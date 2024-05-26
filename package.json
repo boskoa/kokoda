@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "instant messaging app",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node index.js",
@@ -16,6 +17,12 @@
     "eslint": "^9.3.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.3.0",
+    "nodemon": "^3.1.1",
     "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
   }
 }
