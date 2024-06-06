@@ -1,14 +1,16 @@
 const dark = {
   main: {
-    bg: "black",
-    fg: "white",
+    containerBg: "black",
+    bg: "#242424",
+    fg: "#FFEE44",
   },
 };
 
 const light = {
   main: {
-    bg: "white",
-    fg: "black",
+    containerBg: "white",
+    bg: "#EEDDEE",
+    fg: "#242424",
   },
 };
 
