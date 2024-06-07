@@ -6,6 +6,7 @@ const ViewPortContainer = styled.div`
   margin: 0 auto;
   overflow-y: auto;
   background-color: ${({ theme }) => theme.main.fg};
+  position: relative;
 
   @media only screen and (max-width: 800px) {
     width: 320px;

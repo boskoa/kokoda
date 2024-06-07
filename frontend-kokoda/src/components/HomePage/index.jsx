@@ -5,35 +5,37 @@ import { useState } from "react";
 const HomeContainer = styled.div`
   background-color: ${({ theme }) => theme.main.bg};
   color: ${({ theme }) => theme.main.fg};
-  min-height: 100%;
+  min-height: 180%;
   position: relative;
   overflow-x: hidden;
+  padding-bottom: 40px;
 `;
 
 const FooterMenu = styled.div`
+  position: sticky;
+  bottom: 0px;
   height: 40px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  margin-top: -40px;
   background-color: teal;
 `;
 
 const MenuButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
+  position: sticky;
+  bottom: 96%;
+  left: 86%;
+  height: 20px;
+  width: 50px;
+  margin-top: -20px;
 `;
 
 const Menu = styled.div`
   height: 100%;
-  width: 70%;
+  width: 28%;
   background-color: lime;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
-  transform: ${({ show }) => (show ? "translateX(0%)" : "translateX(110%)")};
+  transform: ${({ show }) => (show ? "translateX(0%)" : "translateX(-100%)")};
   transition: all 0.4s;
 `;
 
@@ -42,12 +44,12 @@ function HomePage() {
 
   return (
     <ViewPort>
-      <HomeContainer>
-        HAI MARK
-        <MenuButton onClick={() => setMenu((p) => !p)}>show</MenuButton>
-        <Menu show={menu} />
-        <FooterMenu />
-      </HomeContainer>
+      <HomeContainer>HAI MARK</HomeContainer>
+      <Menu show={menu} />
+      <MenuButton onClick={() => setMenu((p) => !p)}>
+        {menu ? "hide" : "show"}
+      </MenuButton>
+      <FooterMenu />
     </ViewPort>
   );
 }
