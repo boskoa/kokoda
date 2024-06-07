@@ -9,6 +9,7 @@ const HomeContainer = styled.div`
   position: relative;
   overflow-x: hidden;
   padding-bottom: 40px;
+  z-index: 1;
 `;
 
 const FooterMenu = styled.div`
@@ -17,6 +18,7 @@ const FooterMenu = styled.div`
   height: 40px;
   margin-top: -40px;
   background-color: teal;
+  z-index: 2;
 `;
 
 const MenuButton = styled.button`
@@ -26,17 +28,20 @@ const MenuButton = styled.button`
   height: 20px;
   width: 50px;
   margin-top: -20px;
+  z-index: 2;
 `;
 
 const Menu = styled.div`
   height: 100%;
-  width: 28%;
+  width: 70%;
   background-color: lime;
-  position: fixed;
-  right: 0;
-  top: 0;
-  transform: ${({ show }) => (show ? "translateX(0%)" : "translateX(-100%)")};
+  position: sticky;
+  left: 30%;
+  bottom: 0px;
+  transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(100%)")};
   transition: all 0.4s;
+  opacity: 0.7;
+  z-index: 1;
 `;
 
 function HomePage() {
@@ -45,7 +50,7 @@ function HomePage() {
   return (
     <ViewPort>
       <HomeContainer>HAI MARK</HomeContainer>
-      <Menu show={menu} />
+      <Menu $show={menu} />
       <MenuButton onClick={() => setMenu((p) => !p)}>
         {menu ? "hide" : "show"}
       </MenuButton>

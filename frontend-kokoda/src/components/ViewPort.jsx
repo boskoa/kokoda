@@ -5,17 +5,16 @@ const ViewPortContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
   overflow-y: auto;
+  overflow-x: hidden;
   background-color: ${({ theme }) => theme.main.fg};
   position: relative;
 
   @media only screen and (max-width: 800px) {
     width: 320px;
-    overflow-x: hidden;
   }
 
   @media (hover: none) {
     width: 100%;
-    overflow-x: hidden;
   }
 `;
 
