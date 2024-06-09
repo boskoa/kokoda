@@ -6,6 +6,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Test from "./components/Test";
 import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
+import { useDispatch } from "react-redux";
+import { getAllChats } from "./features/chats/chatsSlice";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
@@ -13,6 +15,7 @@ const Chat = lazy(() => import("./components/Chat.jsx"));
 
 function App() {
   const [theme, setTheme] = useState("dark");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -20,6 +23,10 @@ function App() {
       theme === "dark" ? dark : light
     ).main.containerBg;
   }, [theme]);
+
+  useEffect(() => {
+    dispatch(getAllChats());
+  }, []);
 
   const router = createBrowserRouter([
     {

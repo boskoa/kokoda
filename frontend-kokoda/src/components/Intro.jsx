@@ -19,23 +19,24 @@ const LogoTitle = styled.div`
 
 const partAnimation = keyframes`
   from {
-    opacity: translateY(0);
+    opacity: 0;
   }
   to {
-    opacity: translateY(1);
+    opacity: 1;
   }
 `;
 
 const LogoPart = styled.div`
   position: absolute;
   height: 50px;
-  width: 140px;
-  color: teal;
+  width: 100px;
+  color: gold;
   opacity: 0;
-  font-family: "Permanent Marker", cursive;
-  font-size: 50px;
+  //font-family: "Permanent Marker", cursive;
+  font-size: 70px;
+  font-weight: 900;
   line-height: 50px;
-  text-shadow: teal 0 0 5px;
+  //text-shadow: white 0 0 5px;
   left: ${({ $left }) => $left};
   top: ${({ $top }) => $top};
   display: flex;
@@ -70,41 +71,41 @@ const LogoImage = styled.div`
     top: 67%;
     width: 100%;
     height: 33%;
-    background: yellow;
+    background: gold;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     transform: translateY(0%);
-    animation: ${css`5s ${logoAnimation} infinite`};
+    animation: ${css`2.5s ${logoAnimation} forwards`};
   }
 `;
 
 function Intro() {
   const navigate = useNavigate();
 
-  /*   useEffect(() => {
-    setTimeout(() => navigate("/home"), 2000);
-  }, []); */
+  useEffect(() => {
+    setTimeout(() => navigate("/home"), 3000);
+  }, []);
 
   return (
     <IntroContainer>
       <LogoTitle>
-        <LogoPart $left="0px" $top="15%" $rotate="-30deg" $delay="1s">
+        <LogoPart $left="20px" $top="15%" $rotate="-30deg" $delay="0s">
           KO
         </LogoPart>
         <LogoPart
-          $left="calc(100% - 140px)"
+          $left="calc(100% - 120px)"
           $top="15%"
           $rotate="30deg"
-          $delay="2s"
+          $delay="0.5s"
         >
           KO
         </LogoPart>
-        <LogoPart $left="calc(50% - 70px)" $top="60%" $delay="3s">
+        <LogoPart $left="calc(50% - 50px)" $top="60%" $delay="1s">
           KO
         </LogoPart>
-        <LogoPart $left="calc(50% - 70px)" $top="75%" $delay="4s">
-          DAAA!
+        <LogoPart $left="calc(50% - 50px)" $top="75%" $delay="1.5s">
+          DA
         </LogoPart>
       </LogoTitle>
       <LogoImage />
