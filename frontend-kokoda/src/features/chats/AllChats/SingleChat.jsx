@@ -1,16 +1,30 @@
 import styled from "styled-components";
+import user from "/user.svg";
 
 const ChatContainer = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
+  gap: 5px;
   width: 100%;
   height: 60px;
 `;
 
 const Avatar = styled.div`
   width: 60px;
-  background-color: red;
+  //background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(125, 235, 155, 0.5);
+`;
+
+const UserIcon = styled.img`
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  border-radius: 50%;
 `;
 
 const ChatData = styled.div`
@@ -19,27 +33,51 @@ const ChatData = styled.div`
   justify-content: start;
   align-items: stretch;
   flex: 2;
-  background-color: black;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      transparent 80%,
+      rgba(0, 0, 0, 0.5) 90%,
+      black
+    );
+  }
 `;
 
 const ChatTitle = styled.h2`
   font-size: 14px;
-  border: 1px solid white;
+  overflow: hidden;
+  flex: 1;
 `;
 
 const ChatLastMessage = styled.p`
   font-size: 12px;
-  border: 1px solid teal;
-  text-overflow: ellipsis;
+  flex: 2;
   overflow: hidden;
 `;
 
 function SingleChat({ chat }) {
   return (
     <ChatContainer>
-      <Avatar />
+      <Avatar>
+        <UserIcon
+          src={`/public/uploads/avatars/${chat.id}.webp`}
+          alt="user avatar"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = user;
+          }}
+          height="100%"
+          width="100%"
+        />
+      </Avatar>
       <ChatData>
-        <ChatTitle>{chat.title.slice(0, 2)}</ChatTitle>
+        <ChatTitle>{chat.title.split().toString()}</ChatTitle>
         <ChatLastMessage>{chat.body}</ChatLastMessage>
       </ChatData>
     </ChatContainer>

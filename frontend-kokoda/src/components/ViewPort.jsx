@@ -17,6 +17,31 @@ const ViewPortContainer = styled.div`
   @media (hover: none) {
     width: 100%;
   }
+
+  &::-webkit-scrollbar {
+    background-color: rgb(255, 68, 0);
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgb(255, 68, 0);
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(255, 215, 0);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-button:single-button:vertical:decrement {
+    height: 0px;
+    width: 0px;
+  }
+
+  &::-webkit-scrollbar-button:single-button:vertical:increment {
+    height: 0px;
+    width: 0px;
+  }
 `;
 
 function ViewPort() {

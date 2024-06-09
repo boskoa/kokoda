@@ -6,7 +6,7 @@ import SingleChat from "./SingleChat";
 const AllChatsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   padding: 5px;
   width: 100%;
   justify-content: start;

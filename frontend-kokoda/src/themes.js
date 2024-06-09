@@ -5,8 +5,8 @@ const dark = {
     fg: "#FFEE44",
   },
   footerButton: {
-    bg1: "rgba(0, 139, 139, 0.5)",
-    bg2: "rgba(10, 179, 89, 0.5)",
+    bg1: "rgba(0, 139, 139, 0.9)",
+    bg2: "rgba(10, 179, 89, 0.9)",
     fg: "#EEDDEE",
   },
 };
@@ -18,7 +18,8 @@ const light = {
     fg: "#242424",
   },
   footerButton: {
-    bg: "rgba(0, 139, 139, 0.5)",
+    bg1: "rgba(0, 139, 139, 0.9)",
+    bg2: "rgba(10, 179, 89, 0.9)",
     fg: "#EEDDEE",
   },
 };

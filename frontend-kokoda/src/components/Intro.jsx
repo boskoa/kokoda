@@ -32,7 +32,6 @@ const LogoPart = styled.div`
   width: 100px;
   color: gold;
   opacity: 0;
-  //font-family: "Permanent Marker", cursive;
   font-size: 70px;
   font-weight: 900;
   line-height: 50px;
