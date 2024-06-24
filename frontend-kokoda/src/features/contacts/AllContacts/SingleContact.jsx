@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import user from "/user.svg";
 
-const ChatContainer = styled.div`
+const ContactContainer = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
@@ -27,7 +27,7 @@ const UserIcon = styled.img`
   border-radius: 50%;
 `;
 
-const ChatData = styled.div`
+const ContactData = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -49,24 +49,18 @@ const ChatData = styled.div`
   }
 `;
 
-const ChatTitle = styled.h2`
+const ContactName = styled.h2`
   font-size: 14px;
   overflow: hidden;
   flex: 1;
 `;
 
-const ChatLastMessage = styled.p`
-  font-size: 12px;
-  flex: 2;
-  overflow: hidden;
-`;
-
-function SingleChat({ chat }) {
+function SingleContact({ contact }) {
   return (
-    <ChatContainer>
+    <ContactContainer>
       <Avatar>
         <UserIcon
-          src={`/public/uploads/avatars/${chat.id}.webp`}
+          src={`/public/uploads/avatars/${contact.id}.webp`}
           alt="user avatar"
           onError={(e) => {
             e.currentTarget.onerror = null;
@@ -76,12 +70,11 @@ function SingleChat({ chat }) {
           width="100%"
         />
       </Avatar>
-      <ChatData>
-        <ChatTitle>{chat.title.split().toString()}</ChatTitle>
-        <ChatLastMessage>{chat.body}</ChatLastMessage>
-      </ChatData>
-    </ChatContainer>
+      <ContactData>
+        <ContactName>{contact.name}</ContactName>
+      </ContactData>
+    </ContactContainer>
   );
 }
 
-export default SingleChat;
+export default SingleContact;

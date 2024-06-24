@@ -1,5 +1,7 @@
+import AllContacts from "../../../features/contacts/AllContacts";
+
 function Contacts() {
-  return <div>Contacts</div>;
+  return <AllContacts />;
 }
 
 export default Contacts;

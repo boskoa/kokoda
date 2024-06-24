@@ -8,6 +8,7 @@ import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
 import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
+import { getAllContacts } from "./features/contacts/contactsSlice";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
@@ -26,6 +27,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getAllChats());
+    dispatch(getAllContacts());
   }, []);
 
   const router = createBrowserRouter([
