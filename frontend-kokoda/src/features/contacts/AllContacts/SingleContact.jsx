@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import user from "/user.svg";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import trimText from "../../../utils/trimText";
 
 const ContactContainer = styled.div`
   display: flex;
@@ -14,7 +15,6 @@ const ContactContainer = styled.div`
 
 const Avatar = styled.div`
   width: 60px;
-  //background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 30%, transparent);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,11 +35,9 @@ const ContactData = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: stretch;
-  flex: 1;
+  gap: 5px;
   width: calc(100% - 60px - 5px);
   position: relative;
-  height: 100%;
-  //border: 1px solid red;
 `;
 
 const ContactBackground = styled.div`
@@ -53,44 +51,29 @@ const ContactBackground = styled.div`
   );
   border-radius: 30px;
   z-index: -1;
-  //border: 1px solid red;
 `;
 
 const ContactName = styled.h2`
-  min-height: 40%;
   font-size: 14px;
-  //overflow: hidden;
-  //flex: 1;
+  height: 20px;
+  position: relative;
 `;
 
 const LastMessage = styled.p`
-  height: 60%;
+  flex: 1;
   font-size: 12px;
+  max-height: calc(100% - 20px);
 `;
 
 function SingleContact({ contact }) {
-  const dataRef = useRef();
   const nameRef = useRef();
   const messageRef = useRef();
   const [name, setName] = useState(contact.name);
+  const [message, setMessage] = useState(contact.company.catchPhrase);
 
   useLayoutEffect(() => {
-    const testElement = document.createElement("span");
-    nameRef.current.appendChild(testElement);
-    let length = 0;
-    for (const char of contact.name) {
-      testElement.innerText += char;
-      length++;
-      if (
-        testElement.getBoundingClientRect().width > dataRef.current.clientWidth
-      ) {
-        length -= 3;
-        setName(contact.name.slice(0, length) + "...");
-        break;
-      }
-    }
-
-    nameRef.current.removeChild(testElement);
+    trimText(nameRef.current, contact.name, setName);
+    trimText(messageRef.current, contact.company.catchPhrase, setMessage);
   }, []);
 
   return (
@@ -107,11 +90,13 @@ function SingleContact({ contact }) {
           width="100%"
         />
       </Avatar>
-      <ContactData ref={dataRef}>
-        <ContactName>
-          <span ref={nameRef}>{name}</span>
+      <ContactData>
+        <ContactName ref={nameRef}>
+          <span>{name}</span>
         </ContactName>
-        <LastMessage>proba</LastMessage>
+        <LastMessage ref={messageRef}>
+          <span>{message}</span>
+        </LastMessage>
       </ContactData>
       <ContactBackground></ContactBackground>
     </ContactContainer>
