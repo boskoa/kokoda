@@ -73,7 +73,7 @@ function SingleContact({ contact }) {
 
   useLayoutEffect(() => {
     trimText(nameRef.current, contact.name, setName);
-    trimText(messageRef.current, contact.company.catchPhrase, setMessage);
+    trimText(messageRef.current, contact.company.catchPhrase, setMessage, 2);
   }, []);
 
   return (
@@ -91,12 +91,8 @@ function SingleContact({ contact }) {
         />
       </Avatar>
       <ContactData>
-        <ContactName ref={nameRef}>
-          <span>{name}</span>
-        </ContactName>
-        <LastMessage ref={messageRef}>
-          <span>{message}</span>
-        </LastMessage>
+        <ContactName ref={nameRef}>{name}</ContactName>
+        <LastMessage ref={messageRef}>{message}</LastMessage>
       </ContactData>
       <ContactBackground></ContactBackground>
     </ContactContainer>

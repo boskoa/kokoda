@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import user from "/user.svg";
+import { useLayoutEffect, useRef, useState } from "react";
+import trimText from "../../../utils/trimText";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -62,6 +64,16 @@ const ChatLastMessage = styled.p`
 `;
 
 function SingleChat({ chat }) {
+  const titleRef = useRef();
+  const messageRef = useRef();
+  const [title, setTitle] = useState(chat.title);
+  const [message, setMessage] = useState(chat.body);
+
+  useLayoutEffect(() => {
+    trimText(titleRef.current, chat.title, setTitle);
+    trimText(messageRef.current, chat.body, setMessage, 2);
+  }, []);
+
   return (
     <ChatContainer>
       <Avatar>
@@ -77,8 +89,8 @@ function SingleChat({ chat }) {
         />
       </Avatar>
       <ChatData>
-        <ChatTitle>{chat.title.split().toString()}</ChatTitle>
-        <ChatLastMessage>{chat.body}</ChatLastMessage>
+        <ChatTitle ref={titleRef}>{title.split().toString()}</ChatTitle>
+        <ChatLastMessage ref={messageRef}>{message}</ChatLastMessage>
       </ChatData>
     </ChatContainer>
   );
