@@ -83,7 +83,7 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate("/home"), 3000);
+    setTimeout(() => navigate("/chats"), 3000);
   }, []);
 
   return (
@@ -100,14 +100,24 @@ function Intro() {
         >
           KO
         </LogoPart>
-        <LogoPart $left="calc(50% - 50px)" $top="60%" $delay="1s">
+        <LogoPart
+          $left="calc(50% - 50px)"
+          $top="60%"
+          $rotate="0deg"
+          $delay="1s"
+        >
           KO
         </LogoPart>
-        <LogoPart $left="calc(50% - 50px)" $top="75%" $delay="1.5s">
+        <LogoPart
+          $left="calc(50% - 50px)"
+          $top="75%"
+          $rotate="0deg"
+          $delay="1.5s"
+        >
           DA
         </LogoPart>
       </LogoTitle>
-      <LogoImage />
+      <LogoImage>HAI MARK</LogoImage>
     </IntroContainer>
   );
 }

@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import user from "/user.svg";
-import { useLayoutEffect, useRef, useState } from "react";
-import trimText from "../../../utils/trimText";
 
 const ContactContainer = styled.div`
   display: flex;
@@ -55,27 +53,22 @@ const ContactBackground = styled.div`
 
 const ContactName = styled.h2`
   font-size: 14px;
-  height: 20px;
-  position: relative;
+  height: 50%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-top: 5px;
 `;
 
 const LastMessage = styled.p`
-  flex: 1;
+  height: 50%;
   font-size: 12px;
-  max-height: calc(100% - 20px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 function SingleContact({ contact }) {
-  const nameRef = useRef();
-  const messageRef = useRef();
-  const [name, setName] = useState(contact.name);
-  const [message, setMessage] = useState(contact.company.catchPhrase);
-
-  useLayoutEffect(() => {
-    trimText(nameRef.current, contact.name, setName);
-    trimText(messageRef.current, contact.company.catchPhrase, setMessage, 2);
-  }, []);
-
   return (
     <ContactContainer>
       <Avatar>
@@ -91,10 +84,10 @@ function SingleContact({ contact }) {
         />
       </Avatar>
       <ContactData>
-        <ContactName ref={nameRef}>{name}</ContactName>
-        <LastMessage ref={messageRef}>{message}</LastMessage>
+        <ContactName>{contact.name}</ContactName>
+        <LastMessage>{contact.company.catchPhrase}</LastMessage>
       </ContactData>
-      <ContactBackground></ContactBackground>
+      <ContactBackground />
     </ContactContainer>
   );
 }

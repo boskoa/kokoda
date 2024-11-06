@@ -40,11 +40,11 @@ function App() {
           element: <Intro />,
         },
         {
-          path: "home",
+          path: "",
           element: <HomePage />,
           children: [
             {
-              index: true,
+              path: "chats",
               element: (
                 <Suspense>
                   <Chats />
@@ -59,15 +59,15 @@ function App() {
                 </Suspense>
               ),
             },
+            {
+              path: "chats/:id",
+              element: (
+                <Suspense>
+                  <Chat />
+                </Suspense>
+              ),
+            },
           ],
-        },
-        {
-          path: "chat/:id",
-          element: (
-            <Suspense>
-              <Chat />
-            </Suspense>
-          ),
         },
       ],
     },

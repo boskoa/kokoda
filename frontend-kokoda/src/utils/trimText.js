@@ -1,5 +1,3 @@
-import { useLayoutEffect } from "react";
-
 export default function trimText(container, text, setText, lines = 1) {
   const testElement = document.createElement("span");
   testElement.style.position = "absolute";

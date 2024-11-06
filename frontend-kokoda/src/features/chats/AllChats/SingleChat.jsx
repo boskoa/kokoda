@@ -10,14 +10,15 @@ const ChatContainer = styled.div`
   gap: 5px;
   width: 100%;
   height: 60px;
+  position: relative;
 `;
 
 const Avatar = styled.div`
   width: 60px;
-  //background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 30%, transparent);
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   border-radius: 50%;
   border: 2px solid rgba(125, 235, 155, 0.5);
 `;
@@ -34,46 +35,41 @@ const ChatData = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: stretch;
-  flex: 2;
+  gap: 5px;
+  width: calc(100% - 60px - 5px);
   position: relative;
+`;
 
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      transparent 80%,
-      rgba(0, 0, 0, 0.5) 90%,
-      black
-    );
-  }
+const ChatBackground = styled.div`
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(100, 100, 100, 0.2),
+    rgba(100, 100, 100, 0.2) 20%,
+    transparent
+  );
+  border-radius: 30px;
+  z-index: -1;
 `;
 
 const ChatTitle = styled.h2`
   font-size: 14px;
+  height: 50%;
   overflow: hidden;
-  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const ChatLastMessage = styled.p`
   font-size: 12px;
-  flex: 2;
+  height: 50%;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 function SingleChat({ chat }) {
-  const titleRef = useRef();
-  const messageRef = useRef();
-  const [title, setTitle] = useState(chat.title);
-  const [message, setMessage] = useState(chat.body);
-
-  useLayoutEffect(() => {
-    trimText(titleRef.current, chat.title, setTitle);
-    trimText(messageRef.current, chat.body, setMessage, 2);
-  }, []);
-
   return (
     <ChatContainer>
       <Avatar>
@@ -89,9 +85,10 @@ function SingleChat({ chat }) {
         />
       </Avatar>
       <ChatData>
-        <ChatTitle ref={titleRef}>{title.split().toString()}</ChatTitle>
-        <ChatLastMessage ref={messageRef}>{message}</ChatLastMessage>
+        <ChatTitle>{chat.title.split().toString()}</ChatTitle>
+        <ChatLastMessage>{chat.body}</ChatLastMessage>
       </ChatData>
+      <ChatBackground />
     </ChatContainer>
   );
 }

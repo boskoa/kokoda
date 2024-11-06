@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 
 const FooterMenuContainer = styled.div`
@@ -25,19 +25,27 @@ const buttonAnimation = keyframes`
   }
 `;
 
-const FooterButtonContainer = styled(Link)`
+const FooterButtonContainer = styled(NavLink)`
   height: 100%;
   width: 50%;
   background-color: ${({ theme, $color }) => theme.footerButton[$color]};
   border: none;
   text-decoration: none;
   cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
   color: ${({ theme }) => theme.footerButton.fg};
+  text-shadow: 0px 0px 2px black;
+
+  &.active {
+    text-shadow: 0px 0px 5px white;
+    color: black;
+  }
 
   &:active::before {
     content: "";
@@ -55,10 +63,10 @@ const FooterButtonContainer = styled(Link)`
 function FooterMenu() {
   return (
     <FooterMenuContainer>
-      <FooterButtonContainer to="/home" $color={"bg1"}>
+      <FooterButtonContainer to="/chats" $color={"bg1"}>
         Chats
       </FooterButtonContainer>
-      <FooterButtonContainer to="/home/contacts" $color={"bg2"}>
+      <FooterButtonContainer to="/contacts" $color={"bg2"}>
         Contacts
       </FooterButtonContainer>
     </FooterMenuContainer>

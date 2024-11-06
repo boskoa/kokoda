@@ -19,12 +19,12 @@ const ViewPortContainer = styled.div`
   }
 
   &::-webkit-scrollbar {
-    background-color: rgb(255, 68, 0);
+    background-color: rgb(26, 105, 107);
     width: 3px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: rgb(255, 68, 0);
+    background-color: rgb(26, 105, 107);
     width: 3px;
   }
 
