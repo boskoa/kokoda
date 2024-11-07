@@ -52,18 +52,18 @@ function App() {
               ),
             },
             {
-              path: "contacts",
-              element: (
-                <Suspense>
-                  <Contacts />
-                </Suspense>
-              ),
-            },
-            {
               path: "chats/:id",
               element: (
                 <Suspense>
                   <Chat />
+                </Suspense>
+              ),
+            },
+            {
+              path: "contacts",
+              element: (
+                <Suspense>
+                  <Contacts />
                 </Suspense>
               ),
             },

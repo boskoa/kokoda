@@ -41,10 +41,11 @@ const FooterButtonContainer = styled(NavLink)`
   position: relative;
   color: ${({ theme }) => theme.footerButton.fg};
   text-shadow: 0px 0px 2px black;
+  transition: all 0.2s;
 
   &.active {
-    text-shadow: 0px 0px 5px white;
-    color: black;
+    text-shadow: 0px 0px 10px black;
+    box-shadow: inset 0 0 5px gold;
   }
 
   &:active::before {
