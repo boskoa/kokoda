@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
+import IntroLoader from "./IntroLoader";
 
 const IntroContainer = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
   position: relative;
+  overflow: hidden;
 `;
 
 const LogoTitle = styled.div`
@@ -26,23 +28,68 @@ const partAnimation = keyframes`
   }
 `;
 
+const stamp = ($rotate) => keyframes`
+  0% {
+    transform: perspective(300px) translateZ(300px) rotateZ(${$rotate + 10}deg);
+  }
+  70% {
+    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
+  }
+  80% {
+    transform: perspective(300px) translateZ(80px) rotateZ(${$rotate}deg);
+  }
+  90% {
+    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
+  }
+  95% {
+    transform: perspective(300px) translateZ(40px) rotateZ(${$rotate}deg);
+  }
+  100% {
+    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
+  }
+`;
+
+const dust = (color) => keyframes`
+  from {
+    text-shadow: 0 0 0px ${color};
+  }
+  50% {
+    text-shadow: 0 0 20px ${color};
+  }
+  to {
+    text-shadow: 0 0 0px ${color};
+  }
+`;
+
 const LogoPart = styled.div`
   position: absolute;
   height: 50px;
   width: 100px;
   color: gold;
-  opacity: 0;
-  font-size: 70px;
-  font-weight: 900;
+  //opacity: 0;
+  font-family: "Sour Gummy", sans-serif;
+  font-size: 90px;
+  font-weight: 800;
   line-height: 50px;
   //text-shadow: white 0 0 5px;
   left: ${({ $left }) => $left};
   top: ${({ $top }) => $top};
   display: flex;
   justify-content: center;
-  transform: ${({ $rotate }) => `rotate(${$rotate})`};
+  z-index: 2;
+  transform: ${({ $rotate }) =>
+    `perspective(300px) translateZ(300px) rotateZ(${$rotate}deg)`};
   transform-origin: 50%;
-  animation: ${({ $delay }) => css`0s ${partAnimation} ${$delay} forwards`};
+  animation: ${({ $delay }) =>
+    css`0.5s ${({ $rotate }) => stamp($rotate)} ${$delay} forwards,
+    1s ${dust("#ffd9008d")} 1.5s ease-out infinite`};
+
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    text-shadow: 0 0 5px black;
+    z-index: -1;
+  }
 `;
 
 const logoAnimation = keyframes`
@@ -75,7 +122,7 @@ const LogoImage = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     transform: translateY(0%);
-    animation: ${css`2.5s ${logoAnimation} forwards`};
+    animation: ${css`4.5s ${logoAnimation} 1s forwards`};
   }
 `;
 
@@ -83,41 +130,43 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate("/chats"), 3000);
+    //setTimeout(() => navigate("/chats"), 4500);
   }, []);
 
   return (
     <IntroContainer>
       <LogoTitle>
-        <LogoPart $left="20px" $top="15%" $rotate="-30deg" $delay="0s">
+        <LogoPart
+          data-text="KO"
+          $left="20px"
+          $top="15%"
+          $rotate={-30}
+          $delay="0s"
+        >
           KO
         </LogoPart>
         <LogoPart
+          data-text="KO"
           $left="calc(100% - 120px)"
           $top="15%"
-          $rotate="30deg"
+          $rotate={30}
           $delay="0.5s"
         >
           KO
         </LogoPart>
         <LogoPart
+          data-text="DA"
           $left="calc(50% - 50px)"
           $top="60%"
-          $rotate="0deg"
+          $rotate={0}
           $delay="1s"
-        >
-          KO
-        </LogoPart>
-        <LogoPart
-          $left="calc(50% - 50px)"
-          $top="75%"
-          $rotate="0deg"
-          $delay="1.5s"
         >
           DA
         </LogoPart>
       </LogoTitle>
-      <LogoImage>HAI MARK</LogoImage>
+      <LogoImage>
+        <IntroLoader />
+      </LogoImage>
     </IntroContainer>
   );
 }

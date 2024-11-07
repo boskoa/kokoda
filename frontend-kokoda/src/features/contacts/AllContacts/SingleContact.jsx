@@ -20,7 +20,7 @@ const Avatar = styled.div`
   border-radius: 50%;
   border: 2px solid rgba(125, 235, 155, 0.5);
 `;
-
+/* 
 const imageShow = keyframes`
   from {
     opacity: 0;
@@ -29,14 +29,13 @@ const imageShow = keyframes`
     opacity: 1;
   }
 `;
-
+ */
 const UserIcon = styled.img`
   width: 90%;
   height: 90%;
   object-fit: contain;
   border-radius: 50%;
   opacity: 0;
-  //animation: 1s ${imageShow} 0.5s forwards;
   transition: all 1s;
 `;
 
