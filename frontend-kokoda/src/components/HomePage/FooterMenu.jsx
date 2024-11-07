@@ -46,6 +46,7 @@ const FooterButtonContainer = styled(NavLink)`
   &.active {
     text-shadow: 0px 0px 10px black;
     box-shadow: inset 0 0 5px gold;
+    font-size: 1.15em;
   }
 
   &:active::before {

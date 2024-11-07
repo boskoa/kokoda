@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import user from "/user.svg";
 
 const ContactContainer = styled.div`
@@ -21,11 +21,23 @@ const Avatar = styled.div`
   border: 2px solid rgba(125, 235, 155, 0.5);
 `;
 
+const imageShow = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const UserIcon = styled.img`
   width: 90%;
   height: 90%;
   object-fit: contain;
   border-radius: 50%;
+  opacity: 0;
+  //animation: 1s ${imageShow} 0.5s forwards;
+  transition: all 1s;
 `;
 
 const ContactData = styled.div`
@@ -75,9 +87,13 @@ function SingleContact({ contact }) {
         <UserIcon
           src={`/public/uploads/avatars/${contact.id}.webp`}
           alt="user avatar"
+          onLoad={(e) => {
+            e.currentTarget.opacity = 1;
+          }}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = user;
+            e.currentTarget.style.opacity = 1;
           }}
           height="100%"
           width="100%"

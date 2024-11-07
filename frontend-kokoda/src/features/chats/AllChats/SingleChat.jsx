@@ -28,6 +28,8 @@ const UserIcon = styled.img`
   height: 90%;
   object-fit: contain;
   border-radius: 50%;
+  opacity: 0;
+  transition: all 1s;
 `;
 
 const ChatData = styled.div`
@@ -76,9 +78,13 @@ function SingleChat({ chat }) {
         <UserIcon
           src={`/public/uploads/avatars/${chat.id}.webp`}
           alt="user avatar"
+          onLoad={(e) => {
+            e.currentTarget.opacity = 1;
+          }}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = user;
+            e.currentTarget.style.opacity = 1;
           }}
           height="100%"
           width="100%"
