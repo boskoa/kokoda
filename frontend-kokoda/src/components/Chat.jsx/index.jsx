@@ -1,5 +1,7 @@
+import DetailedChat from "../../features/detailedChats/DetailedChat";
+
 function Chat() {
-  return <div>Chat</div>;
+  return <DetailedChat />;
 }
 
 export default Chat;

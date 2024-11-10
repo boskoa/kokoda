@@ -18,7 +18,7 @@ const LogoTitle = styled.div`
   top: 0;
   left: 0;
 `;
-
+/* 
 const partAnimation = keyframes`
   from {
     opacity: 0;
@@ -27,7 +27,7 @@ const partAnimation = keyframes`
     opacity: 1;
   }
 `;
-
+ */
 const stamp = ($rotate) => keyframes`
   0% {
     transform: perspective(300px) translateZ(300px) rotateZ(${$rotate + 10}deg);
@@ -53,7 +53,10 @@ const dust = (color) => keyframes`
   from {
     text-shadow: 0 0 0px ${color};
   }
-  50% {
+  25% {
+    text-shadow: 0 0 20px ${color};
+  }
+  75% {
     text-shadow: 0 0 20px ${color};
   }
   to {
@@ -82,12 +85,16 @@ const LogoPart = styled.div`
   transform-origin: 50%;
   animation: ${({ $delay }) =>
     css`0.5s ${({ $rotate }) => stamp($rotate)} ${$delay} forwards,
-    1s ${dust("#ffd9008d")} 1.5s ease-out infinite`};
+    3s ${dust("#ffd9008d")} 1.5s ease-out infinite`};
 
   &::before {
     content: attr(data-text);
     position: absolute;
-    text-shadow: 0 0 5px black;
+    text-shadow:
+      -2px 2px 0 #111,
+      2px 2px 0 #111,
+      2px -2px 0 #111,
+      -2px -2px 0 #111;
     z-index: -1;
   }
 `;
@@ -109,14 +116,15 @@ const LogoImage = styled.div`
   mask-repeat: no-repeat;
   mask-position: center;
   position: relative;
+  background-color: #353535;
 
   &::before {
     content: "";
     display: block;
     position: absolute;
-    top: 67%;
+    top: 73%;
     width: 100%;
-    height: 33%;
+    height: 45%;
     background: gold;
     background-size: contain;
     background-position: center;
@@ -130,7 +138,7 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //setTimeout(() => navigate("/chats"), 4500);
+    setTimeout(() => navigate("/chats"), 6000);
   }, []);
 
   return (
@@ -138,19 +146,19 @@ function Intro() {
       <LogoTitle>
         <LogoPart
           data-text="KO"
-          $left="20px"
+          $left="10%"
           $top="15%"
           $rotate={-30}
-          $delay="0s"
+          $delay="1s"
         >
           KO
         </LogoPart>
         <LogoPart
           data-text="KO"
-          $left="calc(100% - 120px)"
+          $left="calc(90% - 100px)"
           $top="15%"
           $rotate={30}
-          $delay="0.5s"
+          $delay="1.5s"
         >
           KO
         </LogoPart>
@@ -159,7 +167,7 @@ function Intro() {
           $left="calc(50% - 50px)"
           $top="60%"
           $rotate={0}
-          $delay="1s"
+          $delay="2s"
         >
           DA
         </LogoPart>
