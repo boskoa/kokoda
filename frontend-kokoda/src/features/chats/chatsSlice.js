@@ -14,17 +14,21 @@ const initialState = chatsAdapter.getInitialState({
   error: null,
 });
 
-export const getAllChats = createAsyncThunk("chats/getAllChats", async () => {
-  /* const { token, page } = data;
+export const getAllChats = createAsyncThunk(
+  "chats/getAllChats",
+  async (data) => {
+    const { offset } = data;
+    /*
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
-    }; */
-  const response = await axios.get(BASE_URL);
-
-  return response.data;
-});
+    };
+  */
+    const response = await axios.get(BASE_URL + `?_start=${offset}&_limit=10`);
+    return response.data;
+  },
+);
 
 const chatsSlice = createSlice({
   name: "chats",

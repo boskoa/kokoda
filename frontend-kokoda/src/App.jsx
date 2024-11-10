@@ -26,7 +26,7 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    dispatch(getAllChats());
+    dispatch(getAllChats({ offset: 10 }));
     dispatch(getAllContacts());
   }, []);
 
