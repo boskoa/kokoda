@@ -26,8 +26,8 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    dispatch(getAllChats({ offset: 10 }));
-    dispatch(getAllContacts());
+    dispatch(getAllChats({ offset: 0, limit: 20 }));
+    dispatch(getAllContacts({ offset: 0, limit: 20 }));
   }, []);
 
   const router = createBrowserRouter([

@@ -17,7 +17,7 @@ const initialState = chatsAdapter.getInitialState({
 export const getAllChats = createAsyncThunk(
   "chats/getAllChats",
   async (data) => {
-    const { offset } = data;
+    const { offset, limit } = data;
     /*
     const config = {
       headers: {
@@ -25,7 +25,10 @@ export const getAllChats = createAsyncThunk(
       },
     };
   */
-    const response = await axios.get(BASE_URL + `?_start=${offset}&_limit=10`);
+    //change query when quering db
+    const response = await axios.get(
+      BASE_URL + `?_start=${offset}&_limit=${limit}`,
+    );
     return response.data;
   },
 );

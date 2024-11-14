@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllChats,
   selectAllChats,
   selectChatsLoading,
 } from "../../../features/chats/chatsSlice";
@@ -23,22 +24,27 @@ function AllChats() {
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
   const dispatch = useDispatch();
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState(chats.length);
   const loading = useSelector(selectChatsLoading);
-  const limit = 10;
-  /* finish this
+  const limit = 20;
+
   useEffect(() => {
-    if (intersecting) {
-      dispatch
+    document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    if (intersecting && chats.length % limit === 0 && chats.length >= offset) {
+      dispatch(getAllChats({ offset, limit }));
+      setOffset((p) => p + limit);
     }
-  }, [intersecting])
- */
+  }, [intersecting]);
+
   return (
     <AllChatsContainer>
       {chats.map((c) => (
         <SingleChat key={c.id} chat={c} />
       ))}
-      <Spinner endRef={endRef} loading={true} />
+      <Spinner endRef={endRef} loading={loading} />
     </AllChatsContainer>
   );
 }

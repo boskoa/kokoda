@@ -55,7 +55,7 @@ const ViewPortContainer = styled.div`
 
 function ViewPort() {
   return (
-    <ViewPortContainer $userId={1}>
+    <ViewPortContainer id="vp" $userId={1}>
       <Outlet />
     </ViewPortContainer>
   );

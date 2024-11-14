@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
 const HomeContainer = styled.div`
   background-color: transparent;
   color: ${({ theme }) => theme.main.fg};
-  min-height: 200%;
+  min-height: 100%;
   position: relative;
   //overflow-x: hidden;
   padding-bottom: 40px;

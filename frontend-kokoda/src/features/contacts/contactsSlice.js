@@ -14,16 +14,22 @@ const initialState = contactsAdapter.getInitialState({
   error: null,
 });
 
-export const getAllContacts = createAsyncThunk("getAllContacts", async () => {
-  /* const consfig = {
+export const getAllContacts = createAsyncThunk(
+  "getAllContacts",
+  async (data) => {
+    const { offset, limit } = data;
+    /* const consfig = {
     headers: {
       Authorization: `bearer ${token}`,
     },
   }; */
-  const response = await axios.get(BASE_URL);
-  console.log("CONT", response.data);
-  return response.data;
-});
+    //change query when quering db
+    const response = await axios.get(
+      BASE_URL + `?_start=${offset}&_limit=${limit}`,
+    );
+    return response.data;
+  },
+);
 
 const contactsSlice = createSlice({
   name: "contacts",
