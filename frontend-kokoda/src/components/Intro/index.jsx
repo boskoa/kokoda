@@ -138,7 +138,7 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate("/chats"), 6000);
+    //setTimeout(() => navigate("/chats"), 6000);
   }, []);
 
   return (

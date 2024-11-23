@@ -16,7 +16,7 @@ module.exports = [
   {
     ignores: [
       "dist",
-      "frontend-kokoda",
+      //"frontend-kokoda",
       ".env",
       "node_modules",
       "cypress.config.js",

@@ -2,36 +2,40 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const LoaderContainer = styled.div`
-  position: absolute;
-  color: red;
+  position: relative;
   font-size: 16px;
   font-weight: 600;
-  height: 54px;
-  width: 44px;
-  top: calc(50% - 20px);
-  left: calc(50% - 10px);
+  height: 100%;
+  top: 0.5vw;
+  left: 0.5vw;
   display: flex;
   justify-content: center;
-  align-items: end;
-  padding-bottom: 10px;
+  align-items: center;
   color: ${({ theme }) => theme.main.bg};
   //border: 2px solid ${({ theme }) => theme.main.bg};
   //border-radius: 100% / 125% 125% 80% 80%;
+
+  @media only screen and (max-width: 800px) {
+    font-size: 12px;
+  }
 `;
 
 function IntroLoader() {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    let index;
-    setTimeout(() => {
-      index = setInterval(
+    let intervalIndex;
+    const timeoutIndex = setTimeout(() => {
+      intervalIndex = setInterval(
         () => setCounter((p) => (p < 100 ? p + 5 : 100)),
-        200,
+        100,
       );
     }, 1500);
 
-    return () => clearInterval(index);
+    return () => {
+      clearTimeout(timeoutIndex);
+      clearInterval(intervalIndex);
+    };
   }, []);
 
   return <LoaderContainer>{counter}%</LoaderContainer>;
