@@ -28,7 +28,7 @@ function IntroLoader() {
     const timeoutIndex = setTimeout(() => {
       intervalIndex = setInterval(
         () => setCounter((p) => (p < 100 ? p + 5 : 100)),
-        100,
+        150,
       );
     }, 1500);
 

@@ -23,8 +23,8 @@ const TilesContainer = styled.div`
   width: 14vw;
   height: 14vw;
   animation: 0.3s ${moveContainer} 1s ease-in both;
-  perspective: 800px;
-  //transform-style: preserve-3d;
+  perspective: 1000px;
+  perspective-origin: 100% 100%;
 
   @media only screen and (max-width: 800px) {
     transform: translate(-50px, -100px);
@@ -42,6 +42,39 @@ const lightUp = keyframes`
   }
 `;
 
+const shake = keyframes`
+  10% {
+    transform: translate(0px, 0px);
+  }
+  20% {
+    transform: translate(1px, 2px);
+  }
+  30% {
+    transform: translate(0px, -1px);
+  }
+  40% {
+    transform: translate(-2px, 0px);
+  }
+  50% {
+    transform: translate(-1px, -2px);
+  }
+  60% {
+    transform: translate(-2px, 1px);
+  }
+  70% {
+    transform: translate(0px, 2px);
+  }
+  80% {
+    transform: translate(1px, -3px);
+  }
+  90% {
+    transform: translate(-3px, -3px);
+  }
+  100% {
+    transform: translate(3px, 3px);
+  }
+`;
+
 const LogoImage = styled.div`
   width: 100%;
   height: 100%;
@@ -51,6 +84,7 @@ const LogoImage = styled.div`
   mask-position: center;
   position: relative;
   z-index: 5;
+  animation: 0.1s ${shake} 4.7s infinite;
 
   &::before {
     content: "";
@@ -67,19 +101,6 @@ const LogoImage = styled.div`
     animation: 0.3s ${lightUp} 0.5s cubic-bezier(1, 0.02, 1, 0.74) forwards;
     z-index: 0;
   }
-`;
-
-const ImageBG = styled.div`
-  display: block;
-  position: absolute;
-  top: 0%;
-  width: 100%;
-  height: 100%;
-  background: ${({ theme }) => theme.main.bg};
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 4;
 `;
 
 const rotateTile = (rotate) => keyframes`
@@ -109,17 +130,12 @@ const LogoTile = styled.div`
   align-items: center;
   font-size: 5vw;
   font-weight: 800;
-  //transform: rotateY(180deg);
   transform-origin: ${({ $origin }) => $origin};
-  perspective: 400px;
   background-color: ${({ $bg }) => $bg};
-  //color: red;
+  color: ${({ theme }) => theme.main.bg};
   animation: ${({ $rotate }) =>
-    css`1s ${rotateTile($rotate)} ${({ $delay }) => $delay} both`};
+    css`1s ${rotateTile($rotate)} ${({ $delay }) => $delay} cubic-bezier(0.69, 0.09, 0.77, 1.38) both`};
   z-index: ${({ $z }) => $z};
-  //backface-visibility: hidden;
-  //perspective: 400px;
-  //transform-style: preserve-3d;
 
   & > span {
     transform: ${({ $rotate }) => $rotate};
@@ -134,7 +150,7 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //setTimeout(() => navigate("/chats"), 6000);
+    setTimeout(() => navigate("/chats"), 6000);
   }, []);
 
   return (
@@ -142,9 +158,9 @@ function Intro() {
       <TilesContainer>
         <LogoTile
           $rotate="rotateY(180deg)"
-          $top="102%"
-          $left="100%"
-          $origin="0%"
+          $top="104%"
+          $left="104%"
+          $origin="-2%"
           $delay="3.5s"
           $z={1}
           $bg="teal"
@@ -153,11 +169,11 @@ function Intro() {
         </LogoTile>
         <LogoTile
           $rotate="rotateX(180deg)"
-          $top="2%"
-          $left="102%"
-          $origin="0 100%"
+          $top="0%"
+          $left="104%"
+          $origin="0 102%"
           $delay="2.5s"
-          $z={2}
+          $z={1}
           $bg="gold"
         >
           <span>KO</span>
@@ -165,15 +181,14 @@ function Intro() {
         <LogoTile
           $rotate="rotateY(-180deg)"
           $top={0}
-          $left="2%"
-          $origin="100%"
+          $left={0}
+          $origin="102%"
           $delay="1.5s"
-          $z={3}
+          $z={1}
           $bg="teal"
         >
           <span>KO</span>
         </LogoTile>
-        <ImageBG />
         <LogoImage>
           <IntroLoader />
         </LogoImage>
