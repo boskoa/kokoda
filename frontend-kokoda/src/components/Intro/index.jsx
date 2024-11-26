@@ -7,19 +7,33 @@ const IntroContainer = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  position: relative;
+  align-items: center;
   overflow: hidden;
 `;
 
-const LogoTitle = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
+const moveContainer = keyframes`
+  from {
+    transform: translate(0);
+  }
 `;
-/* 
-const partAnimation = keyframes`
+
+const TilesContainer = styled.div`
+  position: relative;
+  transform: translate(-7vw, 4vw);
+  width: 14vw;
+  height: 14vw;
+  animation: 0.3s ${moveContainer} 1s ease-in both;
+  perspective: 1000px;
+  perspective-origin: 100% -50%;
+
+  @media only screen and (max-width: 800px) {
+    transform: translate(-50px, -100px);
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+const lightUp = keyframes`
   from {
     opacity: 0;
   }
@@ -27,110 +41,108 @@ const partAnimation = keyframes`
     opacity: 1;
   }
 `;
- */
-const stamp = ($rotate) => keyframes`
-  0% {
-    transform: perspective(300px) translateZ(300px) rotateZ(${$rotate + 10}deg);
+
+const shake = keyframes`
+  10% {
+    transform: translate(0px, 0px);
+  }
+  20% {
+    transform: translate(1px, 2px);
+  }
+  30% {
+    transform: translate(0px, -1px);
+  }
+  40% {
+    transform: translate(-2px, 0px);
+  }
+  50% {
+    transform: translate(-1px, -2px);
+  }
+  60% {
+    transform: translate(-2px, 1px);
   }
   70% {
-    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
+    transform: translate(0px, 2px);
   }
   80% {
-    transform: perspective(300px) translateZ(80px) rotateZ(${$rotate}deg);
+    transform: translate(1px, -3px);
   }
   90% {
-    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
-  }
-  95% {
-    transform: perspective(300px) translateZ(40px) rotateZ(${$rotate}deg);
+    transform: translate(-3px, -3px);
   }
   100% {
-    transform: perspective(300px) translateZ(0px) rotateZ(${$rotate}deg);
-  }
-`;
-
-const dust = (color) => keyframes`
-  from {
-    text-shadow: 0 0 0px ${color};
-  }
-  25% {
-    text-shadow: 0 0 20px ${color};
-  }
-  75% {
-    text-shadow: 0 0 20px ${color};
-  }
-  to {
-    text-shadow: 0 0 0px ${color};
-  }
-`;
-
-const LogoPart = styled.div`
-  position: absolute;
-  height: 50px;
-  width: 100px;
-  color: gold;
-  //opacity: 0;
-  font-family: "Sour Gummy", sans-serif;
-  font-size: 90px;
-  font-weight: 800;
-  line-height: 50px;
-  //text-shadow: white 0 0 5px;
-  left: ${({ $left }) => $left};
-  top: ${({ $top }) => $top};
-  display: flex;
-  justify-content: center;
-  z-index: 2;
-  transform: ${({ $rotate }) =>
-    `perspective(300px) translateZ(300px) rotateZ(${$rotate}deg)`};
-  transform-origin: 50%;
-  animation: ${({ $delay }) =>
-    css`0.5s ${({ $rotate }) => stamp($rotate)} ${$delay} forwards,
-    3s ${dust("#ffd9008d")} 1.5s ease-out infinite`};
-
-  &::before {
-    content: attr(data-text);
-    position: absolute;
-    text-shadow:
-      -2px 2px 0 #111,
-      2px 2px 0 #111,
-      2px -2px 0 #111,
-      -2px -2px 0 #111;
-    z-index: -1;
-  }
-`;
-
-const logoAnimation = keyframes`
-  from {
-    transform: translateY(0%);
-  }
-  to {
-    transform: translateY(-100%);
+    transform: translate(3px, 3px);
   }
 `;
 
 const LogoImage = styled.div`
-  width: 40%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   mask-image: url("/chicken.svg");
   mask-size: 100%;
   mask-repeat: no-repeat;
   mask-position: center;
   position: relative;
-  background-color: #353535;
+  z-index: 5;
+  animation: 0.1s ${shake} 4.7s infinite;
 
   &::before {
     content: "";
     display: block;
     position: absolute;
-    top: 73%;
+    top: 0%;
     width: 100%;
-    height: 45%;
+    height: 100%;
     background: gold;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    transform: translateY(0%);
-    animation: ${css`4.5s ${logoAnimation} 1s forwards`};
+    opacity: 0;
+    animation: 0.3s ${lightUp} 0.5s cubic-bezier(1, 0.02, 1, 0.74) forwards;
+    z-index: 0;
+  }
+`;
+
+const rotateTile = (rotate) => keyframes`
+  from {
+    transform: rotate(0, 0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: ${rotate};
+  }
+`;
+
+const LogoTile = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: ${({ $top }) => $top};
+  left: ${({ $left }) => $left};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5vw;
+  font-weight: 800;
+  transform-origin: ${({ $origin }) => $origin};
+  background-color: ${({ $bg }) => $bg};
+  color: ${({ theme }) => theme.main.bg};
+  animation: ${({ $rotate }) =>
+    css`1s ${rotateTile($rotate)} ${({ $delay }) => $delay} cubic-bezier(0.69, 0.09, 0.77, 1.38) both`};
+  z-index: ${({ $z }) => $z};
+
+  & > span {
+    transform: ${({ $rotate }) => $rotate};
+  }
+
+  @media only screen and (max-width: 800px) {
+    font-size: 3rem;
   }
 `;
 
@@ -138,43 +150,49 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //setTimeout(() => navigate("/chats"), 6000);
+    setTimeout(() => navigate("/chats"), 6000);
   }, []);
 
   return (
     <IntroContainer>
-      <LogoTitle>
-        <LogoPart
-          data-text="KO"
-          $left="10%"
-          $top="15%"
-          $rotate={-30}
-          $delay="1s"
+      <TilesContainer>
+        <LogoTile
+          $rotate="rotateX(180deg)"
+          $top="-104%"
+          $left="104%"
+          $origin="0% 102%"
+          $delay="3.5s"
+          $z={1}
+          $bg="teal"
         >
-          KO
-        </LogoPart>
-        <LogoPart
-          data-text="KO"
-          $left="calc(90% - 100px)"
-          $top="15%"
-          $rotate={30}
+          <span>DA</span>
+        </LogoTile>
+        <LogoTile
+          $rotate="rotateY(-180deg)"
+          $top="-104%"
+          $left="0%"
+          $origin="102%"
+          $delay="2.5s"
+          $z={1}
+          $bg="gold"
+        >
+          <span>KO</span>
+        </LogoTile>
+        <LogoTile
+          $rotate="rotateX(-180deg)"
+          $top={0}
+          $left={0}
+          $origin="0% -2%"
           $delay="1.5s"
+          $z={1}
+          $bg="teal"
         >
-          KO
-        </LogoPart>
-        <LogoPart
-          data-text="DA"
-          $left="calc(50% - 50px)"
-          $top="60%"
-          $rotate={0}
-          $delay="2s"
-        >
-          DA
-        </LogoPart>
-      </LogoTitle>
-      <LogoImage>
-        <IntroLoader />
-      </LogoImage>
+          <span>KO</span>
+        </LogoTile>
+        <LogoImage>
+          <IntroLoader />
+        </LogoImage>
+      </TilesContainer>
     </IntroContainer>
   );
 }

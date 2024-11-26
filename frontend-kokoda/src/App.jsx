@@ -5,7 +5,7 @@ import { dark, light } from "./themes";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Test from "./components/Test";
 import ViewPort from "./components/ViewPort";
-import Intro from "./components/Intro/index1";
+import Intro from "./components/Intro";
 import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
