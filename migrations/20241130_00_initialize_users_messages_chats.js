@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.createTable("users", {
       id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        unique: true,
       },
       username: {
         type: DataTypes.STRING,
@@ -50,8 +50,8 @@ module.exports = {
     await queryInterface.createTable("chats", {
       id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        unique: true,
       },
       members: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
@@ -73,8 +73,8 @@ module.exports = {
     await queryInterface.createTable("messages", {
       id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        unique: true,
       },
       sender_id: {
         type: DataTypes.INTEGER,

@@ -7,8 +7,8 @@ Message.init(
   {
     id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       autoIncrement: true,
-      unique: true,
     },
     senderId: {
       type: DataTypes.INTEGER,

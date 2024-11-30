@@ -27,7 +27,7 @@ async function runMigrations() {
 async function rollbackMigrations() {
   await sequelize.authenticate();
   const migrator = new Umzug(migrationsConf);
-  await migrator.down();
+  await migrator.down({ to: 0 });
 }
 
 async function connectToDatabase() {

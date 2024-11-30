@@ -7,8 +7,8 @@ Chat.init(
   {
     id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       autoIncrement: true,
-      unique: true,
     },
     members: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),

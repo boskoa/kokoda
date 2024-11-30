@@ -4,6 +4,7 @@ const cors = require("cors");
 const compression = require("compression");
 const { errorHandler } = require("./utils/errorHandler");
 const testRouter = require("./controllers/test");
+const usersRouter = require("./controllers/users");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.static("dist"));
 
 // routers
 app.use("/api/test", testRouter);
+app.use("/api/users", usersRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
