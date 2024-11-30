@@ -32,9 +32,15 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    contacts: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+    },
+    blockedUsers: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+    },
     admin: {
       type: DataTypes.BOOLEAN,
-      default: false,
+      defaultValue: false,
     },
   },
   {
