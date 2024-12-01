@@ -66,7 +66,7 @@ router.post("/", async (req, res, next) => {
 router.patch("/:id", tokenExtractor, async (req, res, next) => {
   const sender = await User.findByPk(req.decodedToken.id);
   const user = await User.findByPk(req.params.id);
-  //deactivate; add field in DB - active
+
   if (sender.id !== user.id && !sender.admin) {
     return res.status(401).json({ error: "Not authorized" });
   }
