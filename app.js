@@ -6,6 +6,7 @@ const { errorHandler } = require("./utils/errorHandler");
 const testRouter = require("./controllers/test");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
+const chatsRouter = require("./controllers/chats");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.static("dist"));
 app.use("/api/test", testRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/chats", chatsRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
