@@ -20,6 +20,10 @@ Chat.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    group: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     sequelize,
