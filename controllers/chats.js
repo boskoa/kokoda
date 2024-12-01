@@ -3,12 +3,19 @@ const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();
 
 router.post("/", tokenExtractor, async (req, res, next) => {
-  if (!req.body.members.length || !req.body.admins.length) {
+  if (!("group" in req.body)) {
     return res.status(401).json({ error: "Missing required data" });
   }
 
-  if (!("group" in req.body)) {
-    return res.status(401).json({ error: "Missing required data" });
+  if (req.body.group) {
+    if (!req.body.members.length || !req.body.admins.length) {
+      return res.status(401).json({ error: "Missing required data" });
+    }
+  } else {
+    if (req.body.members?.length !== 2 || req.body.admins) {
+      return res.status(401).json({ error: "Wrong data" });
+    }
+    req.body.public = false;
   }
 
   try {
