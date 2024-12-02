@@ -131,6 +131,7 @@ router.delete("/:id", tokenExtractor, async (req, res, next) => {
     }
 
     await user.destroy();
+    return res.status(200).send("User deleted");
   } catch (error) {
     next(error);
   }
