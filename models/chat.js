@@ -10,6 +10,10 @@ Chat.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    name: {
+      type: DataTypes.STRING,
+      validate: { len: [1, 20] },
+    },
     members: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
     },

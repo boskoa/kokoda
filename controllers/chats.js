@@ -3,6 +3,7 @@ const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();
 
 router.get("/:id", tokenExtractor, async (req, res, next) => {
+  // Implement pagination based on date
   try {
     const sender = await User.findByPk(req.decodedToken.id);
     const chat = await Chat.findByPk(req.params.id, {
@@ -26,6 +27,10 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
 router.post("/", tokenExtractor, async (req, res, next) => {
   if (!("group" in req.body)) {
     return res.status(401).json({ error: "Missing required data" });
+  }
+
+  if (!req.body.name) {
+    return res.status(401).json({ error: "Missing name" });
   }
 
   if (req.body.group) {
