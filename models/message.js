@@ -10,7 +10,7 @@ Message.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    senderId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {

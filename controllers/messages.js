@@ -19,11 +19,10 @@ router.post("/", tokenExtractor, async (req, res, next) => {
     return res.status(401).json({ error: "Missing required data" });
   }
 
+  const newData = { ...req.body, userId: req.decodedToken.id };
+
   try {
-    const message = await Message.create({
-      ...req.body,
-      senderId: req.decodedToken.id,
-    });
+    const message = await Message.create(newData);
     return res.status(200).json(message);
   } catch (error) {
     next(error);
@@ -40,7 +39,7 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
     const chat = await Chat.findByPk(message.chatId);
 
     if (
-      sender?.id !== message.senderId ||
+      sender?.id !== message.userId ||
       !sender?.admin ||
       !chat.admins.includes(req.decodedToken.id)
     ) {
@@ -70,7 +69,7 @@ router.delete("/:id", tokenExtractor, async (req, res, next) => {
     const chat = await Chat.findByPk(message.chatId);
 
     if (
-      sender?.id !== message.senderId ||
+      sender?.id !== message.userId ||
       !sender?.admin ||
       !chat.admins.includes(req.decodedToken.id)
     ) {
