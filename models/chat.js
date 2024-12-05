@@ -12,7 +12,7 @@ Chat.init(
     },
     name: {
       type: DataTypes.STRING,
-      validate: { len: [1, 20] },
+      unique: true,
     },
     members: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
