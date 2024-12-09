@@ -30,6 +30,28 @@ function App() {
     dispatch(getAllContacts({ offset: 0, limit: 20 }));
   }, []);
 
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8080");
+
+    // Event listener for WebSocket connection open
+    socket.addEventListener("open", () => {
+      console.log("Connected to WebSocket server.");
+    });
+
+    // Event listener for incoming messages
+    socket.addEventListener("message", (event) => {
+      console.log("MESSAGE RECEIVED");
+    });
+
+    // Function to send messages
+    function sendMessage() {
+      socket.send("IT'S ALIVE");
+      console.log("IT'S ALIVE");
+    }
+
+    sendMessage();
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
