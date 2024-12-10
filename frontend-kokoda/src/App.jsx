@@ -9,14 +9,23 @@ import Intro from "./components/Intro";
 import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
+import useWebSocket from "react-use-websocket";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
 const Chat = lazy(() => import("./components/Chat.jsx"));
 
+const WS_URL = "ws://127.0.0.1:8080";
+
 function App() {
   const [theme, setTheme] = useState("dark");
   const dispatch = useDispatch();
+
+  useWebSocket(WS_URL, {
+    onOpen: () => {
+      console.log("WebSocket connection established.");
+    },
+  });
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -28,28 +37,6 @@ function App() {
   useEffect(() => {
     dispatch(getAllChats({ offset: 0, limit: 20 }));
     dispatch(getAllContacts({ offset: 0, limit: 20 }));
-  }, []);
-
-  useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
-
-    // Event listener for WebSocket connection open
-    socket.addEventListener("open", () => {
-      console.log("Connected to WebSocket server.");
-    });
-
-    // Event listener for incoming messages
-    socket.addEventListener("message", (event) => {
-      console.log("MESSAGE RECEIVED");
-    });
-
-    // Function to send messages
-    function sendMessage() {
-      socket.send("IT'S ALIVE");
-      console.log("IT'S ALIVE");
-    }
-
-    sendMessage();
   }, []);
 
   const router = createBrowserRouter([

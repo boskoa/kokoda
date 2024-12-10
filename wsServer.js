@@ -1,10 +1,13 @@
-const WebSocket = require("ws");
+const { WebSocketServer } = require("ws");
+const http = require("http");
 
-const wss = new WebSocket.Server({ port: 8080 });
+const server = http.createServer();
+const wss = new WebSocketServer({ server });
 
-wss.on("connection", (ws) => {
+wss.on("connection", (connection) => {
   console.log("New client connected.");
-  ws.on("message", (message) => {
+  /*
+  connection.on("message", (message) => {
     console.log("Received message:", message.toString());
     wss.cleints.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
@@ -13,7 +16,10 @@ wss.on("connection", (ws) => {
     });
   });
 
-  ws.on("close", () => {
+  connection.on("close", () => {
     console.log("Client disconnected.");
   });
+  */
 });
+
+module.exports = { server };
