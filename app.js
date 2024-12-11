@@ -8,8 +8,10 @@ const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
 const chatsRouter = require("./controllers/chats");
 const messagesRouter = require("./controllers/messages");
+const { createServer } = require("http");
 
 const app = express();
+const server = createServer(app);
 
 process.on("uncaughtException", function (err) {
   console.log(err);
@@ -34,4 +36,4 @@ app.all("/*", (_req, res) => {
 
 app.use(errorHandler);
 
-module.exports = app;
+module.exports = server;

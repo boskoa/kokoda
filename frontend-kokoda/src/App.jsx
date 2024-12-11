@@ -15,16 +15,18 @@ const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
 const Chat = lazy(() => import("./components/Chat.jsx"));
 
-const WS_URL = "ws://127.0.0.1:8080";
+const WS_URL = "ws://127.0.0.1:3003";
 
 function App() {
   const [theme, setTheme] = useState("dark");
   const dispatch = useDispatch();
 
-  useWebSocket(WS_URL, {
+  const { sendMessage, readyState } = useWebSocket(WS_URL, {
     onOpen: () => {
       console.log("WebSocket connection established.");
     },
+    retryOnError: true,
+    shouldReconnect: () => true,
   });
 
   useEffect(() => {
