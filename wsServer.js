@@ -1,4 +1,5 @@
 const WebSocket = require("ws");
+const app = require("./app");
 
 function handleWebsocketConnections(expressServer) {
   const wsServer = new WebSocket.Server({
@@ -13,7 +14,9 @@ function handleWebsocketConnections(expressServer) {
   });
 
   wsServer.on("connection", (connection) => {
-    console.log("New client connected.");
+    console.log("New client connected.", wsServer.clients.size);
+
+    app.locals.wsClients = wsServer.clients;
   });
 
   return wsServer;
