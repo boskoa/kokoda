@@ -15,7 +15,7 @@ const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
 const Chat = lazy(() => import("./components/Chat.jsx"));
 
-const WS_URL = "ws://127.0.0.1:3003";
+const WS_URL = "ws://127.0.0.1:3003/websockets";
 
 function App() {
   const [theme, setTheme] = useState("dark");

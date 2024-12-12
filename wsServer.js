@@ -1,24 +1,22 @@
-const { WebSocketServer } = require("ws");
-const server = require("./app");
+const WebSocket = require("ws");
 
-const wss = new WebSocketServer({ server });
+function handleWebsocketConnections(expressServer) {
+  const wsServer = new WebSocket.Server({
+    noServer: true,
+    path: "/websockets",
+  });
 
-wss.on("connection", (connection) => {
-  console.log("New client connected.");
-  /*
-  connection.on("message", (message) => {
-    console.log("Received message:", message.toString());
-    wss.cleints.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message.toString());
-      }
+  expressServer.on("upgrade", (req, connection, head) => {
+    wsServer.handleUpgrade(req, connection, head, (connection) => {
+      wsServer.emit("connection", connection, req);
     });
   });
 
-  connection.on("close", () => {
-    console.log("Client disconnected.");
+  wsServer.on("connection", (connection) => {
+    console.log("New client connected.");
   });
-  */
-});
 
-module.exports = server;
+  return wsServer;
+}
+
+module.exports = handleWebsocketConnections;
