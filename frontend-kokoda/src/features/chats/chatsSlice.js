@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+const BASE_URL = "/api/chats";
 
 const chatsAdapter = createEntityAdapter();
 
@@ -17,17 +17,16 @@ const initialState = chatsAdapter.getInitialState({
 export const getAllChats = createAsyncThunk(
   "chats/getAllChats",
   async (data) => {
-    const { offset, limit } = data;
-    /*
+    const { token, offset, limit } = data;
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
     };
-  */
     //change query when quering db
     const response = await axios.get(
-      BASE_URL + `?_start=${offset}&_limit=${limit}`,
+      BASE_URL, // + `?_start=${offset}&_limit=${limit}`,
+      config,
     );
     return response.data;
   },

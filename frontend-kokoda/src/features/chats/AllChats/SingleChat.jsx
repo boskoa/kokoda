@@ -72,6 +72,10 @@ const ChatLastMessage = styled.p`
 `;
 
 function SingleChat({ chat }) {
+  if (!chat?.id) {
+    return null;
+  }
+
   return (
     <ChatContainer>
       <Avatar>
@@ -91,8 +95,8 @@ function SingleChat({ chat }) {
         />
       </Avatar>
       <ChatData>
-        <ChatTitle>{chat.title.split().toString()}</ChatTitle>
-        <ChatLastMessage>{chat.body}</ChatLastMessage>
+        <ChatTitle>{chat.name}</ChatTitle>
+        <ChatLastMessage>{chat.members}</ChatLastMessage>
       </ChatData>
       <ChatBackground />
     </ChatContainer>

@@ -1,6 +1,18 @@
+const { Op } = require("sequelize");
 const { Chat, User, Message } = require("../models");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();
+
+router.get("/", tokenExtractor, async (req, res, next) => {
+  try {
+    const chats = await Chat.findAll({
+      where: { members: { [Op.contains]: [req.decodedToken.id] } },
+    });
+    return res.status(200).json(chats);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/:id", tokenExtractor, async (req, res, next) => {
   // Implement pagination based on date
@@ -39,6 +51,7 @@ router.post("/", tokenExtractor, async (req, res, next) => {
       return res.status(401).json({ error: "Missing required data" });
     }
   } else {
+    // implement "no multiple chats between same users (if not a group chat)"
     if (req.body.members?.length !== 2 || req.body.admins) {
       return res.status(401).json({ error: "Wrong data" });
     }

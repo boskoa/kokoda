@@ -34,7 +34,14 @@ function AllChats() {
 
   useEffect(() => {
     if (intersecting && chats.length % limit === 0 && chats.length >= offset) {
-      dispatch(getAllChats({ offset, limit }));
+      dispatch(
+        getAllChats({
+          token:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNzMzMDA3NTc2fQ.y8vfgSOqsPf1TxBn1SxjFkjKMSW3BsNOJdXdZDd28l0",
+          offset,
+          limit,
+        }),
+      );
       setOffset((p) => p + limit);
     }
   }, [intersecting]);
