@@ -7,6 +7,7 @@ router.get("/", tokenExtractor, async (req, res, next) => {
   try {
     const chats = await Chat.findAll({
       where: { members: { [Op.contains]: [req.decodedToken.id] } },
+      include: { model: Message, limit: 1, order: [["id", "DESC"]] },
     });
     return res.status(200).json(chats);
   } catch (error) {

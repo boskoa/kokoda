@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import user from "/user.svg";
-import { useLayoutEffect, useRef, useState } from "react";
-import trimText from "../../../utils/trimText";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -72,10 +70,6 @@ const ChatLastMessage = styled.p`
 `;
 
 function SingleChat({ chat }) {
-  if (!chat?.id) {
-    return null;
-  }
-
   return (
     <ChatContainer>
       <Avatar>
@@ -96,7 +90,9 @@ function SingleChat({ chat }) {
       </Avatar>
       <ChatData>
         <ChatTitle>{chat.name}</ChatTitle>
-        <ChatLastMessage>{chat.members}</ChatLastMessage>
+        <ChatLastMessage>
+          {chat.messages[0]?.text || "No messages yet."}
+        </ChatLastMessage>
       </ChatData>
       <ChatBackground />
     </ChatContainer>

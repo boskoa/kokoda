@@ -13,7 +13,7 @@ import useWebSocket from "react-use-websocket";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
-const Chat = lazy(() => import("./components/Chat.jsx"));
+const Chat = lazy(() => import("./components/Chat/index.jsx"));
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
 
@@ -37,7 +37,14 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    dispatch(getAllChats({ offset: 0, limit: 20 }));
+    dispatch(
+      getAllChats({
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNzMzMDA3NTc2fQ.y8vfgSOqsPf1TxBn1SxjFkjKMSW3BsNOJdXdZDd28l0",
+        offset: 0,
+        limit: 20,
+      }),
+    );
     dispatch(getAllContacts({ offset: 0, limit: 20 }));
   }, []);
 
