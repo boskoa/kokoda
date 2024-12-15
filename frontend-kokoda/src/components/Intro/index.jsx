@@ -150,7 +150,9 @@ function Intro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate("/chats"), 6000);
+    const index = setTimeout(() => navigate("/chats"), 6000);
+
+    return () => clearTimeout(index);
   }, []);
 
   return (

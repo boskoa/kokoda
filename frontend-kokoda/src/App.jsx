@@ -2,7 +2,11 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import HomePage from "./components/HomePage";
 import { ThemeProvider } from "styled-components";
 import { dark, light } from "./themes";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import Test from "./components/Test";
 import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
@@ -14,6 +18,7 @@ import useWebSocket from "react-use-websocket";
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chats = lazy(() => import("./components/HomePage/Chats"));
 const Chat = lazy(() => import("./components/Chat/index.jsx"));
+const Login = lazy(() => import("./components/Login"));
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
 
@@ -87,11 +92,23 @@ function App() {
             },
           ],
         },
+        {
+          path: "login",
+          element: (
+            <Suspense fallback={<p>Loading</p>}>
+              <Login />
+            </Suspense>
+          ),
+        },
       ],
     },
     {
       path: "test",
       element: <Test />,
+    },
+    {
+      path: "*",
+      element: <Navigate to="/chats" />,
     },
   ]);
 
