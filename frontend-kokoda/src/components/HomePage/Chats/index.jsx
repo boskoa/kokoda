@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
 
-const AllChatsContainer = styled.div`
+const ChatsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -19,7 +19,7 @@ const AllChatsContainer = styled.div`
   justify-content: start;
 `;
 
-function AllChats() {
+function Chats() {
   const chats = useSelector(selectAllChats);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
@@ -47,13 +47,13 @@ function AllChats() {
   }, [intersecting]);
 
   return (
-    <AllChatsContainer>
+    <ChatsContainer>
       {chats.map((c) => (
         <SingleChat key={c.id} chat={c} />
       ))}
       <Spinner endRef={endRef} loading={loading} />
-    </AllChatsContainer>
+    </ChatsContainer>
   );
 }
 
-export default AllChats;
+export default Chats;

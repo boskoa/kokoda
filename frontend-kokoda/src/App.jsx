@@ -10,15 +10,17 @@ import {
 import Test from "./components/Test";
 import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
+import Chats from "./components/HomePage/Chats";
 import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
 import useWebSocket from "react-use-websocket";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
-const Chats = lazy(() => import("./components/HomePage/Chats"));
 const Chat = lazy(() => import("./components/Chat/index.jsx"));
-const Login = lazy(() => import("./components/Login"));
+const Authentication = lazy(() => import("./components/Authentication"));
+const Login = lazy(() => import("./components/Authentication/Login"));
+const Register = lazy(() => import("./components/Authentication/Register"));
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
 
@@ -93,12 +95,30 @@ function App() {
           ],
         },
         {
-          path: "login",
+          path: "authentication",
           element: (
             <Suspense fallback={<p>Loading</p>}>
-              <Login />
+              <Authentication />
             </Suspense>
           ),
+          children: [
+            {
+              path: "login",
+              element: (
+                <Suspense>
+                  <Login />
+                </Suspense>
+              ),
+            },
+            {
+              path: "register",
+              element: (
+                <Suspense>
+                  <Register />
+                </Suspense>
+              ),
+            },
+          ],
         },
       ],
     },

@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
 
-const AllContactsContainer = styled.div`
+const ContactsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -19,7 +19,7 @@ const AllContactsContainer = styled.div`
   justify-content: start;
 `;
 
-function AllContacts() {
+function Contacts() {
   const contacts = useSelector(selectAllContacts);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
@@ -44,7 +44,7 @@ function AllContacts() {
   }, [intersecting]);
 
   return (
-    <AllContactsContainer>
+    <ContactsContainer>
       {contacts
         .concat({
           name: "dsfdsf sdfdsf ghhrth sdsadasd frewtret sdfdsfgr ezhrthzzujuj",
@@ -58,8 +58,8 @@ function AllContacts() {
           <SingleContact key={c.id} contact={c} />
         ))}
       <Spinner endRef={endRef} loading={loading} />
-    </AllContactsContainer>
+    </ContactsContainer>
   );
 }
 
-export default AllContacts;
+export default Contacts;
