@@ -12,7 +12,7 @@ const initialState = {
 export const loginUser = createAsyncThunk(
   "login/loginUser",
   async (credentials) => {
-    const response = await axios(BASE_URL, credentials);
+    const response = await axios.post(BASE_URL, credentials);
     window.localStorage.setItem("loggedKokoda", JSON.stringify(response.data));
 
     return response.data;

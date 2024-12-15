@@ -10,7 +10,7 @@ const AuthenticationContainer = styled.div`
   perspective-origin: 50%;
 `;
 
-const AuthenticationFormContainer = styled.div`
+const AuthenticationTable = styled.div`
   width: 300px;
   min-height: 400px;
   background-color: teal;
@@ -19,9 +19,44 @@ const AuthenticationFormContainer = styled.div`
 `;
 
 export const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  padding: 20px 10px;
   opacity: ${({ $opacity }) => $opacity};
   transform: ${({ $rotate }) => `rotateY(${$rotate})`};
   transition: opacity 0.5s ease-out;
+`;
+
+export const InputContainer = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const AuthInput = styled.input`
+  border: none;
+  color: ${({ $color }) => $color};
+  border: 3px solid ${({ $color }) => $color};
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  font-size: 16px;
+  padding: 0 5px;
+`;
+
+export const Error = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  height: calc(100% - 6px);
+  color: red;
+  background-color: black;
+  font-size: 14px;
+  z-index: 5;
 `;
 
 function Authentication() {
@@ -29,11 +64,11 @@ function Authentication() {
 
   return (
     <AuthenticationContainer>
-      <AuthenticationFormContainer
+      <AuthenticationTable
         $rotate={pathname === "/authentication/login" ? "0deg" : "180deg"}
       >
         <Outlet />
-      </AuthenticationFormContainer>
+      </AuthenticationTable>
     </AuthenticationContainer>
   );
 }

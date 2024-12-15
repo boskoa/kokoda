@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import ViewPort from "../ViewPort";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Menu from "./Menu";
 import FooterMenu from "./FooterMenu";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import useWebSocket from "react-use-websocket";
+import { useSelector } from "react-redux";
+import { selectLoggedUser } from "../../features/login/loginSlice";
 
 const HomeContainer = styled.div`
   background-color: transparent;
@@ -26,8 +28,27 @@ const MenuButton = styled.button`
   z-index: 3;
 `;
 
+const WS_URL = "ws://127.0.0.1:3003/websockets";
+
 function HomePage() {
   const [menu, setMenu] = useState(false);
+  const loggedUser = useSelector(selectLoggedUser);
+  const navigate = useNavigate();
+  const { sendMessage, readyState } = useWebSocket(WS_URL, {
+    onOpen: () => {
+      console.log("WebSocket connection established.");
+    },
+    retryOnError: true,
+    shouldReconnect: () => true,
+  });
+
+  useEffect(() => {
+    if (!loggedUser) {
+      navigate("/authentication/login");
+    }
+  }, [loggedUser]);
+
+  if (!loggedUser) return null;
 
   return (
     <>

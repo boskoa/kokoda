@@ -14,7 +14,7 @@ import Chats from "./components/HomePage/Chats";
 import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
-import useWebSocket from "react-use-websocket";
+import { alreadyLogged } from "./features/login/loginSlice";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chat = lazy(() => import("./components/Chat/index.jsx"));
@@ -22,19 +22,82 @@ const Authentication = lazy(() => import("./components/Authentication"));
 const Login = lazy(() => import("./components/Authentication/Login"));
 const Register = lazy(() => import("./components/Authentication/Register"));
 
-const WS_URL = "ws://127.0.0.1:3003/websockets";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ViewPort />,
+    children: [
+      {
+        index: true,
+        element: <Intro />,
+      },
+      {
+        path: "",
+        element: <HomePage />,
+        children: [
+          {
+            path: "chats",
+            element: <Chats />,
+          },
+          {
+            path: "chats/:id",
+            element: (
+              <Suspense>
+                <Chat />
+              </Suspense>
+            ),
+          },
+          {
+            path: "contacts",
+            element: (
+              <Suspense>
+                <Contacts />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "authentication",
+        element: (
+          <Suspense fallback={<p>Loading</p>}>
+            <Authentication />
+          </Suspense>
+        ),
+        children: [
+          {
+            path: "login",
+            element: (
+              <Suspense>
+                <Login />
+              </Suspense>
+            ),
+          },
+          {
+            path: "register",
+            element: (
+              <Suspense>
+                <Register />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "test",
+    element: <Test />,
+  },
+  {
+    path: "*",
+    element: <Navigate to="/chats" />,
+  },
+]);
 
 function App() {
   const [theme, setTheme] = useState("dark");
   const dispatch = useDispatch();
-
-  const { sendMessage, readyState } = useWebSocket(WS_URL, {
-    onOpen: () => {
-      console.log("WebSocket connection established.");
-    },
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -55,82 +118,10 @@ function App() {
     dispatch(getAllContacts({ offset: 0, limit: 20 }));
   }, []);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <ViewPort />,
-      children: [
-        {
-          index: true,
-          element: <Intro />,
-        },
-        {
-          path: "",
-          element: <HomePage />,
-          children: [
-            {
-              path: "chats",
-              element: (
-                <Suspense>
-                  <Chats />
-                </Suspense>
-              ),
-            },
-            {
-              path: "chats/:id",
-              element: (
-                <Suspense>
-                  <Chat />
-                </Suspense>
-              ),
-            },
-            {
-              path: "contacts",
-              element: (
-                <Suspense>
-                  <Contacts />
-                </Suspense>
-              ),
-            },
-          ],
-        },
-        {
-          path: "authentication",
-          element: (
-            <Suspense fallback={<p>Loading</p>}>
-              <Authentication />
-            </Suspense>
-          ),
-          children: [
-            {
-              path: "login",
-              element: (
-                <Suspense>
-                  <Login />
-                </Suspense>
-              ),
-            },
-            {
-              path: "register",
-              element: (
-                <Suspense>
-                  <Register />
-                </Suspense>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      path: "test",
-      element: <Test />,
-    },
-    {
-      path: "*",
-      element: <Navigate to="/chats" />,
-    },
-  ]);
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem("loggedKokoda");
+    if (loggedUser) dispatch(alreadyLogged(JSON.parse(loggedUser)));
+  }, []);
 
   return (
     <>

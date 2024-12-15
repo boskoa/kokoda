@@ -5,6 +5,7 @@ const { User } = require("../models");
 const { SECRET } = require("../utils/config");
 
 router.post("/", async (req, res, next) => {
+  console.log("FOOOOOOOOOOOOOOOOOOOOO", req.body.username);
   if (req.body.username === "" || req.body.password === "") {
     return res.status(401).json({ error: "No credentials entered" });
   }
