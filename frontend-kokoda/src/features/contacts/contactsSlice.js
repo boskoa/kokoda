@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "https://jsonplaceholder.typicode.com/users";
+const BASE_URL = "https://jsonplaceholder.typicode.com/posts";
 
 const contactsAdapter = createEntityAdapter();
 

@@ -99,8 +99,8 @@ function SingleContact({ contact }) {
         />
       </Avatar>
       <ContactData>
-        <ContactName>{contact.name}</ContactName>
-        <LastMessage>{contact.company.catchPhrase}</LastMessage>
+        <ContactName>{contact.title}</ContactName>
+        <LastMessage>{contact.body}</LastMessage>
       </ContactData>
       <ContactBackground />
     </ContactContainer>

@@ -45,18 +45,9 @@ function Contacts() {
 
   return (
     <ContactsContainer>
-      {contacts
-        .concat({
-          name: "dsfdsf sdfdsf ghhrth sdsadasd frewtret sdfdsfgr ezhrthzzujuj",
-          id: 234,
-          company: {
-            catchPhrase:
-              "YABADABADU YABADABADU YABADABADU YABADABADU YABADABADU YABADABADUYABADABADUYABADABADU YABADABADU YABADABADU YABADABADU",
-          },
-        })
-        .map((c) => (
-          <SingleContact key={c.id} contact={c} />
-        ))}
+      {contacts.map((c) => (
+        <SingleContact key={c.id} contact={c} />
+      ))}
       <Spinner endRef={endRef} loading={loading} />
     </ContactsContainer>
   );

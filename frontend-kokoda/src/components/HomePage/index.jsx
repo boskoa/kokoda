@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
 import { useSelector } from "react-redux";
 import { selectLoggedUser } from "../../features/login/loginSlice";
+import Header from "./Header";
 
 const HomeContainer = styled.div`
   background-color: transparent;
@@ -43,7 +44,6 @@ function HomePage() {
   });
 
   useEffect(() => {
-    console.log(loggedUser);
     if (!loggedUser) {
       navigate("/authentication/login");
     }
@@ -56,6 +56,7 @@ function HomePage() {
       <MenuButton onClick={() => setMenu((p) => !p)}>
         {menu ? "hide" : "show"}
       </MenuButton>
+      <Header />
       <HomeContainer>
         <Outlet />
       </HomeContainer>
