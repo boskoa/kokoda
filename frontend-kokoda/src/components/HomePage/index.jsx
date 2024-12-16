@@ -43,6 +43,7 @@ function HomePage() {
   });
 
   useEffect(() => {
+    console.log(loggedUser);
     if (!loggedUser) {
       navigate("/authentication/login");
     }

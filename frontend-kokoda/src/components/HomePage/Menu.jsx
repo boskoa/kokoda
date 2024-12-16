@@ -8,7 +8,7 @@ const MenuContainer = styled.div`
   margin-top: -100vh;
   position: sticky;
   bottom: 0px;
-  transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(100%)")};
+  transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(101%)")};
   transition: all 0.4s;
   opacity: 0.7;
   z-index: 2;

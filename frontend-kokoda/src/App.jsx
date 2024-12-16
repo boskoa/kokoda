@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
 import { alreadyLogged } from "./features/login/loginSlice";
+import ComponentLoader from "./components/ComponentLoader";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const Chat = lazy(() => import("./components/Chat/index.jsx"));
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
           {
             path: "chats/:id",
             element: (
-              <Suspense>
+              <Suspense fallback={<ComponentLoader />}>
                 <Chat />
               </Suspense>
             ),
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
           {
             path: "contacts",
             element: (
-              <Suspense>
+              <Suspense fallback={<ComponentLoader />}>
                 <Contacts />
               </Suspense>
             ),
@@ -60,7 +61,7 @@ const router = createBrowserRouter([
       {
         path: "authentication",
         element: (
-          <Suspense fallback={<p>Loading</p>}>
+          <Suspense fallback={<ComponentLoader />}>
             <Authentication />
           </Suspense>
         ),
@@ -118,10 +119,8 @@ function App() {
     dispatch(getAllContacts({ offset: 0, limit: 20 }));
   }, []);
 
-  useEffect(() => {
-    const loggedUser = window.localStorage.getItem("loggedKokoda");
-    if (loggedUser) dispatch(alreadyLogged(JSON.parse(loggedUser)));
-  }, []);
+  const loggedUser = window.localStorage.getItem("loggedKokoda");
+  if (loggedUser) dispatch(alreadyLogged(JSON.parse(loggedUser)));
 
   return (
     <>
