@@ -11,7 +11,7 @@ import Header from "./Header";
 const HomeContainer = styled.div`
   background-color: transparent;
   color: ${({ theme }) => theme.main.fg};
-  min-height: 100%;
+  min-height: calc(100% - 45px);
   position: relative;
   //overflow-x: hidden;
   padding-bottom: 40px;
@@ -53,10 +53,7 @@ function HomePage() {
 
   return (
     <>
-      <MenuButton onClick={() => setMenu((p) => !p)}>
-        {menu ? "hide" : "show"}
-      </MenuButton>
-      <Header />
+      <Header menu={menu} setMenu={setMenu} />
       <HomeContainer>
         <Outlet />
       </HomeContainer>

@@ -2,3 +2,4 @@
 **/.env
 ./public/data
 **/requests
+**/dist

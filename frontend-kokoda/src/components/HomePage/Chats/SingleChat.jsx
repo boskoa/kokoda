@@ -59,6 +59,7 @@ const ChatTitle = styled.h2`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding-top: 5px;
 `;
 
 const ChatLastMessage = styled.p`
