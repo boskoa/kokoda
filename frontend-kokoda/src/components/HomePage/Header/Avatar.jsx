@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { selectLoggedUser } from "../../../features/login/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
+import styled, { keyframes } from "styled-components";
+import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
 import { useEffect, useState } from "react";
 
@@ -30,6 +30,15 @@ const Image = styled.img`
   z-index: 2;
 `;
 
+const apear = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const LogoutButton = styled.button`
   all: unset;
   position: absolute;
@@ -43,16 +52,18 @@ const LogoutButton = styled.button`
   font-size: 13px;
   font-weight: 600;
   padding-right: 5px;
-  z-index: 1;
+  z-index: 0;
+  animation: 0.3s ${apear} 1s both;
 `;
 
 function Avatar() {
   const loggedUser = useSelector(selectLoggedUser);
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <AvatarContainer $show={show}>
-      <LogoutButton onClick={() => console.log("logout")}>logout</LogoutButton>
+      <LogoutButton onClick={() => dispatch(logout())}>logout</LogoutButton>
       <Image
         onClick={() => setShow((p) => !p)}
         src={`/public/uploads/avatars/${loggedUser.id}.png`}
