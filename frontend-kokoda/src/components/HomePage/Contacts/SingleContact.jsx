@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import user from "/user.svg";
 
 const ContactContainer = styled.div`
@@ -78,7 +78,7 @@ function SingleContact({ contact }) {
           src={`/public/uploads/avatars/${contact.id}.webp`}
           alt="user avatar"
           onLoad={(e) => {
-            e.currentTarget.opacity = 1;
+            e.currentTarget.style.opacity = 1;
           }}
           onError={(e) => {
             e.currentTarget.onerror = null;

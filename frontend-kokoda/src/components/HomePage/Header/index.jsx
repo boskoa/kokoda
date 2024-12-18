@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MenuButton from "./MenuButton";
+import Avatar from "./Avatar";
 
 const HeaderMenuContainer = styled.header`
   position: sticky;
@@ -19,6 +20,7 @@ const HeaderMenuContainer = styled.header`
 function Header({ setMenu }) {
   return (
     <HeaderMenuContainer>
+      <Avatar />
       <Logo />
       <MenuButton setMenu={setMenu} />
     </HeaderMenuContainer>
