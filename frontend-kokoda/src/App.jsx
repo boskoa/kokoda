@@ -108,6 +108,7 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
+    // Fix later
     dispatch(
       getAllChats({
         token:

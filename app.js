@@ -8,6 +8,7 @@ const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
 const chatsRouter = require("./controllers/chats");
 const messagesRouter = require("./controllers/messages");
+const contactsRouter = require("./controllers/contacts");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/chats", chatsRouter);
 app.use("/api/messages", messagesRouter);
+app.use("/api/contacts", contactsRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));

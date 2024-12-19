@@ -9,6 +9,7 @@ import SingleChat from "./SingleChat";
 import { useEffect, useRef, useState } from "react";
 import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -20,6 +21,7 @@ const ChatsContainer = styled.div`
 `;
 
 function Chats() {
+  const loggedUser = useSelector(selectLoggedUser);
   const chats = useSelector(selectAllChats);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
@@ -33,18 +35,16 @@ function Chats() {
   }, []);
 
   useEffect(() => {
-    if (intersecting && chats.length % limit === 0 && chats.length >= offset) {
-      dispatch(
-        getAllChats({
-          token:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNzMzMDA3NTc2fQ.y8vfgSOqsPf1TxBn1SxjFkjKMSW3BsNOJdXdZDd28l0",
-          offset,
-          limit,
-        }),
-      );
+    if (
+      loggedUser &&
+      intersecting &&
+      chats.length % limit === 0 &&
+      chats.length >= offset
+    ) {
+      dispatch(getAllChats({ token: loggedUser.token, offset, limit }));
       setOffset((p) => p + limit);
     }
-  }, [intersecting]);
+  }, [loggedUser, intersecting]);
 
   return (
     <ChatsContainer>

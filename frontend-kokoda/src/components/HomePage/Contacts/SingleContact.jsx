@@ -33,7 +33,7 @@ const UserIcon = styled.img`
 const ContactData = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: stretch;
   gap: 5px;
   width: calc(100% - 60px - 5px);
@@ -62,14 +62,6 @@ const ContactName = styled.h2`
   padding-top: 5px;
 `;
 
-const LastMessage = styled.p`
-  height: 50%;
-  font-size: 12px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
 function SingleContact({ contact }) {
   return (
     <ContactContainer>
@@ -90,8 +82,7 @@ function SingleContact({ contact }) {
         />
       </Avatar>
       <ContactData>
-        <ContactName>{contact.title}</ContactName>
-        <LastMessage>{contact.body}</LastMessage>
+        <ContactName>{contact.name}</ContactName>
       </ContactData>
       <ContactBackground />
     </ContactContainer>

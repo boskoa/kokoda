@@ -9,6 +9,7 @@ import SingleContact from "./SingleContact";
 import { useEffect, useRef, useState } from "react";
 import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 const ContactsContainer = styled.div`
   display: flex;
@@ -20,6 +21,7 @@ const ContactsContainer = styled.div`
 `;
 
 function Contacts() {
+  const loggedUser = useSelector(selectLoggedUser);
   const contacts = useSelector(selectAllContacts);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
@@ -34,14 +36,15 @@ function Contacts() {
 
   useEffect(() => {
     if (
+      loggedUser &&
       intersecting &&
       contacts.length % limit === 0 &&
       contacts.length >= offset
     ) {
-      dispatch(getAllContacts({ offset, limit }));
+      dispatch(getAllContacts({ token: loggedUser.token, offset, limit }));
       setOffset((p) => p + limit);
     }
-  }, [intersecting]);
+  }, [loggedUser, intersecting]);
 
   return (
     <ContactsContainer>
