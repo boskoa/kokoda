@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 const AvatarContainer = styled.div`
   position: absolute;
   left: 10px;
-  height: 34px;
-  width: ${({ $show }) => ($show ? "80px" : "34px")};
+  height: 30px;
+  width: ${({ $show }) => ($show ? "80px" : "30px")};
   border-radius: 17px;
   background-color: gold;
   display: flex;
@@ -21,8 +21,8 @@ const AvatarContainer = styled.div`
 const Image = styled.img`
   border: 2px solid gold;
   border-radius: 50%;
-  height: 34px;
-  width: 34px;
+  height: 30px;
+  width: 30px;
   opacity: 0;
   object-fit: contain;
   transition: all 1s;
@@ -44,7 +44,7 @@ const LogoutButton = styled.button`
   position: absolute;
   top: 0;
   right: 0;
-  height: 34px;
+  height: 30px;
   background-color: gold;
   border-radius: 17px;
   cursor: pointer;

@@ -22,27 +22,57 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: white;
+  gap: 30px;
+  color: gold;
   padding: 20px 10px;
   opacity: ${({ $opacity }) => $opacity};
   transform: ${({ $rotate }) => `rotateY(${$rotate})`};
   transition: opacity 0.5s ease-out;
 `;
 
+export const Title = styled.h2`
+  margin-bottom: 10px;
+`;
+
 export const InputContainer = styled.div`
   position: relative;
-  width: 100%;
+  width: 90%;
+`;
+
+export const Button = styled.button`
+  color: teal;
+  background-color: gold;
+  border: none;
+  padding: 5px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 0 0 5px 0 gold;
+  }
+
+  &:active {
+    transform: rotateX(180deg);
+  }
 `;
 
 export const AuthInput = styled.input`
+  position: relative;
   border: none;
   color: ${({ $color }) => $color};
   border: 3px solid ${({ $color }) => $color};
   width: 100%;
-  background-color: transparent;
+  background-color: teal;
   outline: none;
   font-size: 16px;
   padding: 0 5px;
+  z-index: 3;
+  transition: all 0.2s;
+
+  &::placeholder {
+    color: #d3d1c5;
+  }
 `;
 
 export const Error = styled.p`
@@ -50,13 +80,22 @@ export const Error = styled.p`
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 3px;
-  top: 3px;
-  height: calc(100% - 6px);
+  top: 0px;
+  height: 100%;
   color: red;
-  background-color: black;
-  font-size: 14px;
-  z-index: 5;
+  background-color: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 2;
+  transform: ${({ $show }) => ($show ? "translateY(105%)" : "translateY(0)")};
+  transition: all 0.1s;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
 `;
 
 function Authentication() {

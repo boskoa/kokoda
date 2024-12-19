@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthInput, FormContainer, InputContainer, Error } from ".";
+import {
+  AuthInput,
+  FormContainer,
+  InputContainer,
+  Error,
+  Title,
+  ButtonContainer,
+  Button,
+} from ".";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -51,10 +59,10 @@ function Login() {
 
   return (
     <FormContainer onSubmit={handleSubmit(handleLogin)} $opacity={show}>
-      <h2>LOGIN</h2>
+      <Title>LOGIN</Title>
       <InputContainer>
         <AuthInput
-          $color={errors.username ? "red" : "white"}
+          $color={errors.username ? "red" : "gold"}
           autoFocus
           placeholder="username"
           name="username"
@@ -71,11 +79,13 @@ function Login() {
             },
           })}
         />
-        <Error>{errors.username?.message}</Error>
+        <Error $show={errors.username?.message}>
+          {errors.username?.message}
+        </Error>
       </InputContainer>
       <InputContainer>
         <AuthInput
-          $color={errors.username ? "red" : "white"}
+          $color={errors.password ? "red" : "gold"}
           placeholder="password"
           name="password"
           type="password"
@@ -87,12 +97,16 @@ function Login() {
             },
           })}
         />
-        <Error>{errors.password?.message}</Error>
+        <Error $show={errors.password?.message}>
+          {errors.password?.message}
+        </Error>
       </InputContainer>
-      <button type="button" onClick={handleNavigate}>
-        Not registered?
-      </button>
-      <button type="submit">Log in</button>
+      <ButtonContainer>
+        <Button type="button" onClick={handleNavigate}>
+          Not registered?
+        </Button>
+        <Button type="submit">Log in</Button>
+      </ButtonContainer>
     </FormContainer>
   );
 }
