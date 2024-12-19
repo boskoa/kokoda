@@ -8,6 +8,7 @@ import {
   Title,
   ButtonContainer,
   Button,
+  ReqError,
 } from ".";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,14 +28,23 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
 
   useEffect(() => {
     const index = setTimeout(() => setShow(1), 250);
 
-    return () => clearTimeout(index);
+    return () => {
+      dispatch(clearError());
+      clearTimeout(index);
+    };
   }, []);
+
+  useEffect(() => {
+    if (loggedUser?.username) {
+      navigate("/chats");
+    }
+  }, [loggedUser]);
 
   function handleNavigate() {
     setShow(0);
@@ -46,16 +56,6 @@ function Login() {
   function handleLogin(data) {
     dispatch(loginUser(data));
   }
-
-  function handleCancel() {
-    dispatch(clearError());
-  }
-
-  useEffect(() => {
-    if (loggedUser?.username) {
-      navigate("/chats");
-    }
-  }, [loggedUser]);
 
   return (
     <FormContainer onSubmit={handleSubmit(handleLogin)} $opacity={show}>
@@ -105,8 +105,11 @@ function Login() {
         <Button type="button" onClick={handleNavigate}>
           Not registered?
         </Button>
-        <Button type="submit">Log in</Button>
+        <Button $disabled={!isValid} type="submit">
+          Log in
+        </Button>
       </ButtonContainer>
+      <ReqError $show={loggedError}>{loggedError}</ReqError>
     </FormContainer>
   );
 }

@@ -39,24 +39,6 @@ export const InputContainer = styled.div`
   width: 90%;
 `;
 
-export const Button = styled.button`
-  color: teal;
-  background-color: gold;
-  border: none;
-  padding: 5px 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    box-shadow: 0 0 5px 0 gold;
-  }
-
-  &:active {
-    transform: rotateX(180deg);
-  }
-`;
-
 export const AuthInput = styled.input`
   position: relative;
   border: none;
@@ -96,6 +78,41 @@ export const ButtonContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 90%;
+`;
+
+export const Button = styled.button`
+  color: teal;
+  background-color: gold;
+  border: none;
+  padding: 5px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  ${({ $disabled }) =>
+    !$disabled
+      ? `
+    &:hover {
+      box-shadow: 0 0 5px 0 gold;
+    }
+
+    &:active {
+      transform: rotateX(180deg);
+    }
+  `
+      : `
+        filter: grayscale(80%);
+      `}
+`;
+
+export const ReqError = styled.p`
+  color: gold;
+  border: 3px solid red;
+  padding: 2px;
+  width: 90%;
+  text-align: center;
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transition: all 0.3s;
 `;
 
 function Authentication() {
