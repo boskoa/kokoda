@@ -6,13 +6,25 @@ import {
   Error,
   FormContainer,
   InputContainer,
+  ReqError,
   Title,
 } from ".";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import {
+  clearUsersError,
+  createUser,
+  selectUsersError,
+  selectUsersLoading,
+} from "../../features/users/usersSlice";
+import { selectLoggedUser } from "../../features/login/loginSlice";
 
 function Register() {
+  const [submitted, setSubmitted] = useState(false);
+  const loggedUser = useSelector(selectLoggedUser);
+  const registerError = useSelector(selectUsersError);
+  const registerLoading = useSelector(selectUsersLoading);
   const navigate = useNavigate();
   const [show, setShow] = useState(0);
   const dispatch = useDispatch();
@@ -26,10 +38,25 @@ function Register() {
     const index = setTimeout(() => setShow(1), 250);
 
     return () => {
-      //dispatch(clearError());
+      dispatch(clearUsersError());
       clearTimeout(index);
     };
   }, []);
+
+  useEffect(() => {
+    if (submitted && !registerError && !registerLoading) {
+      setSubmitted(false);
+      handleNavigate();
+    } else if (submitted && registerError && !registerLoading) {
+      setSubmitted(false);
+    }
+  }, [submitted, registerError, registerLoading]);
+
+  useEffect(() => {
+    if (loggedUser?.username) {
+      navigate(-1);
+    }
+  }, [loggedUser]);
 
   function handleNavigate() {
     setShow(0);
@@ -39,7 +66,8 @@ function Register() {
   }
 
   function handleRegister(data) {
-    dispatch(addUser(data));
+    dispatch(createUser(data));
+    setSubmitted(true);
   }
 
   return (
@@ -134,6 +162,7 @@ function Register() {
           Register
         </Button>
       </ButtonContainer>
+      <ReqError $show={registerError}>{registerError}</ReqError>
     </FormContainer>
   );
 }

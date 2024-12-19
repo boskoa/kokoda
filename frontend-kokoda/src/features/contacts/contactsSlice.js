@@ -15,7 +15,7 @@ const initialState = contactsAdapter.getInitialState({
 });
 
 export const getAllContacts = createAsyncThunk(
-  "getAllContacts",
+  "contacts/getAllContacts",
   async (data) => {
     const { offset, limit } = data;
     /* const consfig = {

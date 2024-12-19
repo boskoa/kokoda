@@ -12,7 +12,7 @@ const AuthenticationContainer = styled.div`
 
 const AuthenticationTable = styled.div`
   width: 300px;
-  min-height: 400px;
+  min-height: 420px;
   background-color: teal;
   transform: ${({ $rotate }) => `rotateY(${$rotate})`};
   transition: all 0.5s cubic-bezier(0.69, 0.09, 0.77, 1.38);
@@ -31,7 +31,7 @@ export const FormContainer = styled.form`
 `;
 
 export const Title = styled.h2`
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 `;
 
 export const InputContainer = styled.div`

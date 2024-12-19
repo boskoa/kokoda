@@ -30,7 +30,7 @@ const loginSlice = createSlice({
       state.user = null;
       window.localStorage.removeItem("loggedKokoda");
     },
-    clearError: (state) => {
+    clearLoginError: (state) => {
       state.error = null;
     },
   },
@@ -60,6 +60,6 @@ export function selectLoggedError(state) {
   return state.login.error;
 }
 
-export const { alreadyLogged, logout, clearError } = loginSlice.actions;
+export const { alreadyLogged, logout, clearLoginError } = loginSlice.actions;
 
 export default loginSlice.reducer;

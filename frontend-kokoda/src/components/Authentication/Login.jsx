@@ -13,7 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearError,
+  clearLoginError,
   loginUser,
   selectLoggedError,
   selectLoggedUser,
@@ -35,7 +35,7 @@ function Login() {
     const index = setTimeout(() => setShow(1), 250);
 
     return () => {
-      dispatch(clearError());
+      dispatch(clearLoginError());
       clearTimeout(index);
     };
   }, []);
