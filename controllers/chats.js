@@ -23,7 +23,9 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
       include: { model: Message, order: [["id", "ASC"]] },
     });
 
-    if (!sender.admin && !chat.members.includes(sender.id)) {
+    if (!chat) return res.status(404).json({ error: "No such chat" });
+
+    if (!sender.admin && !chat.members?.includes(sender.id)) {
       return res.status(401).json({ error: "Not authorized" });
     }
 

@@ -18,7 +18,9 @@ import { alreadyLogged } from "./features/login/loginSlice";
 import ComponentLoader from "./components/ComponentLoader";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
-const Chat = lazy(() => import("./components/Chat/index.jsx"));
+const DetailedChat = lazy(
+  () => import("./components/HomePage/DetailedChat/index.jsx"),
+);
 const Authentication = lazy(() => import("./components/Authentication"));
 const Login = lazy(() => import("./components/Authentication/Login"));
 const Register = lazy(() => import("./components/Authentication/Register"));
@@ -44,7 +46,7 @@ const router = createBrowserRouter([
             path: "chats/:id",
             element: (
               <Suspense fallback={<ComponentLoader />}>
-                <Chat />
+                <DetailedChat />
               </Suspense>
             ),
           },

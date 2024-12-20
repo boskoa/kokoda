@@ -2,31 +2,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import {
   getDetailedChat,
-  selectDetailedChatById,
-  selectDetailedChatsLoading,
-} from "../../features/detailedChats/detailedChatsSlice";
+  selectDetailedChat,
+} from "../../../features/detailedChat/detailedChatSlice";
 import { useEffect } from "react";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 function DetailedChat() {
   const { id } = useParams();
-  const chat = useSelector((state) => selectDetailedChatById(state, id));
-  const loading = useSelector(selectDetailedChatsLoading);
+  const loggedUser = useSelector(selectLoggedUser);
+  const chat = useSelector(selectDetailedChat);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (typeof chat === "undefined") {
-      dispatch(getDetailedChat({ id }));
+    if (id && loggedUser) {
+      dispatch(getDetailedChat({ token: loggedUser.token, id }));
     }
-  }, [id]);
+  }, [id, loggedUser]);
 
-  if ((typeof chat === "undefined" && !loading) || loading) {
-    return "LOADING...";
-  }
+  if (!chat) return "loading";
 
   return (
     <div>
       <p>{chat.id}</p>
       <p>{chat.name}</p>
+      {chat.messages.map((m) => (
+        <p key={m.id}>{m.text}</p>
+      ))}
       <p>{chat.body}</p>
       <NavLink to="/chats/1">back</NavLink>
       <NavLink to="/chats/3">forth</NavLink>

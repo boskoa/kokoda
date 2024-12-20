@@ -1,38 +1,37 @@
-import {
-  createAsyncThunk,
-  createEntityAdapter,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "https://jsonplaceholder.typicode.com/comments";
+const BASE_URL = "/api/chats";
 
-const detailedChatsAdapter = createEntityAdapter();
-
-const initialState = detailedChatsAdapter.getInitialState({
+const initialState = {
   loading: false,
   error: null,
-});
+  chat: null,
+};
 
 export const getDetailedChat = createAsyncThunk(
   "getDetailedChat",
   async (data) => {
-    const { id } = data;
-    /*
+    const { token, id } = data;
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
-    }; */
-    const response = await axios.get(BASE_URL + "/" + id);
+    };
+    const response = await axios.get(BASE_URL + "/" + id, config);
+    console.log(response.data);
     return response.data;
   },
 );
 
-const detailedChatsSlice = createSlice({
+const detailedChatSlice = createSlice({
   name: "detailedChats",
   initialState,
-  reducers: {},
+  reducers: {
+    clearChat: (state) => {
+      state.chat = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDetailedChat.pending, (state) => {
@@ -42,7 +41,7 @@ const detailedChatsSlice = createSlice({
       .addCase(getDetailedChat.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        detailedChatsAdapter.upsertOne(state, action.payload);
+        state.chat = action.payload;
       })
       .addCase(getDetailedChat.rejected, (state, action) => {
         state.loading = false;
@@ -51,14 +50,18 @@ const detailedChatsSlice = createSlice({
   },
 });
 
-export const {
-  selectAll: selectAllDetailedChats,
-  selectIds: selectDetailedChatsIds,
-  selectById: selectDetailedChatById,
-} = detailedChatsAdapter.getSelectors((state) => state.detailedChats);
+export function selectDetailedChat(state) {
+  return state.detailedChats.chat;
+}
 
 export function selectDetailedChatsLoading(state) {
   return state.detailedChats.loading;
 }
 
-export default detailedChatsSlice.reducer;
+export function selectDetailedChatsError(state) {
+  return state.detailedChats.error;
+}
+
+export const { clearChat } = detailedChatSlice.actions;
+
+export default detailedChatSlice.reducer;
