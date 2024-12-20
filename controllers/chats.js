@@ -17,7 +17,6 @@ router.get("/", tokenExtractor, async (req, res, next) => {
 
 router.get("/:id", tokenExtractor, async (req, res, next) => {
   // Implement pagination based on date
-  //console.log("FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", req.app.locals.wsClients);
   try {
     const sender = await User.findByPk(req.decodedToken.id);
     const chat = await Chat.findByPk(req.params.id, {
