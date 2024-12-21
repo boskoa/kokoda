@@ -35,19 +35,24 @@ function HomePage() {
   const [menu, setMenu] = useState(false);
   const loggedUser = useSelector(selectLoggedUser);
   const navigate = useNavigate();
-  const { sendMessage, readyState } = useWebSocket(WS_URL, {
-    onOpen: () => {
-      console.log("WebSocket connection established.");
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    WS_URL,
+    {
+      onOpen: () => {
+        console.log("WebSocket connection established.");
+      },
+      retryOnError: true,
+      shouldReconnect: () => true,
     },
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
+  );
 
   useEffect(() => {
     if (!loggedUser) {
       navigate("/authentication/login");
     }
   }, [loggedUser]);
+
+  useEffect(() => {}, []);
 
   if (!loggedUser) return null;
 

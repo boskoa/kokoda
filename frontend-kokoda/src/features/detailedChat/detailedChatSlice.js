@@ -19,7 +19,7 @@ export const getDetailedChat = createAsyncThunk(
       },
     };
     const response = await axios.get(BASE_URL + "/" + id, config);
-    console.log(response.data);
+
     return response.data;
   },
 );

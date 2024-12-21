@@ -109,19 +109,6 @@ function App() {
     ).main.containerBg;
   }, [theme]);
 
-  useEffect(() => {
-    // Fix later
-    dispatch(
-      getAllChats({
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNzMzMDA3NTc2fQ.y8vfgSOqsPf1TxBn1SxjFkjKMSW3BsNOJdXdZDd28l0",
-        offset: 0,
-        limit: 20,
-      }),
-    );
-    dispatch(getAllContacts({ offset: 0, limit: 20 }));
-  }, []);
-
   const loggedUser = window.localStorage.getItem("loggedKokoda");
   if (loggedUser) dispatch(alreadyLogged(JSON.parse(loggedUser)));
 

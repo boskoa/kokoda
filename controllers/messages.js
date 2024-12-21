@@ -15,7 +15,7 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
 });
 
 router.post("/", tokenExtractor, async (req, res, next) => {
-  console.log("FOOOOOOOOOOOOOOO", req.app.locals.wsClients);
+  //console.log("FOOOOOOOOOOOOOOO", req.app.locals.wsClients);
   if (!req.body.chatId || !req.body.text) {
     return res.status(401).json({ error: "Missing required data" });
   }
