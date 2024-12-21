@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import user from "/user.svg";
+import { useNavigate } from "react-router-dom";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -71,8 +72,10 @@ const ChatLastMessage = styled.p`
 `;
 
 function SingleChat({ chat }) {
+  const navigate = useNavigate();
+
   return (
-    <ChatContainer>
+    <ChatContainer onClick={() => navigate(`/chats/${chat.id}`)}>
       <Avatar>
         <UserIcon
           src={`/public/uploads/avatars/${chat.id}.webp`}

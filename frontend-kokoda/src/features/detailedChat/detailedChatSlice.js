@@ -31,6 +31,9 @@ const detailedChatSlice = createSlice({
     clearChat: (state) => {
       state.chat = null;
     },
+    updateChat: (state, action) => {
+      state.chat.messages.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,6 +65,6 @@ export function selectDetailedChatsError(state) {
   return state.detailedChats.error;
 }
 
-export const { clearChat } = detailedChatSlice.actions;
+export const { clearChat, updateChat } = detailedChatSlice.actions;
 
 export default detailedChatSlice.reducer;

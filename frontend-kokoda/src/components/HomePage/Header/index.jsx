@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import MenuButton from "./MenuButton";
 import Avatar from "./Avatar";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const HeaderMenuContainer = styled.header`
   position: sticky;
@@ -15,11 +17,24 @@ const HeaderMenuContainer = styled.header`
   align-items: center;
   background-color: rgb(0, 128, 128, 0.5);
   backdrop-filter: blur(10px);
+  transform: ${({ $translate }) => $translate};
+  transition: all 0.3s;
 `;
 
 function Header({ setMenu }) {
+  const { pathname } = useLocation();
+  const pathArray = pathname.split("/");
+
+  useEffect(() => {
+    console.log(pathname);
+  }, [pathname]);
+
   return (
-    <HeaderMenuContainer>
+    <HeaderMenuContainer
+      $translate={
+        isNaN(pathArray[pathArray.length - 1]) ? "" : "translateY(-40px)"
+      }
+    >
       <Avatar />
       <Logo />
       <MenuButton setMenu={setMenu} />
