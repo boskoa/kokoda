@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function Input({ send }) {
   const [message, setMessage] = useState("");
+
   return (
     <div>
       <input

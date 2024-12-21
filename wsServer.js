@@ -1,5 +1,5 @@
 const WebSocket = require("ws");
-//const app = require("./app");
+const app = require("./app");
 
 function handleWebsocketConnections(expressServer) {
   const wsServer = new WebSocket.Server({
@@ -22,20 +22,9 @@ function handleWebsocketConnections(expressServer) {
       connection.clientId = id;
       console.log("New client connected.", wsServer.clients.size);
     }
-    //app.locals.wsClients = wsServer.clients;
-
-    connection.on("message", (message) => {
-      console.log("FOOOOOO", JSON.parse(message), wsServer.clients.size);
-      const parsedMessage = JSON.parse(message);
-      wsServer.clients.forEach((c) => {
-        console.log("CLIENT IDS", c.clientId);
-        if ([1, 2, 3, 4, 5, 6, 7].includes(parseInt(c.clientId))) {
-          console.log("HAAAAAAAAAAAAAAAAAAAAAI");
-          c.send(JSON.stringify(parsedMessage));
-        }
-      });
-    });
   });
+
+  app.locals.wsClients = wsServer.clients;
 
   return wsServer;
 }

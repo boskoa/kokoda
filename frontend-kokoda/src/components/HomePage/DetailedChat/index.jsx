@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import useWebSocket from "react-use-websocket";
 import Input from "./Input";
+import axios from "axios";
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
 
@@ -37,6 +38,16 @@ function DetailedChat() {
     console.log(lastJsonMessage);
   }, [lastJsonMessage]);
 
+  async function sendMessage(text) {
+    const config = {
+      headers: {
+        Authorization: `bearer ${loggedUser.token}`,
+      },
+    };
+
+    await axios.post("/api/messages", { chatId: chat.id, text }, config);
+  }
+
   if (!chat) return "loading";
 
   return (
@@ -48,7 +59,7 @@ function DetailedChat() {
       ))}
       <p>{chat.body}</p>
       <p>{JSON.stringify(lastJsonMessage)}</p>
-      <Input send={sendJsonMessage} />
+      <Input send={sendMessage} />
       <NavLink to="/chats/1">back</NavLink>
       <NavLink to="/chats/3">forth</NavLink>
     </div>

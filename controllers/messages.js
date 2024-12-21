@@ -15,7 +15,6 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
 });
 
 router.post("/", tokenExtractor, async (req, res, next) => {
-  //console.log("FOOOOOOOOOOOOOOO", req.app.locals.wsClients);
   if (!req.body.chatId || !req.body.text) {
     return res.status(401).json({ error: "Missing required data" });
   }
@@ -24,6 +23,12 @@ router.post("/", tokenExtractor, async (req, res, next) => {
 
   try {
     const message = await Message.create(newData);
+    const chat = await Chat.findByPk(req.body.chatId);
+    req.app.locals.wsClients.forEach((c) => {
+      if (chat.members.includes(parseInt(c.clientId))) {
+        c.send(JSON.stringify(message));
+      }
+    });
     return res.status(200).json(message);
   } catch (error) {
     next(error);
