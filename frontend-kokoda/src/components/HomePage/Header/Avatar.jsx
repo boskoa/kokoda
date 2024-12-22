@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const AvatarContainer = styled.div`
   position: absolute;
@@ -16,6 +16,16 @@ const AvatarContainer = styled.div`
   align-items: center;
   overflow: hidden;
   transition: width 0.3s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 30px;
+    background-color: gold;
+  }
 `;
 
 const Image = styled.img`
