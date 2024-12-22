@@ -12,6 +12,15 @@ const MessageContainer = styled.div`
   align-self: ${({ $side }) => $side};
 `;
 
+const MessageText = styled.p`
+  margin-bottom: 5px;
+`;
+
+const Time = styled.span`
+  font-size: 10px;
+  float: right;
+`;
+
 function Message({ message }) {
   const loggedUser = useSelector(selectLoggedUser);
 
@@ -19,14 +28,14 @@ function Message({ message }) {
     <MessageContainer
       $side={loggedUser.id === message.userId ? "end" : "start"}
     >
-      <p>{message.text}</p>
-      <span>
+      <MessageText>{message.text}</MessageText>
+      <Time>
         {new Date(message.updatedAt).toLocaleTimeString("en-US", {
           hour12: false,
           hour: "2-digit",
           minute: "2-digit",
         })}
-      </span>
+      </Time>
     </MessageContainer>
   );
 }

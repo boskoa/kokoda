@@ -50,6 +50,7 @@ const Back = styled(NavLink)`
 const Messages = styled.div`
   display: flex;
   flex-direction: column-reverse;
+  padding-bottom: 10px;
 `;
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
@@ -68,7 +69,8 @@ function DetailedChat() {
   });
 
   useEffect(() => {
-    document.getElementById("vp").scrollTo({ bottom: 0, behavior: "smooth" });
+    const vp = document.getElementById("vp");
+    vp.scrollTo({ top: vp.scrollHeight, behavior: "smooth" });
   }, [chat]);
 
   useEffect(() => {
@@ -90,7 +92,11 @@ function DetailedChat() {
       },
     };
 
-    await axios.post("/api/messages", { chatId: chat.id, text }, config);
+    const response = await axios.post(
+      "/api/messages",
+      { chatId: chat.id, text },
+      config,
+    );
   }
 
   if (!chat) return null;

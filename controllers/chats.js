@@ -33,7 +33,10 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
     if (!chat) {
       return res.status(404).json({ error: "Chat not found" });
     }
-
+    console.log(
+      "FOOOOOOOOOOOOOOOOOOOOOOOOO",
+      new Date(chat.messages[0].createdAt).toLocaleDateString("en-GB"),
+    );
     return res.status(200).json(chat);
   } catch (error) {
     next(error);
