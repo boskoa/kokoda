@@ -7,6 +7,8 @@ const MessageContainer = styled.div`
   margin: 10px;
   padding: 10px;
   width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
   border-radius: ${({ $side }) =>
     $side === "end" ? "8px 0 8px 8px" : "0 5px 5px 5px"};
   align-self: ${({ $side }) => $side};

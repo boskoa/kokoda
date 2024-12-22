@@ -12,13 +12,16 @@ const initialState = {
 export const getDetailedChat = createAsyncThunk(
   "detailedChat/getDetailedChat",
   async (data) => {
-    const { token, id } = data;
+    const { token, id, offset, limit } = data;
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
     };
-    const response = await axios.get(BASE_URL + "/" + id, config);
+    const response = await axios.get(
+      `${BASE_URL}/${id}?pagination=${offset},${limit}`,
+      config,
+    );
 
     return response.data;
   },

@@ -15,8 +15,8 @@ const HeaderMenuContainer = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(0, 128, 128, 0.5);
-  backdrop-filter: blur(10px);
+  background-color: rgba(0, 128, 128, 0.7);
+  backdrop-filter: blur(20px);
   transform: ${({ $translate }) => $translate};
   transition: all 0.3s;
 `;

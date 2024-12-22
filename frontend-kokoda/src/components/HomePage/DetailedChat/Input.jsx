@@ -13,7 +13,7 @@ const TextInput = styled.textarea`
   flex: 2;
   outline: none;
   border: 1px solid #ff6932;
-  background-color: #ff693296;
+  background-color: #ff6932ca;
   color: white;
   font-size: 12px;
   scrollbar-width: none;
@@ -33,7 +33,7 @@ const SendButton = styled.button`
   }
 `;
 
-function Input({ send }) {
+function Input({ send, setLoaded }) {
   const [message, setMessage] = useState("");
 
   return (
@@ -48,6 +48,7 @@ function Input({ send }) {
         onClick={() => {
           send(message);
           setMessage("");
+          setLoaded(true);
         }}
       >
         send
