@@ -10,7 +10,12 @@ function Input({ send }) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button onClick={() => send(message)}>send</button>
+      <button
+        disabled={message.trim().length < 1}
+        onClick={() => send(message)}
+      >
+        send
+      </button>
     </div>
   );
 }

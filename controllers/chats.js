@@ -20,13 +20,13 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
   try {
     const sender = await User.findByPk(req.decodedToken.id);
     const chat = await Chat.findByPk(req.params.id, {
-      include: { model: Message, order: [["id", "ASC"]] },
+      include: { model: Message },
+      order: [[Message, "id", "DESC"]],
     });
 
     if (!chat) return res.status(404).json({ error: "No such chat" });
 
     if (!sender.admin && !chat.members?.includes(sender.id)) {
-      console.log("FOOOOOO", chat.members);
       return res.status(401).json({ error: "Not authorized" });
     }
 

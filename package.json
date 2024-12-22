@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node index.js",
     "lint": "eslint .",
+    "build:ui": "rm -rf dist && cd ./frontend-kokoda/ && npm run build && cp -r dist ..",
     "dev": "NODE_ENV=development nodemon index.js"
   },
   "author": "Bosko A.",

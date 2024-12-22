@@ -12,6 +12,8 @@ import Input from "./Input";
 import axios from "axios";
 import Message from "./Message";
 import styled from "styled-components";
+import { IoArrowBackCircle } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 40px);
@@ -32,9 +34,22 @@ const Title = styled.header`
   backdrop-filter: blur(10px);
 `;
 
+const Back = styled(NavLink)`
+  position: absolute;
+  left: 0;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
 const Messages = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 `;
 
 const WS_URL = "ws://127.0.0.1:3003/websockets";
@@ -51,6 +66,10 @@ function DetailedChat() {
     retryOnError: true,
     shouldReconnect: () => true,
   });
+
+  useEffect(() => {
+    document.getElementById("vp").scrollTo({ bottom: 0, behavior: "smooth" });
+  }, [chat]);
 
   useEffect(() => {
     if (id && loggedUser) {
@@ -71,18 +90,21 @@ function DetailedChat() {
       },
     };
 
-    const response = await axios.post(
-      "/api/messages",
-      { chatId: chat.id, text },
-      config,
-    );
+    await axios.post("/api/messages", { chatId: chat.id, text }, config);
   }
 
-  if (!chat) return "loading";
+  if (!chat) return null;
 
   return (
     <DetailedChatsContainer>
-      <Title>{chat.name}</Title>
+      <Title>
+        <IconContext.Provider value={{ color: "gold", size: "2em" }}>
+          <Back to="/chats">
+            <IoArrowBackCircle />
+          </Back>
+        </IconContext.Provider>
+        {chat.name}
+      </Title>
       <Messages>
         {chat.messages.map((m) => (
           <Message key={m.id} message={m} />
@@ -90,8 +112,6 @@ function DetailedChat() {
       </Messages>
 
       <Input send={sendMessage} />
-      <NavLink to="/chats/1">back</NavLink>
-      <NavLink to="/chats/3">forth</NavLink>
     </DetailedChatsContainer>
   );
 }

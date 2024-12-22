@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const getDetailedChat = createAsyncThunk(
-  "getDetailedChat",
+  "detailedChat/getDetailedChat",
   async (data) => {
     const { token, id } = data;
     const config = {
@@ -25,14 +25,14 @@ export const getDetailedChat = createAsyncThunk(
 );
 
 const detailedChatSlice = createSlice({
-  name: "detailedChats",
+  name: "detailedChat",
   initialState,
   reducers: {
     clearChat: (state) => {
       state.chat = null;
     },
     updateChat: (state, action) => {
-      state.chat.messages.push(action.payload);
+      state.chat.messages.unshift(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -54,15 +54,15 @@ const detailedChatSlice = createSlice({
 });
 
 export function selectDetailedChat(state) {
-  return state.detailedChats.chat;
+  return state.detailedChat.chat;
 }
 
-export function selectDetailedChatsLoading(state) {
-  return state.detailedChats.loading;
+export function selectDetailedChatLoading(state) {
+  return state.detailedChat.loading;
 }
 
-export function selectDetailedChatsError(state) {
-  return state.detailedChats.error;
+export function selectDetailedChatError(state) {
+  return state.detailedChat.error;
 }
 
 export const { clearChat, updateChat } = detailedChatSlice.actions;
