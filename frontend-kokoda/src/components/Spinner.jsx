@@ -6,6 +6,7 @@ const SpinnerContainer = styled.div`
   justify-content: center;
   height: 50px;
   width: 100%;
+  border: 1px solid red;
 `;
 
 const spin = keyframes`

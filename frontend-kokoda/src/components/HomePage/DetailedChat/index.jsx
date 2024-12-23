@@ -58,7 +58,7 @@ const Messages = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column-reverse;
-  justify-content: start;
+  justify-content: end;
   padding-bottom: 10px;
 `;
 
@@ -68,13 +68,14 @@ function DetailedChat() {
   const { id } = useParams();
   const loggedUser = useSelector(selectLoggedUser);
   const chat = useSelector(selectDetailedChat);
+  const [messages, setMessages] = useState([]);
   const loading = useSelector(selectDetailedChatLoading);
   const [loaded, setLoaded] = useState(false);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
   const dispatch = useDispatch();
   const limit = 10;
-  const [offset, setOffset] = useState(10);
+  const [offset, setOffset] = useState(0);
   const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser.id, {
     onOpen: () => {
       console.log("WebSocket connection established.");
@@ -92,35 +93,23 @@ function DetailedChat() {
   }, [chat, loaded]);
 
   useEffect(() => {
-    if (id && loggedUser) {
-      dispatch(
-        getDetailedChat({ token: loggedUser.token, id, offset: 0, limit: 10 }),
-      );
-    }
-  }, [id, loggedUser]);
-
-  useEffect(() => {
     console.log("OFF", offset);
   }, [offset]);
 
   useEffect(() => {
     console.log(
       "INTER",
-      chat?.messages.length,
+      chat?.messages?.length,
       offset,
-      chat?.messages.length >= offset,
-      chat?.messages.length % limit === 0,
       intersecting,
+      chat?.messages?.length % limit === 0,
     );
-    if (
-      intersecting &&
-      chat?.messages.length % limit === 0 &&
-      chat?.messages.length >= offset
-    ) {
+    if (intersecting && chat?.messages?.length % limit === 0) {
       dispatch(getDetailedChat({ token: loggedUser.token, id, offset, limit }));
       setOffset((p) => p + limit);
+      console.log("MOAR");
     }
-  }, [intersecting, chat, offset]);
+  }, [intersecting, chat]);
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -146,8 +135,6 @@ function DetailedChat() {
     );
   }
 
-  if (!chat) return null;
-
   return (
     <DetailedChatsContainer>
       <Title>
@@ -156,11 +143,11 @@ function DetailedChat() {
             <IoArrowBackCircle />
           </Back>
         </IconContext.Provider>
-        {chat.name}
+        {chat?.name}
       </Title>
       <Spinner endRef={endRef} loading={loading} />
       <Messages>
-        {chat.messages.map((m) => (
+        {chat?.messages?.map((m) => (
           <Message key={m.id} message={m} />
         ))}
       </Messages>

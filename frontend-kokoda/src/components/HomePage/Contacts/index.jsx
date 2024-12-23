@@ -39,6 +39,7 @@ function Contacts() {
       loggedUser &&
       intersecting &&
       contacts.length % limit === 0 &&
+      // Fishy (remove?)
       contacts.length >= offset
     ) {
       dispatch(getAllContacts({ token: loggedUser.token, offset, limit }));

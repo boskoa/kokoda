@@ -4,22 +4,26 @@ function useIntersectionObserver(ref) {
   const [intersecting, setIntersecting] = useState(false);
   console.log("FOO", ref);
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
+    if (ref.current) {
+      const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1.0,
+      };
 
-    const observer = new IntersectionObserver((targets) => {
-      const [target] = targets;
-      if (target.isIntersecting) {
-        setIntersecting(true);
-      } else {
-        setIntersecting(false);
-      }
-    }, options);
+      const observer = new IntersectionObserver((targets) => {
+        console.log("TARGETS", targets);
+        const [target] = targets;
+        if (target.isIntersecting) {
+          setIntersecting(true);
+          console.log("INTERSECTING");
+        } else {
+          setIntersecting(false);
+        }
+      }, options);
 
-    if (ref.current) observer.observe(ref.current);
+      observer.observe(ref.current);
+    }
   }, [ref]);
 
   return intersecting;
