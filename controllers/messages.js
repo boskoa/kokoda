@@ -90,4 +90,30 @@ router.delete("/:id", tokenExtractor, async (req, res, next) => {
   }
 });
 
+router.get("/chat/:id", tokenExtractor, async (req, res, next) => {
+  const [offset, limit] = req.query.pagination.split(",");
+
+  try {
+    const sender = await User.findByPk(req.decodedToken.id);
+    const chat = await Chat.findByPk(req.params.id);
+
+    if (!chat) return res.status(404).json({ error: "No such chat" });
+
+    if (!sender.admin && !chat.members?.includes(sender.id)) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
+
+    const messages = await Message.findAll({
+      where: { chatId: req.params.id },
+      offset,
+      limit,
+      order: [["id", "DESC"]],
+    });
+
+    return res.status(200).json(messages);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

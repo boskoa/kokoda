@@ -1,12 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
-import {
-  clearChat,
-  getDetailedChat,
-  selectDetailedChat,
-  selectDetailedChatLoading,
-  updateChat,
-} from "../../../features/detailedChat/detailedChatSlice";
 import { useEffect, useRef, useState } from "react";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import useWebSocket from "react-use-websocket";
@@ -67,13 +60,12 @@ const WS_URL = "ws://127.0.0.1:3003/websockets";
 function DetailedChat() {
   const { id } = useParams();
   const loggedUser = useSelector(selectLoggedUser);
-  const chat = useSelector(selectDetailedChat);
+  const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const loading = useSelector(selectDetailedChatLoading);
+  const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
-  const dispatch = useDispatch();
   const limit = 10;
   const [offset, setOffset] = useState(0);
   const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser.id, {
@@ -88,38 +80,79 @@ function DetailedChat() {
     const vp = document.getElementById("vp");
     vp.scrollTo({
       top: vp.scrollHeight,
-      behavior: loaded ? "smooth" : "instant",
+      behavior: messages.length <= 10 ? "instant" : "smooth",
     });
-  }, [chat, loaded]);
+  }, [messages]);
 
+  useEffect(() => {
+    async function getChat(data) {
+      const { id, token } = data;
+      const config = {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`/api/chats/${id}`, config);
+
+      setChat(response.data);
+    }
+    if (loggedUser) {
+      try {
+        getChat({ id, token: loggedUser.token });
+      } catch (error) {
+        console.log("ERROR", error);
+      }
+    }
+  }, [loggedUser]);
+  /* 
   useEffect(() => {
     console.log("OFF", offset);
   }, [offset]);
-
+ */
   useEffect(() => {
-    console.log(
+    async function getMessages(data) {
+      const { token, id, offset, limit } = data;
+      const config = {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      };
+      setLoading(true);
+      const response = await axios.get(
+        `/api/messages/chat/${id}?pagination=${offset},${limit}`,
+        config,
+      );
+      setLoading(false);
+
+      setMessages((p) =>
+        p.length ? [...p, ...response.data] : [...response.data],
+      );
+    }
+    /*     console.log(
       "INTER",
-      chat?.messages?.length,
+      messages?.length,
       offset,
       intersecting,
-      chat?.messages?.length % limit === 0,
-    );
-    if (intersecting && chat?.messages?.length % limit === 0) {
-      dispatch(getDetailedChat({ token: loggedUser.token, id, offset, limit }));
-      setOffset((p) => p + limit);
-      console.log("MOAR");
+      messages?.length % limit === 0,
+    ); */
+    if (intersecting && messages.length % limit === 0) {
+      try {
+        getMessages({ token: loggedUser.token, id, offset, limit });
+        setOffset((p) => p + limit);
+        if (messages.length === 0) setLoaded(true);
+      } catch (error) {
+        console.log("ERROR", error);
+      }
     }
   }, [intersecting, chat]);
 
   useEffect(() => {
     if (lastJsonMessage) {
-      dispatch(updateChat(lastJsonMessage));
+      setMessages((p) =>
+        p.length ? [lastJsonMessage, ...p] : [lastJsonMessage],
+      );
     }
   }, [lastJsonMessage]);
-
-  useEffect(() => {
-    return () => dispatch(clearChat());
-  }, []);
 
   async function sendMessage(text) {
     const config = {
@@ -128,11 +161,7 @@ function DetailedChat() {
       },
     };
 
-    await axios.post(
-      "/api/messages",
-      { chatId: chat.id, text, offset, limit },
-      config,
-    );
+    await axios.post("/api/messages", { chatId: chat.id, text }, config);
   }
 
   return (
@@ -147,7 +176,7 @@ function DetailedChat() {
       </Title>
       <Spinner endRef={endRef} loading={loading} />
       <Messages>
-        {chat?.messages?.map((m) => (
+        {messages.map((m) => (
           <Message key={m.id} message={m} />
         ))}
       </Messages>

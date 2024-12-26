@@ -16,12 +16,10 @@ router.get("/", tokenExtractor, async (req, res, next) => {
 });
 
 router.get("/:id", tokenExtractor, async (req, res, next) => {
-  // Implement pagination based on date
-  const [offset, limit] = req.query.pagination.split(",");
-
   try {
     const sender = await User.findByPk(req.decodedToken.id);
-    const chat = await Chat.findByPk(req.params.id, {
+    const chat = await Chat.findByPk(
+      req.params.id /* , {
       include: {
         model: Message,
         attributes: [
@@ -33,21 +31,16 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
           "updatedAt",
         ],
         separate: true,
-        limit,
-        offset,
+        limit: 10,
         order: [["id", "DESC"]],
       },
-      //order: [[Message, "id", "DESC"]],
-    });
+    } */,
+    );
 
     if (!chat) return res.status(404).json({ error: "No such chat" });
 
     if (!sender.admin && !chat.members?.includes(sender.id)) {
       return res.status(401).json({ error: "Not authorized" });
-    }
-
-    if (!chat) {
-      return res.status(404).json({ error: "Chat not found" });
     }
     /* console.log(
       "FOOOOOOOOOOOOOOOOOOOOOOOOO",

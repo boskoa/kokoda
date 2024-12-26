@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 function useIntersectionObserver(ref) {
   const [intersecting, setIntersecting] = useState(false);
-  console.log("FOO", ref);
   useEffect(() => {
     if (ref.current) {
       const options = {
@@ -12,11 +11,9 @@ function useIntersectionObserver(ref) {
       };
 
       const observer = new IntersectionObserver((targets) => {
-        console.log("TARGETS", targets);
         const [target] = targets;
         if (target.isIntersecting) {
           setIntersecting(true);
-          console.log("INTERSECTING");
         } else {
           setIntersecting(false);
         }
