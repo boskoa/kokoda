@@ -33,7 +33,7 @@ const SendButton = styled.button`
   }
 `;
 
-function Input({ send, setLoaded }) {
+function Input({ send }) {
   const [message, setMessage] = useState("");
 
   return (
@@ -48,7 +48,6 @@ function Input({ send, setLoaded }) {
         onClick={() => {
           send(message);
           setMessage("");
-          setLoaded(true);
         }}
       >
         send

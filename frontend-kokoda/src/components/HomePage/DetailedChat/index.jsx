@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import useWebSocket from "react-use-websocket";
 import Input from "./Input";
@@ -62,8 +62,12 @@ function DetailedChat() {
   const loggedUser = useSelector(selectLoggedUser);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
+  //implement condition for fetching more messages
+  const [prevLength, setPrevLength] = useState(-10);
+  const stopLoading = prevLength === messages.length;
+  const [lastHeight, setLastHeight] = useState();
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [shouldScroll, setShouldScroll] = useState(true);
   const endRef = useRef(null);
   const intersecting = useIntersectionObserver(endRef);
   const limit = 10;
@@ -76,12 +80,17 @@ function DetailedChat() {
     shouldReconnect: () => true,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const vp = document.getElementById("vp");
-    vp.scrollTo({
-      top: vp.scrollHeight,
-      behavior: messages.length <= 10 ? "instant" : "smooth",
-    });
+    shouldScroll
+      ? vp.scrollTo({
+          top: vp.scrollHeight,
+          behavior: messages.length <= 10 ? "instant" : "smooth",
+        })
+      : (vp.scrollTop = vp.scrollHeight - lastHeight);
+
+    setLastHeight(vp.scrollHeight);
+    setLoading(false);
   }, [messages]);
 
   useEffect(() => {
@@ -93,22 +102,13 @@ function DetailedChat() {
         },
       };
       const response = await axios.get(`/api/chats/${id}`, config);
-
       setChat(response.data);
     }
-    if (loggedUser) {
-      try {
-        getChat({ id, token: loggedUser.token });
-      } catch (error) {
-        console.log("ERROR", error);
-      }
+    if (loggedUser && !loading) {
+      getChat({ id, token: loggedUser.token });
     }
   }, [loggedUser]);
-  /* 
-  useEffect(() => {
-    console.log("OFF", offset);
-  }, [offset]);
- */
+
   useEffect(() => {
     async function getMessages(data) {
       const { token, id, offset, limit } = data;
@@ -117,34 +117,24 @@ function DetailedChat() {
           Authorization: `bearer ${token}`,
         },
       };
+      if (messages.length >= 10) setShouldScroll(false);
       setLoading(true);
       const response = await axios.get(
         `/api/messages/chat/${id}?pagination=${offset},${limit}`,
         config,
       );
-      setLoading(false);
 
       setMessages((p) =>
         p.length ? [...p, ...response.data] : [...response.data],
       );
     }
-    /*     console.log(
-      "INTER",
-      messages?.length,
-      offset,
-      intersecting,
-      messages?.length % limit === 0,
-    ); */
-    if (intersecting && messages.length % limit === 0) {
-      try {
-        getMessages({ token: loggedUser.token, id, offset, limit });
-        setOffset((p) => p + limit);
-        if (messages.length === 0) setLoaded(true);
-      } catch (error) {
-        console.log("ERROR", error);
-      }
+
+    if (intersecting && !stopLoading && !loading) {
+      getMessages({ token: loggedUser.token, id, offset, limit });
+      setOffset((p) => p + limit);
+      setPrevLength(messages.length);
     }
-  }, [intersecting, chat]);
+  }, [intersecting, messages]);
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -160,7 +150,7 @@ function DetailedChat() {
         Authorization: `bearer ${loggedUser.token}`,
       },
     };
-
+    setShouldScroll(true);
     await axios.post("/api/messages", { chatId: chat.id, text }, config);
   }
 
@@ -181,7 +171,7 @@ function DetailedChat() {
         ))}
       </Messages>
 
-      <Input send={sendMessage} setLoaded={setLoaded} />
+      <Input send={sendMessage} />
     </DetailedChatsContainer>
   );
 }

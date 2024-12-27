@@ -30,7 +30,9 @@ function Message({ message }) {
     <MessageContainer
       $side={loggedUser.id === message.userId ? "end" : "start"}
     >
-      <MessageText>{message.text}</MessageText>
+      <MessageText>
+        {message.id} - {message.text}
+      </MessageText>
       <Time>
         {new Date(message.updatedAt).toLocaleTimeString("en-US", {
           hour12: false,
