@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-function useIntersectionObserver(ref) {
+function useIntersectionObserver(ref, root = null) {
   const [intersecting, setIntersecting] = useState(false);
   useEffect(() => {
     if (ref.current) {
       const options = {
-        root: null,
+        root,
         rootMargin: "0px",
         threshold: 1.0,
       };

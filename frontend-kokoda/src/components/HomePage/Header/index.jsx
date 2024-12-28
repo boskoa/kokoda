@@ -25,10 +25,6 @@ function Header({ setMenu }) {
   const { pathname } = useLocation();
   const pathArray = pathname.split("/");
 
-  useEffect(() => {
-    console.log(pathname);
-  }, [pathname]);
-
   return (
     <HeaderMenuContainer
       $translate={

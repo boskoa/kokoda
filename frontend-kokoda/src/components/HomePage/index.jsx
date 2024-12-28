@@ -11,6 +11,7 @@ const HomeContainer = styled.div`
   background-color: transparent;
   color: ${({ theme }) => theme.main.fg};
   min-height: calc(100% - 45px);
+  width: inherit;
   position: relative;
   //overflow-x: hidden;
   padding-bottom: 40px;

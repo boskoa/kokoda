@@ -2,8 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const InputContainer = styled.div`
-  position: sticky;
-  bottom: 40px;
+  position: fixed;
+  bottom: 0px;
+  width: inherit;
   display: flex;
   align-items: stretch;
   height: 40px;
@@ -15,9 +16,11 @@ const TextInput = styled.textarea`
   border: 1px solid #ff6932;
   background-color: #ff6932ca;
   color: white;
-  font-size: 12px;
+  font-size: 16px;
   scrollbar-width: none;
   resize: none;
+  display: flex;
+  padding: 10px 5px;
 `;
 
 const SendButton = styled.button`
@@ -26,6 +29,7 @@ const SendButton = styled.button`
   background-color: #ff6932;
   color: white;
   width: 50px;
+  font-size: 16px;
   transition: all 0.2s;
 
   &:disabled {

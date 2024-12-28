@@ -17,6 +17,7 @@ const DetailedChatsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: inherit;
 `;
 
 const Title = styled.header`
@@ -79,7 +80,7 @@ function DetailedChat() {
     retryOnError: true,
     shouldReconnect: () => true,
   });
-
+  //fix dependencies
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
     shouldScroll
@@ -104,11 +105,11 @@ function DetailedChat() {
       const response = await axios.get(`/api/chats/${id}`, config);
       setChat(response.data);
     }
-    if (loggedUser && !loading) {
+    if (loggedUser) {
       getChat({ id, token: loggedUser.token });
     }
-  }, [loggedUser]);
-
+  }, [loggedUser, id]);
+  //fix dependencies
   useEffect(() => {
     async function getMessages(data) {
       const { token, id, offset, limit } = data;
@@ -137,10 +138,12 @@ function DetailedChat() {
   }, [intersecting, messages]);
 
   useEffect(() => {
+    // set no scroll if it's not our message
     if (lastJsonMessage) {
       setMessages((p) =>
         p.length ? [lastJsonMessage, ...p] : [lastJsonMessage],
       );
+      setOffset((p) => p + 1);
     }
   }, [lastJsonMessage]);
 

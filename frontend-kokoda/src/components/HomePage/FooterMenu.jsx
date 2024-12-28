@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 
 const FooterMenuContainer = styled.div`
@@ -8,6 +8,8 @@ const FooterMenuContainer = styled.div`
   margin-top: -40px;
   z-index: 1;
   display: flex;
+  transform: ${({ $translate }) => $translate};
+  transition: all 0.3s;
 `;
 
 const buttonAnimation = keyframes`
@@ -63,8 +65,15 @@ const FooterButtonContainer = styled(NavLink)`
 `;
 
 function FooterMenu() {
+  const { pathname } = useLocation();
+  const pathArray = pathname.split("/");
+
   return (
-    <FooterMenuContainer>
+    <FooterMenuContainer
+      $translate={
+        isNaN(pathArray[pathArray.length - 1]) ? "" : "translateX(100%)"
+      }
+    >
       <FooterButtonContainer to="/chats" $color={"bg1"}>
         Chats
       </FooterButtonContainer>
