@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 const MessageContainer = styled.div`
+  position: relative;
   background-color: #32cd3271;
   margin: 10px;
   padding: 10px;
@@ -12,6 +13,25 @@ const MessageContainer = styled.div`
   border-radius: ${({ $side }) =>
     $side === "end" ? "8px 0 8px 8px" : "0 5px 5px 5px"};
   align-self: ${({ $side }) => $side};
+
+  &.date {
+    margin-top: 30px;
+  }
+
+  &.date::before {
+    content: attr(data-date);
+    position: absolute;
+    top: -27px;
+    border-radius: 5px;
+    box-shadow: 0px -2px 2px -1px gold;
+    text-align: center;
+    right: ${({ $side }) => ($side === "end" ? 0 : "")};
+    left: ${({ $side }) => ($side === "start" ? 0 : "")};
+    height: 12px;
+    font-size: 12px;
+    line-height: 100%;
+    width: ${({ $width }) => $width};
+  }
 `;
 
 const MessageText = styled.p`
@@ -23,12 +43,16 @@ const Time = styled.span`
   float: right;
 `;
 
-function Message({ message }) {
+function Message({ message, parentWidth }) {
   const loggedUser = useSelector(selectLoggedUser);
-
+  console.log("FOO", parentWidth);
   return (
     <MessageContainer
       $side={loggedUser.id === message.userId ? "end" : "start"}
+      data-date={new Date(message.createdAt)
+        .toLocaleString("en-GB")
+        .slice(0, 10)}
+      $width={`${parentWidth - 20}px`}
     >
       <MessageText>
         {message.id} - {message.text}

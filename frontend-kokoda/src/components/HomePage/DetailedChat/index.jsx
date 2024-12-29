@@ -74,6 +74,7 @@ function DetailedChat() {
   const [loading, setLoading] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
   const endRef = useRef(null);
+  const messagesRef = useRef(null);
   const intersecting = useIntersectionObserver(
     endRef,
     document.getElementById("vp"),
@@ -94,6 +95,19 @@ function DetailedChat() {
 
     setLastHeight(vp.scrollHeight);
     setLoading(false);
+    // Set date element
+    document
+      .getElementById("messages")
+      .childNodes.forEach((c) => c.classList.remove("date"));
+    const messageDates = Object.keys(
+      Object.groupBy(messages, ({ createdAt }) =>
+        new Date(createdAt).toLocaleString("en-GB").slice(0, 10),
+      ),
+    );
+    messageDates.forEach((d) => {
+      const group = document.querySelectorAll(`[data-date="${d}"]`);
+      group[group.length - 1].classList.add("date");
+    });
   }, [messages]);
 
   useEffect(() => {
@@ -171,9 +185,13 @@ function DetailedChat() {
         {chat?.name}
       </Title>
       <Spinner endRef={endRef} loading={loading} />
-      <Messages>
+      <Messages id="messages" ref={messagesRef}>
         {messages.map((m) => (
-          <Message key={m.id} message={m} />
+          <Message
+            parentWidth={messagesRef.current?.offsetWidth}
+            key={m.id}
+            message={m}
+          />
         ))}
       </Messages>
 
