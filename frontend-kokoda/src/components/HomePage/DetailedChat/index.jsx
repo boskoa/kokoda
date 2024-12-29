@@ -1,8 +1,13 @@
 import { useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
-import useWebSocket from "react-use-websocket";
 import Input from "./Input";
 import axios from "axios";
 import Message from "./Message";
@@ -11,6 +16,7 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
 import Spinner from "../../Spinner";
+import WSContext from "../wsContext";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 85px);
@@ -20,7 +26,7 @@ const DetailedChatsContainer = styled.div`
   width: inherit;
 `;
 
-const Title = styled.header`
+const Title = styled.h2`
   position: sticky;
   top: 0px;
   right: 0px;
@@ -33,6 +39,7 @@ const Title = styled.header`
   align-items: center;
   background-color: rgba(0, 128, 128, 0.7);
   backdrop-filter: blur(20px);
+  font-size: 16px;
 `;
 
 const Back = styled(NavLink)`
@@ -56,30 +63,25 @@ const Messages = styled.div`
   padding-bottom: 10px;
 `;
 
-const WS_URL = "ws://127.0.0.1:3003/websockets";
-
 function DetailedChat() {
   const { id } = useParams();
   const loggedUser = useSelector(selectLoggedUser);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  //implement condition for fetching more messages
   const [prevLength, setPrevLength] = useState(-10);
   const stopLoading = prevLength === messages.length;
   const [lastHeight, setLastHeight] = useState();
   const [loading, setLoading] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
   const endRef = useRef(null);
-  const intersecting = useIntersectionObserver(endRef);
+  const intersecting = useIntersectionObserver(
+    endRef,
+    document.getElementById("vp"),
+  );
   const limit = 10;
   const [offset, setOffset] = useState(0);
-  const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser.id, {
-    onOpen: () => {
-      console.log("WebSocket connection established.");
-    },
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
+  const lastJsonMessage = useContext(WSContext);
+
   //fix dependencies
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
@@ -138,10 +140,11 @@ function DetailedChat() {
   }, [intersecting, messages]);
 
   useEffect(() => {
-    // set no scroll if it's not our message
     if (lastJsonMessage) {
       setMessages((p) =>
-        p.length ? [lastJsonMessage, ...p] : [lastJsonMessage],
+        p.length
+          ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
+          : [lastJsonMessage],
       );
       setOffset((p) => p + 1);
     }

@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 const ViewPortContainer = styled.div`
-  width: 40%;
+  width: 600px;
   height: 100vh;
   margin: 0 auto;
   overflow-y: auto;

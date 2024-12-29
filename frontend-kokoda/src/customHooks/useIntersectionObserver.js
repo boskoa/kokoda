@@ -6,7 +6,7 @@ function useIntersectionObserver(ref, root = null) {
     if (ref.current) {
       const options = {
         root,
-        rootMargin: "0px",
+        rootMargin: "100px",
         threshold: 1.0,
       };
 

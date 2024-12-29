@@ -98,6 +98,8 @@ const router = createBrowserRouter([
   },
 ]);
 
+const loggedUser = window.localStorage.getItem("loggedKokoda");
+
 function App() {
   const [theme, setTheme] = useState("dark");
   const dispatch = useDispatch();
@@ -109,7 +111,6 @@ function App() {
     ).main.containerBg;
   }, [theme]);
 
-  const loggedUser = window.localStorage.getItem("loggedKokoda");
   if (loggedUser) dispatch(alreadyLogged(JSON.parse(loggedUser)));
 
   return (

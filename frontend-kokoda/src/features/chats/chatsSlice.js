@@ -17,17 +17,14 @@ const initialState = chatsAdapter.getInitialState({
 export const getAllChats = createAsyncThunk(
   "chats/getAllChats",
   async (data) => {
-    const { token, offset, limit } = data;
+    const { token } = data;
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
     };
-    //change query when quering db
-    const response = await axios.get(
-      BASE_URL, // + `?_start=${offset}&_limit=${limit}`,
-      config,
-    );
+
+    const response = await axios.get(BASE_URL, config);
     return response.data;
   },
 );
@@ -35,7 +32,14 @@ export const getAllChats = createAsyncThunk(
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
-  reducers: {},
+  reducers: {
+    addSocketMessage: (state, action) => {
+      chatsAdapter.upsertOne(state, {
+        id: action.payload.chatId,
+        messages: [action.payload],
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllChats.pending, (state) => {
@@ -63,5 +67,7 @@ export const {
 export function selectChatsLoading(state) {
   return state.chats.loading;
 }
+
+export const { addSocketMessage } = chatsSlice.actions;
 
 export default chatsSlice.reducer;
