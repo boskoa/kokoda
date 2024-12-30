@@ -70,7 +70,7 @@ function DetailedChat() {
   const [messages, setMessages] = useState([]);
   const [prevLength, setPrevLength] = useState(-10);
   const stopLoading = prevLength === messages.length;
-  const [lastHeight, setLastHeight] = useState();
+  const lastHeightRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [shouldScroll, setShouldScroll] = useState(true);
   const endRef = useRef(null);
@@ -85,29 +85,33 @@ function DetailedChat() {
 
   //fix dependencies
   useLayoutEffect(() => {
+    // Set date element
+    document
+      .getElementById("messages")
+      .childNodes.forEach((c) => c.classList.remove("date"));
+
+    const messageDates = Object.keys(
+      Object.groupBy(messages, ({ createdAt }) =>
+        new Date(createdAt).toLocaleString("en-GB").slice(0, 10),
+      ),
+    );
+
+    messageDates.forEach((d) => {
+      const group = document.querySelectorAll(`[data-date="${d}"]`);
+      group[group.length - 1].classList.add("date");
+    });
+
+    setLoading(false);
     const vp = document.getElementById("vp");
     shouldScroll
       ? vp.scrollTo({
           top: vp.scrollHeight,
           behavior: messages.length <= 10 ? "instant" : "smooth",
         })
-      : (vp.scrollTop = vp.scrollHeight - lastHeight);
-
-    setLastHeight(vp.scrollHeight);
-    setLoading(false);
-    // Set date element
-    document
-      .getElementById("messages")
-      .childNodes.forEach((c) => c.classList.remove("date"));
-    const messageDates = Object.keys(
-      Object.groupBy(messages, ({ createdAt }) =>
-        new Date(createdAt).toLocaleString("en-GB").slice(0, 10),
-      ),
-    );
-    messageDates.forEach((d) => {
-      const group = document.querySelectorAll(`[data-date="${d}"]`);
-      group[group.length - 1].classList.add("date");
-    });
+      : (vp.scrollTop = vp.scrollHeight - (lastHeightRef.current || 0));
+    console.log("FOO", lastHeightRef.current, vp.scrollHeight);
+    lastHeightRef.current = vp.scrollHeight;
+    console.log("BAR");
   }, [messages]);
 
   useEffect(() => {
@@ -144,14 +148,16 @@ function DetailedChat() {
       setMessages((p) =>
         p.length ? [...p, ...response.data] : [...response.data],
       );
+      console.log("GETMESSAGES");
     }
 
     if (intersecting && !stopLoading && !loading) {
       getMessages({ token: loggedUser.token, id, offset, limit });
       setOffset((p) => p + limit);
       setPrevLength(messages.length);
+      console.log("INTERSECTING");
     }
-  }, [intersecting, messages]);
+  }, [intersecting]);
 
   useEffect(() => {
     if (lastJsonMessage) {
@@ -161,6 +167,7 @@ function DetailedChat() {
           : [lastJsonMessage],
       );
       setOffset((p) => p + 1);
+      console.log("LASTJASON");
     }
   }, [lastJsonMessage]);
 

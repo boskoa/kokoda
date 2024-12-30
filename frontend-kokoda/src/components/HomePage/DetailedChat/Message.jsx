@@ -45,7 +45,7 @@ const Time = styled.span`
 
 function Message({ message, parentWidth }) {
   const loggedUser = useSelector(selectLoggedUser);
-  console.log("FOO", parentWidth);
+
   return (
     <MessageContainer
       $side={loggedUser.id === message.userId ? "end" : "start"}
