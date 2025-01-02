@@ -6,14 +6,15 @@ function useIntersectionObserver(ref, root = null) {
     if (ref.current) {
       const options = {
         root,
-        rootMargin: "100px",
-        threshold: 1.0,
+        rootMargin: "0px 0px 800px 0px",
+        threshold: 0.0,
       };
 
       const observer = new IntersectionObserver((targets) => {
         const [target] = targets;
         if (target.isIntersecting) {
           setIntersecting(true);
+          console.log("INTERSECTING", root);
         } else {
           setIntersecting(false);
         }

@@ -1,22 +1,15 @@
 import { useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
-import {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
-import Input from "./Input";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
-import Message from "./Message";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
-import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
+import Input from "./Input";
 import Spinner from "../../Spinner";
-import WSContext from "../wsContext";
+import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
+import Message from "./Message";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 85px);
@@ -61,6 +54,21 @@ const Messages = styled.div`
   flex-direction: column-reverse;
   justify-content: end;
   padding-bottom: 10px;
+
+  & * {
+    overflow-anchor: none;
+  }
+  ${({ $limit }) => `
+    & .messages:nth-last-child(${$limit + 3}) {
+      overflow-anchor: auto;
+    }
+  `}
+`;
+
+const Anchor = styled.p`
+  overflow-anchor: auto;
+  background-color: lime;
+  height: 1px;
 `;
 
 function DetailedChat() {
@@ -68,27 +76,77 @@ function DetailedChat() {
   const loggedUser = useSelector(selectLoggedUser);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [prevLength, setPrevLength] = useState(-10);
-  const stopLoading = prevLength === messages.length;
-  const lastHeightRef = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [shouldScroll, setShouldScroll] = useState(true);
-  const endRef = useRef(null);
+  const offsetRef = useRef(0);
+  const limit = 10;
   const messagesRef = useRef(null);
+  const loadingRef = useRef(false);
+  const stopLoadingRef = useRef(false);
+  const observerRef = useRef(null);
   const intersecting = useIntersectionObserver(
-    endRef,
+    observerRef,
     document.getElementById("vp"),
   );
-  const limit = 10;
-  const [offset, setOffset] = useState(0);
-  const lastJsonMessage = useContext(WSContext);
 
-  //fix dependencies
-  useLayoutEffect(() => {
+  const getChat = useCallback(async (data) => {
+    const { id, token } = data;
+    const config = {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    };
+    const response = await axios.get(`/api/chats/${id}`, config);
+    setChat(response.data);
+  }, []);
+
+  const getMessages = useCallback(async (data) => {
+    const { token, id, offset, limit } = data;
+    const config = {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    };
+    const response = await axios.get(
+      `/api/messages/chat/${id}?pagination=${offset},${limit}`,
+      config,
+    );
+
+    if (response.data.length !== limit) {
+      stopLoadingRef.current = true;
+      loadingRef.current = false;
+    }
+
+    if (!response.data.length) {
+      return;
+    }
+
+    setMessages((p) =>
+      p.length ? [...p, ...response.data] : [...response.data],
+    );
+  }, []);
+
+  useEffect(() => {
+    if (loggedUser && id) {
+      getChat({ id, token: loggedUser.token });
+    }
+  }, [id, loggedUser]);
+
+  useEffect(() => {
+    loadingRef.current = true;
+    if (intersecting && !stopLoadingRef.current) {
+      getMessages({
+        token: loggedUser.token,
+        id,
+        offset: offsetRef.current,
+        limit,
+      });
+      offsetRef.current += limit;
+    }
+  }, [intersecting, getMessages]);
+
+  useEffect(() => {
+    loadingRef.current = false;
     // Set date element
-    document
-      .getElementById("messages")
-      .childNodes.forEach((c) => c.classList.remove("date"));
+    messagesRef.current.childNodes.forEach((c) => c.classList.remove("date"));
 
     const messageDates = Object.keys(
       Object.groupBy(messages, ({ createdAt }) =>
@@ -100,76 +158,7 @@ function DetailedChat() {
       const group = document.querySelectorAll(`[data-date="${d}"]`);
       group[group.length - 1].classList.add("date");
     });
-
-    setLoading(false);
-    const vp = document.getElementById("vp");
-    shouldScroll
-      ? vp.scrollTo({
-          top: vp.scrollHeight,
-          behavior: messages.length <= 10 ? "instant" : "smooth",
-        })
-      : (vp.scrollTop = vp.scrollHeight - (lastHeightRef.current || 0));
-    console.log("FOO", lastHeightRef.current, vp.scrollHeight);
-    lastHeightRef.current = vp.scrollHeight;
-    console.log("BAR");
   }, [messages]);
-
-  useEffect(() => {
-    async function getChat(data) {
-      const { id, token } = data;
-      const config = {
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      };
-      const response = await axios.get(`/api/chats/${id}`, config);
-      setChat(response.data);
-    }
-    if (loggedUser) {
-      getChat({ id, token: loggedUser.token });
-    }
-  }, [loggedUser, id]);
-  //fix dependencies
-  useEffect(() => {
-    async function getMessages(data) {
-      const { token, id, offset, limit } = data;
-      const config = {
-        headers: {
-          Authorization: `bearer ${token}`,
-        },
-      };
-      if (messages.length >= 10) setShouldScroll(false);
-      setLoading(true);
-      const response = await axios.get(
-        `/api/messages/chat/${id}?pagination=${offset},${limit}`,
-        config,
-      );
-
-      setMessages((p) =>
-        p.length ? [...p, ...response.data] : [...response.data],
-      );
-      console.log("GETMESSAGES");
-    }
-
-    if (intersecting && !stopLoading && !loading) {
-      getMessages({ token: loggedUser.token, id, offset, limit });
-      setOffset((p) => p + limit);
-      setPrevLength(messages.length);
-      console.log("INTERSECTING");
-    }
-  }, [intersecting]);
-
-  useEffect(() => {
-    if (lastJsonMessage) {
-      setMessages((p) =>
-        p.length
-          ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
-          : [lastJsonMessage],
-      );
-      setOffset((p) => p + 1);
-      console.log("LASTJASON");
-    }
-  }, [lastJsonMessage]);
 
   async function sendMessage(text) {
     const config = {
@@ -177,7 +166,6 @@ function DetailedChat() {
         Authorization: `bearer ${loggedUser.token}`,
       },
     };
-    setShouldScroll(true);
     await axios.post("/api/messages", { chatId: chat.id, text }, config);
   }
 
@@ -191,17 +179,25 @@ function DetailedChat() {
         </IconContext.Provider>
         {chat?.name}
       </Title>
-      <Spinner endRef={endRef} loading={loading} />
-      <Messages id="messages" ref={messagesRef}>
+      <Messages ref={messagesRef} $limit={limit}>
+        <Anchor />
         {messages.map((m) => (
           <Message
             parentWidth={messagesRef.current?.offsetWidth}
             key={m.id}
             message={m}
-          />
+          >
+            {m.id}: {m.text}
+          </Message>
         ))}
+        <Spinner
+          endRef={observerRef}
+          loading={
+            intersecting && loadingRef.current && !stopLoadingRef.current
+          }
+          style={{ marginTop: 100, overflowAnchor: "none" }}
+        />
       </Messages>
-
       <Input send={sendMessage} />
     </DetailedChatsContainer>
   );

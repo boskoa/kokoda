@@ -29,9 +29,11 @@ const Loader = styled.div`
     inset 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
 `;
 
-function Spinner({ endRef, loading }) {
+function Spinner({ endRef, loading, style = {} }) {
   return (
-    <SpinnerContainer ref={endRef}>{loading && <Loader />}</SpinnerContainer>
+    <SpinnerContainer ref={endRef} style={style}>
+      {loading && <Loader />}
+    </SpinnerContainer>
   );
 }
 

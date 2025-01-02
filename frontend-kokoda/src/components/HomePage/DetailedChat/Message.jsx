@@ -45,9 +45,10 @@ const Time = styled.span`
 
 function Message({ message, parentWidth }) {
   const loggedUser = useSelector(selectLoggedUser);
-
+  //console.log(foo.index, foo.length - 10 - 1);
   return (
     <MessageContainer
+      className="messages"
       $side={loggedUser.id === message.userId ? "end" : "start"}
       data-date={new Date(message.createdAt)
         .toLocaleString("en-GB")
