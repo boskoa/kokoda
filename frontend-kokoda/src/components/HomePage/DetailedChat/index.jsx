@@ -2,7 +2,14 @@ import { useSelector } from "react-redux";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
@@ -10,6 +17,7 @@ import Input from "./Input";
 import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
 import Message from "./Message";
+import WSContext from "../wsContext";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 85px);
@@ -82,10 +90,12 @@ function DetailedChat() {
   const loadingRef = useRef(false);
   const stopLoadingRef = useRef(false);
   const observerRef = useRef(null);
+  const initialRef = useRef(true);
   const intersecting = useIntersectionObserver(
     observerRef,
     document.getElementById("vp"),
   );
+  const lastJsonMessage = useContext(WSContext);
 
   const getChat = useCallback(async (data) => {
     const { id, token } = data;
@@ -112,12 +122,13 @@ function DetailedChat() {
 
     if (response.data.length !== limit) {
       stopLoadingRef.current = true;
-      loadingRef.current = false;
     }
 
     if (!response.data.length) {
       return;
     }
+
+    loadingRef.current = false;
 
     setMessages((p) =>
       p.length ? [...p, ...response.data] : [...response.data],
@@ -141,7 +152,7 @@ function DetailedChat() {
       });
       offsetRef.current += limit;
     }
-  }, [intersecting, getMessages]);
+  }, [intersecting, loggedUser, id, getMessages]);
 
   useEffect(() => {
     loadingRef.current = false;
@@ -158,7 +169,36 @@ function DetailedChat() {
       const group = document.querySelectorAll(`[data-date="${d}"]`);
       group[group.length - 1].classList.add("date");
     });
+
+    if (initialRef.current && messages.length) {
+      const vp = document.getElementById("vp");
+      vp.scrollTop = vp.scrollHeight;
+      initialRef.current = false;
+    }
   }, [messages]);
+
+  useEffect(() => {
+    if (lastJsonMessage) {
+      setMessages((p) =>
+        p.length
+          ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
+          : [lastJsonMessage],
+      );
+      offsetRef.current += limit;
+    }
+  }, [lastJsonMessage]);
+
+  useLayoutEffect(() => {
+    const vp = document.getElementById("vp");
+    function stopScroll(e) {
+      if (e.target.scrollTop < 300) {
+        e.target.scrollTop = 300;
+      }
+    }
+    vp.addEventListener("scroll", stopScroll);
+
+    return () => vp.removeEventListener("scroll", stopScroll);
+  }, []);
 
   async function sendMessage(text) {
     const config = {
@@ -195,7 +235,7 @@ function DetailedChat() {
           loading={
             intersecting && loadingRef.current && !stopLoadingRef.current
           }
-          style={{ marginTop: 100, overflowAnchor: "none" }}
+          style={{ marginTop: 300 }}
         />
       </Messages>
       <Input send={sendMessage} />

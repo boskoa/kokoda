@@ -14,7 +14,6 @@ function useIntersectionObserver(ref, root = null) {
         const [target] = targets;
         if (target.isIntersecting) {
           setIntersecting(true);
-          console.log("INTERSECTING", root);
         } else {
           setIntersecting(false);
         }
