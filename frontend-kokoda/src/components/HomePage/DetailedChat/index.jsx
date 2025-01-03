@@ -18,6 +18,7 @@ import Spinner from "../../Spinner";
 import useIntersectionObserver from "../../../customHooks/useIntersectionObserver";
 import Message from "./Message";
 import WSContext from "../wsContext";
+import Scroller from "./Scroller";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 85px);
@@ -75,7 +76,6 @@ const Messages = styled.div`
 
 const Anchor = styled.p`
   overflow-anchor: auto;
-  background-color: lime;
   height: 1px;
 `;
 
@@ -84,9 +84,11 @@ function DetailedChat() {
   const loggedUser = useSelector(selectLoggedUser);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const offsetRef = useRef(0);
   const limit = 10;
   const [loading, setLoading] = useState(false);
+  const [unseen, setUnseen] = useState(0);
+  const [scrollDown, setScrollDown] = useState(false);
+  const offsetRef = useRef(0);
   const messagesRef = useRef(null);
   const stopLoadingRef = useRef(false);
   const observerRef = useRef(null);
@@ -185,22 +187,49 @@ function DetailedChat() {
           ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
           : [lastJsonMessage],
       );
+      if (lastJsonMessage.userId !== loggedUser.id) setUnseen((p) => p + 1);
       offsetRef.current += 1;
     }
   }, [lastJsonMessage, id]);
 
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
+    let lastScrollTop = 0;
     function stopScroll(e) {
       if (e.target.scrollTop < 300) {
         e.target.scrollTop = 300;
       }
+
+      if (
+        e.target.scrollHeight - e.target.scrollTop <
+        e.target.offsetHeight + 50
+      ) {
+        setUnseen(0);
+      }
+
+      if (
+        e.target.scrollHeight - e.target.scrollTop >
+        e.target.offsetHeight + 500
+      ) {
+        if (e.target.scrollTop - lastScrollTop > 10) {
+          setScrollDown(true);
+        } else if (e.target.scrollTop < lastScrollTop) {
+          setScrollDown(false);
+        }
+      } else {
+        setScrollDown(false);
+      }
+      lastScrollTop = e.target.scrollTop;
     }
     vp.addEventListener("scroll", stopScroll);
 
     return () => vp.removeEventListener("scroll", stopScroll);
   }, []);
-
+  /* 
+  useEffect(() => {
+    console.log("UNSEEN", unseen, scrollDown);
+  }, [unseen, scrollDown]);
+ */
   async function sendMessage(text) {
     const config = {
       headers: {
@@ -238,6 +267,7 @@ function DetailedChat() {
         />
       </Messages>
       <Input send={sendMessage} />
+      <Scroller unseen={unseen} scrollDown={scrollDown} />
     </DetailedChatsContainer>
   );
 }

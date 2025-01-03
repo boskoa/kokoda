@@ -31,6 +31,7 @@ const MessageContainer = styled.div`
     font-size: 12px;
     line-height: 100%;
     width: ${({ $width }) => $width};
+    filter: brightness(0.8);
   }
 `;
 
@@ -41,11 +42,12 @@ const MessageText = styled.p`
 const Time = styled.span`
   font-size: 10px;
   float: right;
+  filter: brightness(0.8);
 `;
 
 function Message({ message, parentWidth }) {
   const loggedUser = useSelector(selectLoggedUser);
-  //console.log(foo.index, foo.length - 10 - 1);
+
   return (
     <MessageContainer
       className="messages"
@@ -55,9 +57,7 @@ function Message({ message, parentWidth }) {
         .slice(0, 10)}
       $width={`${parentWidth - 20}px`}
     >
-      <MessageText>
-        {message.id} - {message.text}
-      </MessageText>
+      <MessageText>{message.text}</MessageText>
       <Time>
         {new Date(message.updatedAt).toLocaleTimeString("en-US", {
           hour12: false,
