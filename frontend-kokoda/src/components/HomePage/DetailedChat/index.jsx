@@ -86,8 +86,8 @@ function DetailedChat() {
   const [messages, setMessages] = useState([]);
   const offsetRef = useRef(0);
   const limit = 10;
+  const [loading, setLoading] = useState(false);
   const messagesRef = useRef(null);
-  const loadingRef = useRef(false);
   const stopLoadingRef = useRef(false);
   const observerRef = useRef(null);
   const initialRef = useRef(true);
@@ -120,15 +120,16 @@ function DetailedChat() {
       config,
     );
 
+    setLoading(false);
+
     if (response.data.length !== limit) {
       stopLoadingRef.current = true;
     }
 
     if (!response.data.length) {
+      stopLoadingRef.current = true;
       return;
     }
-
-    loadingRef.current = false;
 
     setMessages((p) =>
       p.length ? [...p, ...response.data] : [...response.data],
@@ -142,7 +143,7 @@ function DetailedChat() {
   }, [id, loggedUser]);
 
   useEffect(() => {
-    loadingRef.current = true;
+    setLoading(true);
     if (intersecting && !stopLoadingRef.current) {
       getMessages({
         token: loggedUser.token,
@@ -155,7 +156,7 @@ function DetailedChat() {
   }, [intersecting, loggedUser, id, getMessages]);
 
   useEffect(() => {
-    loadingRef.current = false;
+    setLoading(false);
     // Set date element
     messagesRef.current.childNodes.forEach((c) => c.classList.remove("date"));
 
@@ -178,15 +179,15 @@ function DetailedChat() {
   }, [messages]);
 
   useEffect(() => {
-    if (lastJsonMessage) {
+    if (lastJsonMessage && lastJsonMessage.chatId == id) {
       setMessages((p) =>
         p.length
           ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
           : [lastJsonMessage],
       );
-      offsetRef.current += limit;
+      offsetRef.current += 1;
     }
-  }, [lastJsonMessage]);
+  }, [lastJsonMessage, id]);
 
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
@@ -232,9 +233,7 @@ function DetailedChat() {
         ))}
         <Spinner
           endRef={observerRef}
-          loading={
-            intersecting && loadingRef.current && !stopLoadingRef.current
-          }
+          loading={intersecting && loading && !stopLoadingRef.current}
           style={{ marginTop: 300 }}
         />
       </Messages>
