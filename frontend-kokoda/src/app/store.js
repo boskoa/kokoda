@@ -3,6 +3,7 @@ import chats from "../features/chats/chatsSlice";
 import contacts from "../features/contacts/contactsSlice";
 import login from "../features/login/loginSlice";
 import users from "../features/users/usersSlice";
+import unseen from "../features/unseen/unseenSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     contacts,
     login,
     users,
+    unseen,
   },
 });
 
