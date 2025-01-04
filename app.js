@@ -9,6 +9,7 @@ const loginRouter = require("./controllers/login");
 const chatsRouter = require("./controllers/chats");
 const messagesRouter = require("./controllers/messages");
 const contactsRouter = require("./controllers/contacts");
+const unseensRouter = require("./controllers/unseens");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/chats", chatsRouter);
 app.use("/api/messages", messagesRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/api/unseens", unseensRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));

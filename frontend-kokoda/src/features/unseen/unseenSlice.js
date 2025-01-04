@@ -1,7 +1,11 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "/api/unseen";
+const BASE_URL = "/api/unseens";
 
 const unseenAdapter = createEntityAdapter();
 
@@ -23,6 +27,20 @@ export const getAllUnseen = createEntityAdapter(
   },
 );
 
+export const updateUnseen = createAsyncThunk(
+  "unseen/updateUnseen",
+  async (data) => {
+    const { token, count, chatId } = data;
+    const config = {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    };
+    const response = await axios.post(BASE_URL, { count, chatId }, config);
+    return response.data;
+  },
+);
+
 const unseenSlice = createSlice({
   name: "unseen",
   initialState,
@@ -39,6 +57,19 @@ const unseenSlice = createSlice({
         unseenAdapter.upsertMany(state, action.payload);
       })
       .addCase(getAllUnseen.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateUnseen.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUnseen.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        unseenAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(updateUnseen.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

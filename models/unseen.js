@@ -34,9 +34,9 @@ Unseen.init(
   {
     sequelize,
     underscored: true,
-    timestamps: true,
-    createdAt: true,
-    updatedAt: true,
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
     modelName: "unseen",
   },
 );
