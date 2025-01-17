@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
@@ -19,6 +19,10 @@ import useIntersectionObserver from "../../../customHooks/useIntersectionObserve
 import Message from "./Message";
 import WSContext from "../wsContext";
 import Scroller from "./Scroller";
+import {
+  selectUnseenById,
+  updateUnseen,
+} from "../../../features/unseen/unseenSlice";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh - 85px);
@@ -84,9 +88,10 @@ function DetailedChat() {
   const loggedUser = useSelector(selectLoggedUser);
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
   const limit = 10;
   const [loading, setLoading] = useState(false);
-  const [unseen, setUnseen] = useState(0);
+  const unseen = useSelector((state) => selectUnseenById(state, id));
   const [scrollDown, setScrollDown] = useState(false);
   const offsetRef = useRef(0);
   const messagesRef = useRef(null);
@@ -187,10 +192,19 @@ function DetailedChat() {
           ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
           : [lastJsonMessage],
       );
-      if (lastJsonMessage.userId !== loggedUser.id) setUnseen((p) => p + 1);
+      if (lastJsonMessage.userId !== loggedUser.id) {
+        dispatch(
+          updateUnseen({
+            token: loggedUser.token,
+            count: unseen?.count || 0 + 1,
+            chatId: id,
+          }),
+        );
+      }
       offsetRef.current += 1;
     }
-  }, [lastJsonMessage, id]);
+    console.log("UNSEEN COUNT", unseen);
+  }, [lastJsonMessage, id, loggedUser]);
 
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
@@ -204,7 +218,14 @@ function DetailedChat() {
         e.target.scrollHeight - e.target.scrollTop <
         e.target.offsetHeight + 50
       ) {
-        setUnseen(0);
+        console.log("ID", loggedUser.id);
+        dispatch(
+          updateUnseen({
+            token: loggedUser.token,
+            count: 0,
+            chatId: id,
+          }),
+        );
       }
 
       if (
@@ -225,11 +246,7 @@ function DetailedChat() {
 
     return () => vp.removeEventListener("scroll", stopScroll);
   }, []);
-  /* 
-  useEffect(() => {
-    console.log("UNSEEN", unseen, scrollDown);
-  }, [unseen, scrollDown]);
- */
+
   async function sendMessage(text) {
     const config = {
       headers: {
@@ -267,7 +284,7 @@ function DetailedChat() {
         />
       </Messages>
       <Input send={sendMessage} />
-      <Scroller unseen={unseen} scrollDown={scrollDown} />
+      <Scroller unseen={unseen?.count} scrollDown={scrollDown} />
     </DetailedChatsContainer>
   );
 }

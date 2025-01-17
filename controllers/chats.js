@@ -42,10 +42,7 @@ router.get("/:id", tokenExtractor, async (req, res, next) => {
     if (!sender.admin && !chat.members?.includes(sender.id)) {
       return res.status(401).json({ error: "Not authorized" });
     }
-    /* console.log(
-      "FOOOOOOOOOOOOOOOOOOOOOOOOO",
-      new Date(chat.messages[0].createdAt).toLocaleDateString("en-GB"),
-    ); */
+
     return res.status(200).json(chat);
   } catch (error) {
     next(error);

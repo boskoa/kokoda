@@ -15,7 +15,7 @@ router.get("/", tokenExtractor, async (req, res, next) => {
 });
 
 router.post("/", tokenExtractor, async (req, res, next) => {
-  if (!(req.body.count && req.body.chatId)) {
+  if (req.body.count === undefined || req.body.chatId === undefined) {
     return res.status(401).json({ error: "Missing data" });
   }
 

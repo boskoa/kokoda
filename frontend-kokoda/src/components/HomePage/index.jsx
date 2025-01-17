@@ -9,6 +9,7 @@ import Header from "./Header";
 import useWebSocket from "react-use-websocket";
 import WSContext from "./wsContext";
 import { addSocketMessage } from "../../features/chats/chatsSlice";
+import { getAllUnseen } from "../../features/unseen/unseenSlice";
 
 const HomeContainer = styled.div`
   background-color: transparent;
@@ -39,6 +40,7 @@ function HomePage() {
     if (!loggedUser) {
       navigate("/authentication/login");
     }
+    dispatch(getAllUnseen(loggedUser.token));
   }, [loggedUser]);
 
   useEffect(() => {

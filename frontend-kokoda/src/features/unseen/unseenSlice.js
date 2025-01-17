@@ -7,14 +7,16 @@ import axios from "axios";
 
 const BASE_URL = "/api/unseens";
 
-const unseenAdapter = createEntityAdapter();
+const unseenAdapter = createEntityAdapter({
+  selectId: (unseen) => unseen.chatId,
+});
 
 const initialState = unseenAdapter.getInitialState({
   loading: false,
   error: null,
 });
 
-export const getAllUnseen = createEntityAdapter(
+export const getAllUnseen = createAsyncThunk(
   "unseen/getAllUnseen",
   async (token) => {
     const config = {
@@ -23,6 +25,7 @@ export const getAllUnseen = createEntityAdapter(
       },
     };
     const response = await axios.get(BASE_URL, config);
+    console.log("THUNK", response.data);
     return response.data;
   },
 );
@@ -37,6 +40,7 @@ export const updateUnseen = createAsyncThunk(
       },
     };
     const response = await axios.post(BASE_URL, { count, chatId }, config);
+    console.log("THUNK II", response.data);
     return response.data;
   },
 );
@@ -46,8 +50,10 @@ const unseenSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    console.log("SLAJS", builder);
     builder
       .addCase(getAllUnseen.pending, (state) => {
+        console.log("PENDING");
         state.loading = true;
         state.error = null;
       })
