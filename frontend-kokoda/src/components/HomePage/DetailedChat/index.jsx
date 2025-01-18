@@ -180,8 +180,12 @@ function DetailedChat() {
 
     if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
-      vp.scrollTop = vp.scrollHeight;
-      initialRef.current = false;
+      console.log("FOOO", vp.scrollHeight, vp.scrollTop, vp.offsetHeight);
+      //if unseen is changed, but page is not refreshed - it doesn't scroll to bottom...
+      setTimeout(() => {
+        vp.scrollTop = vp.scrollHeight;
+        initialRef.current = false;
+      }, 200);
     }
   }, [messages]);
 
@@ -192,19 +196,20 @@ function DetailedChat() {
           ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
           : [lastJsonMessage],
       );
-      if (lastJsonMessage.userId !== loggedUser.id) {
-        dispatch(
-          updateUnseen({
-            token: loggedUser.token,
-            count: unseen?.count || 0 + 1,
-            chatId: id,
-          }),
-        );
-      }
       offsetRef.current += 1;
     }
-    console.log("UNSEEN COUNT", unseen);
   }, [lastJsonMessage, id, loggedUser]);
+  /* 
+  useLayoutEffect(() => {
+    dispatch(
+      updateUnseen({
+        token: loggedUser.token,
+        count: 0,
+        chatId: id,
+      }),
+    );
+  }, []);
+ */
 
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
@@ -218,7 +223,6 @@ function DetailedChat() {
         e.target.scrollHeight - e.target.scrollTop <
         e.target.offsetHeight + 50
       ) {
-        console.log("ID", loggedUser.id);
         dispatch(
           updateUnseen({
             token: loggedUser.token,

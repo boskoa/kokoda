@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import user from "/user.svg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUnseenById,
+  updateUnseen,
+} from "../../../features/unseen/unseenSlice";
+import NewMessages from "./NewMessages";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -73,9 +80,24 @@ const ChatLastMessage = styled.p`
 
 function SingleChat({ chat }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loggedUser = useSelector(selectLoggedUser);
+  const count = useSelector((state) => selectUnseenById(state, chat.id))?.count;
+
+  function handleClick() {
+    dispatch(
+      updateUnseen({
+        token: loggedUser.token,
+        count: 0,
+        chatId: chat.id,
+      }),
+    );
+
+    setTimeout(() => navigate(`/chats/${chat.id}`), 100);
+  }
 
   return (
-    <ChatContainer onClick={() => navigate(`/chats/${chat.id}`)}>
+    <ChatContainer onClick={handleClick}>
       <Avatar>
         <UserIcon
           src={`/public/uploads/avatars/${chat.id}.webp`}
@@ -97,6 +119,7 @@ function SingleChat({ chat }) {
         <ChatLastMessage>
           {chat.messages[0]?.text || "No messages yet."}
         </ChatLastMessage>
+        <NewMessages count={count || 0} />
       </ChatData>
       <ChatBackground />
     </ChatContainer>

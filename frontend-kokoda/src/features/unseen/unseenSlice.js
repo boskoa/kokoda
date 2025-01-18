@@ -25,7 +25,6 @@ export const getAllUnseen = createAsyncThunk(
       },
     };
     const response = await axios.get(BASE_URL, config);
-    console.log("THUNK", response.data);
     return response.data;
   },
 );
@@ -40,7 +39,7 @@ export const updateUnseen = createAsyncThunk(
       },
     };
     const response = await axios.post(BASE_URL, { count, chatId }, config);
-    console.log("THUNK II", response.data);
+
     return response.data;
   },
 );
@@ -50,10 +49,8 @@ const unseenSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    console.log("SLAJS", builder);
     builder
       .addCase(getAllUnseen.pending, (state) => {
-        console.log("PENDING");
         state.loading = true;
         state.error = null;
       })

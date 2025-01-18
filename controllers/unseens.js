@@ -23,11 +23,15 @@ router.post("/", tokenExtractor, async (req, res, next) => {
     let unseen = await Unseen.findOne({
       where: { userId: req.decodedToken.id, chatId: req.body.chatId },
     });
+    let count = req.body.count;
+
     if (unseen) {
-      unseen.set({ count: req.body.count });
+      count = req.body.count !== 0 ? unseen.count + req.body.count : 0;
+      unseen.set({ count });
       await unseen.save();
       return res.status(200).json(unseen);
     }
+
     unseen = await Unseen.create({
       ...req.body,
       userId: req.decodedToken.id,
