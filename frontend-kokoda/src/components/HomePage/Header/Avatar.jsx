@@ -4,6 +4,9 @@ import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { clearChats } from "../../../features/chats/chatsSlice";
+import { clearContacts } from "../../../features/contacts/contactsSlice";
+import { clearUnseen } from "../../../features/unseen/unseenSlice";
 
 const AvatarContainer = styled.div`
   position: absolute;
@@ -77,8 +80,11 @@ function Avatar() {
     <AvatarContainer $show={show}>
       <LogoutButton
         onClick={() => {
-          navigate("/");
+          navigate("/authentication/login");
           dispatch(logout());
+          dispatch(clearChats());
+          dispatch(clearContacts());
+          dispatch(clearUnseen());
         }}
       >
         logout

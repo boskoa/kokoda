@@ -39,6 +39,7 @@ const chatsSlice = createSlice({
         messages: [action.payload],
       });
     },
+    clearChats: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -68,6 +69,6 @@ export function selectChatsLoading(state) {
   return state.chats.loading;
 }
 
-export const { addSocketMessage } = chatsSlice.actions;
+export const { addSocketMessage, clearChats } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

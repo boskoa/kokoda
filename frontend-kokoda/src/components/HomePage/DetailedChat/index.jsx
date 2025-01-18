@@ -201,6 +201,7 @@ function DetailedChat() {
     const vp = document.getElementById("vp");
     let lastScrollTop = 0;
     function stopScroll(e) {
+      console.log("SCROLL");
       if (e.target.scrollTop < 300) {
         e.target.scrollTop = 300;
       }

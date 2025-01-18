@@ -47,7 +47,9 @@ export const updateUnseen = createAsyncThunk(
 const unseenSlice = createSlice({
   name: "unseen",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUnseen: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllUnseen.pending, (state) => {
@@ -88,5 +90,7 @@ export const {
 export function selectUnseenLoading(state) {
   return state.unseen.loading;
 }
+
+export const { clearUnseen } = unseenSlice.actions;
 
 export default unseenSlice.reducer;
