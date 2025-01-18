@@ -25,7 +25,7 @@ import {
 } from "../../../features/unseen/unseenSlice";
 
 const DetailedChatsContainer = styled.div`
-  min-height: calc(100vh - 85px);
+  min-height: calc(100vh + 4px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -180,7 +180,6 @@ function DetailedChat() {
 
     if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
-      console.log("FOOO", vp.scrollHeight, vp.scrollTop, vp.offsetHeight);
       //if unseen is changed, but page is not refreshed - it doesn't scroll to bottom...
       vp.scrollTop = vp.scrollHeight;
       initialRef.current = false;
@@ -197,17 +196,6 @@ function DetailedChat() {
       offsetRef.current += 1;
     }
   }, [lastJsonMessage, id, loggedUser]);
-  /* 
-  useLayoutEffect(() => {
-    dispatch(
-      updateUnseen({
-        token: loggedUser.token,
-        count: 0,
-        chatId: id,
-      }),
-    );
-  }, []);
- */
 
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
@@ -234,7 +222,10 @@ function DetailedChat() {
         e.target.scrollHeight - e.target.scrollTop >
         e.target.offsetHeight + 500
       ) {
-        if (e.target.scrollTop - lastScrollTop > 10) {
+        if (
+          e.target.scrollTop - lastScrollTop > 10 &&
+          e.target.scrollTop - lastScrollTop < 500
+        ) {
           setScrollDown(true);
         } else if (e.target.scrollTop < lastScrollTop) {
           setScrollDown(false);

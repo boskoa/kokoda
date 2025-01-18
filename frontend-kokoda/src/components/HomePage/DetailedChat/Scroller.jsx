@@ -43,7 +43,7 @@ function Scroller({ unseen = 0, scrollDown }) {
     const vp = document.getElementById("vp");
     vp.scrollTo({ top: vp.scrollHeight, behavior: "smooth" });
   }
-  console.log("SINGLE", unseen);
+
   return (
     <ScrollerContainer
       onClick={scroll}
