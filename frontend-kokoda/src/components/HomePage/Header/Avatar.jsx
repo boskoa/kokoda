@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AvatarContainer = styled.div`
   position: absolute;
@@ -68,12 +69,20 @@ const LogoutButton = styled.button`
 
 function Avatar() {
   const loggedUser = useSelector(selectLoggedUser);
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
   return (
     <AvatarContainer $show={show}>
-      <LogoutButton onClick={() => dispatch(logout())}>logout</LogoutButton>
+      <LogoutButton
+        onClick={() => {
+          navigate("/");
+          dispatch(logout());
+        }}
+      >
+        logout
+      </LogoutButton>
       <Image
         onClick={() => setShow((p) => !p)}
         src={`/public/uploads/avatars/${loggedUser.id}.png`}

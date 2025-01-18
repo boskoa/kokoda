@@ -182,10 +182,8 @@ function DetailedChat() {
       const vp = document.getElementById("vp");
       console.log("FOOO", vp.scrollHeight, vp.scrollTop, vp.offsetHeight);
       //if unseen is changed, but page is not refreshed - it doesn't scroll to bottom...
-      setTimeout(() => {
-        vp.scrollTop = vp.scrollHeight;
-        initialRef.current = false;
-      }, 200);
+      vp.scrollTop = vp.scrollHeight;
+      initialRef.current = false;
     }
   }, [messages]);
 
