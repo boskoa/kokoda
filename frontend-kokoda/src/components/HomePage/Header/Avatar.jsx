@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { clearChats } from "../../../features/chats/chatsSlice";
 import { clearContacts } from "../../../features/contacts/contactsSlice";
@@ -74,10 +74,23 @@ function Avatar() {
   const loggedUser = useSelector(selectLoggedUser);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const avatarRef = useRef(null);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    function handleClick(e) {
+      if (avatarRef.current && !avatarRef.current.contains(e.target)) {
+        setShow(false);
+      }
+    }
+
+    document.addEventListener("click", handleClick);
+
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   return (
-    <AvatarContainer $show={show}>
+    <AvatarContainer $show={show} ref={avatarRef}>
       <LogoutButton
         onClick={() => {
           navigate("/authentication/login");

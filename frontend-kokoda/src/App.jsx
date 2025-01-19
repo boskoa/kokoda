@@ -16,6 +16,7 @@ import { getAllChats } from "./features/chats/chatsSlice";
 import { getAllContacts } from "./features/contacts/contactsSlice";
 import { alreadyLogged } from "./features/login/loginSlice";
 import ComponentLoader from "./components/ComponentLoader";
+import store from "./app/store";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const DetailedChat = lazy(
@@ -24,6 +25,8 @@ const DetailedChat = lazy(
 const Authentication = lazy(() => import("./components/Authentication"));
 const Login = lazy(() => import("./components/Authentication/Login"));
 const Register = lazy(() => import("./components/Authentication/Register"));
+
+const loggedUser = window.localStorage.getItem("loggedKokoda");
 
 const router = createBrowserRouter([
   {
@@ -41,6 +44,10 @@ const router = createBrowserRouter([
           {
             path: "chats",
             element: <Chats />,
+            loader: () =>
+              store.dispatch(
+                getAllChats({ token: JSON.parse(loggedUser).token }),
+              ),
           },
           {
             path: "chats/:id",
@@ -57,6 +64,10 @@ const router = createBrowserRouter([
                 <Contacts />
               </Suspense>
             ),
+            loader: () =>
+              store.dispatch(
+                getAllContacts({ token: JSON.parse(loggedUser).token }),
+              ),
           },
         ],
       },
@@ -97,8 +108,6 @@ const router = createBrowserRouter([
     element: <Navigate to="/chats" />,
   },
 ]);
-
-const loggedUser = window.localStorage.getItem("loggedKokoda");
 
 function App() {
   const [theme, setTheme] = useState("dark");

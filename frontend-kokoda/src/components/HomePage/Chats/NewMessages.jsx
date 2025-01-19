@@ -7,7 +7,8 @@ const NewMessagesContainer = styled.div`
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background-color: red;
+  background-color: ${({ theme }) => theme.footerButton.bg2};
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;

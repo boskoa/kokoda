@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Menu from "./Menu";
 import FooterMenu from "./FooterMenu";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -28,6 +28,9 @@ function HomePage() {
   const loggedUser = useSelector(selectLoggedUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const menuRef = useRef(null);
+  const headerRef = useRef(null);
+
   const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser?.id, {
     onOpen: () => {
       console.log("WebSocket connection established.");
@@ -39,8 +42,9 @@ function HomePage() {
   useEffect(() => {
     if (!loggedUser) {
       navigate("/authentication/login");
+    } else {
+      dispatch(getAllUnseen(loggedUser.token));
     }
-    dispatch(getAllUnseen(loggedUser.token));
   }, [loggedUser]);
 
   useEffect(() => {
@@ -59,17 +63,33 @@ function HomePage() {
     }
   }, [lastJsonMessage, loggedUser]);
 
+  useEffect(() => {
+    function handleMenuClick(e) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        !headerRef.current.contains(e.target)
+      ) {
+        setMenu(false);
+      }
+    }
+
+    document.addEventListener("click", handleMenuClick);
+
+    return () => document.removeEventListener("click", handleMenuClick);
+  }, []);
+
   if (!loggedUser) return null;
 
   return (
     <>
-      <Header menu={menu} setMenu={setMenu} />
+      <Header setMenu={setMenu} ref={headerRef} />
       <HomeContainer>
         <WSContext.Provider value={lastJsonMessage}>
           <Outlet />
         </WSContext.Provider>
       </HomeContainer>
-      <Menu menu={menu} />
+      <Menu menu={menu} setMenu={setMenu} ref={menuRef} />
       <FooterMenu />
     </>
   );

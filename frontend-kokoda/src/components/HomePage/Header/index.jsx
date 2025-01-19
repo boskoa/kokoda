@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import MenuButton from "./MenuButton";
 import Avatar from "./Avatar";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 const HeaderMenuContainer = styled.header`
   position: sticky;
@@ -19,23 +19,34 @@ const HeaderMenuContainer = styled.header`
   backdrop-filter: blur(20px);
   transform: ${({ $translate }) => $translate};
   transition: all 0.3s;
+  visibility: ${({ $show }) => ($show ? "visible" : "hidden")};
 `;
 
-function Header({ setMenu }) {
+const Header = forwardRef(function Header({ setMenu }, ref) {
   const { pathname } = useLocation();
   const pathArray = pathname.split("/");
+  const hide = isNaN(pathArray[pathArray.length - 1]);
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    if (!hide) {
+      setTimeout(() => setShow(false), 1000);
+    } else {
+      setShow(true);
+    }
+  }, [hide]);
 
   return (
     <HeaderMenuContainer
-      $translate={
-        isNaN(pathArray[pathArray.length - 1]) ? "" : "translateY(-40px)"
-      }
+      $translate={hide ? "" : "translateY(-40px)"}
+      $show={show}
+      ref={ref}
     >
       <Avatar />
       <Logo />
       <MenuButton setMenu={setMenu} />
     </HeaderMenuContainer>
   );
-}
+});
 
 export default Header;

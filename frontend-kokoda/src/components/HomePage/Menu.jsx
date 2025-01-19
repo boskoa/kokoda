@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import styled from "styled-components";
 
 const MenuContainer = styled.div`
@@ -15,8 +16,8 @@ const MenuContainer = styled.div`
   backdrop-filter: blur(5px);
 `;
 
-function Menu({ menu }) {
-  return <MenuContainer $show={menu} />;
-}
+const Menu = forwardRef(function Menu({ menu }, ref) {
+  return <MenuContainer $show={menu} ref={ref} />;
+});
 
 export default Menu;

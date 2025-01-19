@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 
@@ -10,6 +11,7 @@ const FooterMenuContainer = styled.div`
   display: flex;
   transform: ${({ $translate }) => $translate};
   transition: all 0.3s;
+  visibility: ${({ $show }) => ($show ? "visible" : "hidden")};
 `;
 
 const buttonAnimation = keyframes`
@@ -67,12 +69,21 @@ const FooterButtonContainer = styled(NavLink)`
 function FooterMenu() {
   const { pathname } = useLocation();
   const pathArray = pathname.split("/");
+  const hide = isNaN(pathArray[pathArray.length - 1]);
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    if (!hide) {
+      setTimeout(() => setShow(false), 1000);
+    } else {
+      setShow(true);
+    }
+  }, [hide]);
 
   return (
     <FooterMenuContainer
-      $translate={
-        isNaN(pathArray[pathArray.length - 1]) ? "" : "translateX(100%)"
-      }
+      $show={show}
+      $translate={hide ? "" : "translateX(100%)"}
     >
       <FooterButtonContainer to="/chats" $color={"bg1"}>
         Chats

@@ -180,14 +180,17 @@ function DetailedChat() {
 
     if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
-      //if unseen is changed, but page is not refreshed - it doesn't scroll to bottom...
       vp.scrollTop = vp.scrollHeight;
       initialRef.current = false;
     }
   }, [messages]);
 
   useEffect(() => {
-    if (lastJsonMessage && lastJsonMessage.chatId == id) {
+    if (
+      !initialRef.current &&
+      lastJsonMessage &&
+      lastJsonMessage.chatId == id
+    ) {
       setMessages((p) =>
         p.length
           ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
@@ -201,7 +204,6 @@ function DetailedChat() {
     const vp = document.getElementById("vp");
     let lastScrollTop = 0;
     function stopScroll(e) {
-      console.log("SCROLL");
       if (e.target.scrollTop < 300) {
         e.target.scrollTop = 300;
       }
