@@ -26,6 +26,10 @@ function Chats() {
     document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    dispatch(getAllChats({ token: loggedUser.token }));
+  }, [loggedUser]);
+
   return (
     <ChatsContainer>
       {chats.map((c) => (

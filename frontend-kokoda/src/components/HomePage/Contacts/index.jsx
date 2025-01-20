@@ -1,8 +1,12 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { selectAllContacts } from "../../../features/contacts/contactsSlice";
+import {
+  getAllContacts,
+  selectAllContacts,
+} from "../../../features/contacts/contactsSlice";
 import SingleContact from "./SingleContact";
 import { useEffect } from "react";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
 
 const ContactsContainer = styled.div`
   display: flex;
@@ -14,11 +18,18 @@ const ContactsContainer = styled.div`
 `;
 
 function Contacts() {
+  const loggedUser = useSelector(selectLoggedUser);
   const contacts = useSelector(selectAllContacts);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllContacts({ token: loggedUser.token, offset, limit }));
+    setOffset((p) => p + limit);
+  }, [loggedUser]);
 
   return (
     <ContactsContainer>
