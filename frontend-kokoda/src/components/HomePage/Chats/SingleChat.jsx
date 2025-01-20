@@ -8,12 +8,13 @@ import {
 } from "../../../features/unseen/unseenSlice";
 import NewMessages from "./NewMessages";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
+import { selectContactById } from "../../../features/contacts/contactsSlice";
 
 const ChatContainer = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
-  gap: 5px;
+  gap: 10px;
   width: 100%;
   height: 60px;
   position: relative;
@@ -26,15 +27,16 @@ const Avatar = styled.div`
   align-items: center;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 2px solid rgba(125, 235, 155, 0.5);
+  box-shadow: 0 0 5px 0 rgba(125, 235, 155, 1);
 `;
 
 const UserIcon = styled.img`
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-  border-radius: 50%;
+  width: 60px;
+  height: 60px;
   opacity: 0;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 50%;
   transition: all 1s;
 `;
 
@@ -83,6 +85,13 @@ function SingleChat({ chat }) {
   const dispatch = useDispatch();
   const loggedUser = useSelector(selectLoggedUser);
   const count = useSelector((state) => selectUnseenById(state, chat.id))?.count;
+  const group = chat.members.length > 2;
+  const directory = group ? "chat" : "avatars";
+  const contactId = group ? -1 : chat.members.find((m) => m !== loggedUser.id);
+  const contact = useSelector((state) => selectContactById(state, contactId));
+  const imageId = group
+    ? chat.id
+    : chat.members.find((m) => m !== loggedUser.id);
 
   function handleClick() {
     dispatch(
@@ -100,22 +109,21 @@ function SingleChat({ chat }) {
     <ChatContainer onClick={handleClick}>
       <Avatar>
         <UserIcon
-          src={`/public/uploads/avatars/${chat.id}.webp`}
+          // Remove image extension after upload implementation
+          src={`/public/uploads/${directory}/${imageId}.png`}
           alt="user avatar"
           onLoad={(e) => {
-            e.currentTarget.opacity = 1;
+            e.currentTarget.style.opacity = 1;
           }}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = user;
             e.currentTarget.style.opacity = 1;
           }}
-          height="100%"
-          width="100%"
         />
       </Avatar>
       <ChatData>
-        <ChatTitle>{chat.name}</ChatTitle>
+        <ChatTitle>{chat.name || contact?.username}</ChatTitle>
         <ChatLastMessage>
           {chat.messages[0]?.text || "No messages yet."}
         </ChatLastMessage>

@@ -94,10 +94,10 @@ function Avatar() {
       <LogoutButton
         onClick={() => {
           navigate("/authentication/login");
-          dispatch(logout());
           dispatch(clearChats());
           dispatch(clearContacts());
           dispatch(clearUnseen());
+          dispatch(logout());
         }}
       >
         logout

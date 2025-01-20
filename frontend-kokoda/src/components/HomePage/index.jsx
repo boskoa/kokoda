@@ -8,8 +8,9 @@ import { selectLoggedUser } from "../../features/login/loginSlice";
 import Header from "./Header";
 import useWebSocket from "react-use-websocket";
 import WSContext from "./wsContext";
-import { addSocketMessage } from "../../features/chats/chatsSlice";
+import { addSocketMessage, getAllChats } from "../../features/chats/chatsSlice";
 import { getAllUnseen, updateUnseen } from "../../features/unseen/unseenSlice";
+import { getAllContacts } from "../../features/contacts/contactsSlice";
 
 const HomeContainer = styled.div`
   background-color: transparent;
@@ -44,6 +45,8 @@ function HomePage() {
       navigate("/authentication/login");
     } else {
       dispatch(getAllUnseen(loggedUser.token));
+      dispatch(getAllContacts({ token: loggedUser.token }));
+      dispatch(getAllChats({ token: loggedUser.token }));
     }
   }, [loggedUser]);
 

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
+import user from "/user.svg";
 
 const MessageContainer = styled.div`
   position: relative;
@@ -8,10 +9,12 @@ const MessageContainer = styled.div`
   margin: 10px;
   padding: 10px;
   width: fit-content;
+  min-width: 100px;
   max-width: 80%;
   word-wrap: break-word;
+  margin-left: ${({ $side }) => ($side === "end" ? "0px" : "30px")};
   border-radius: ${({ $side }) =>
-    $side === "end" ? "8px 0 8px 8px" : "0 5px 5px 5px"};
+    $side === "end" ? "10px 0 10px 10px" : "0 10px 10px 10px"};
   align-self: ${({ $side }) => $side};
 
   &.date {
@@ -33,6 +36,21 @@ const MessageContainer = styled.div`
     width: ${({ $width }) => $width};
     filter: brightness(0.8);
   }
+`;
+
+const MiniAvatar = styled.img`
+  position: absolute;
+  top: 0;
+  left: -27px;
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  background-color: gold;
+  border: 2px solid gold;
+  opacity: 0;
+  object-fit: contain;
+  transition: all 1s;
+  cursor: pointer;
 `;
 
 const MessageText = styled.p`
@@ -57,6 +75,20 @@ function Message({ message, parentWidth }) {
         .slice(0, 10)}
       $width={`${parentWidth - 20}px`}
     >
+      {loggedUser.id !== message.userId && (
+        <MiniAvatar
+          src={`/public/uploads/avatars/${message.userId}.png`}
+          alt="user avatar"
+          onLoad={(e) => {
+            e.currentTarget.style.opacity = 1;
+          }}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = user;
+            e.currentTarget.style.opacity = 1;
+          }}
+        />
+      )}
       <MessageText>{message.text}</MessageText>
       <Time>
         {new Date(message.updatedAt).toLocaleTimeString("en-US", {
