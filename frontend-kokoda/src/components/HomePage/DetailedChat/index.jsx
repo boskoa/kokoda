@@ -23,6 +23,8 @@ import {
   selectUnseenById,
   updateUnseen,
 } from "../../../features/unseen/unseenSlice";
+import gear from "../../../assets/gear.svg";
+import ChatSettings from "./ChatSettings";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh + 4px);
@@ -61,6 +63,20 @@ const Back = styled(NavLink)`
   }
 `;
 
+const ChatSettingsButton = styled.button`
+  all: unset;
+  position: absolute;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:active {
+    transform: rotateZ(90deg);
+  }
+`;
+
 const Messages = styled.div`
   flex: 2;
   display: flex;
@@ -93,6 +109,8 @@ function DetailedChat() {
   const [loading, setLoading] = useState(false);
   const unseen = useSelector((state) => selectUnseenById(state, id));
   const [scrollDown, setScrollDown] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const settingsRef = useRef(null);
   const offsetRef = useRef(0);
   const messagesRef = useRef(null);
   const stopLoadingRef = useRef(false);
@@ -240,7 +258,9 @@ function DetailedChat() {
     }
     vp.addEventListener("scroll", stopScroll);
 
-    return () => vp.removeEventListener("scroll", stopScroll);
+    return () => {
+      vp.removeEventListener("scroll", stopScroll);
+    };
   }, []);
 
   async function sendMessage(text) {
@@ -256,11 +276,22 @@ function DetailedChat() {
     <DetailedChatsContainer>
       <Title>
         <IconContext.Provider value={{ color: "gold", size: "2em" }}>
-          <Back to="/chats">
+          <Back to="/chats" title="Go back">
             <IoArrowBackCircle />
           </Back>
         </IconContext.Provider>
         {chat?.name}
+        <ChatSettingsButton>
+          <img
+            src={gear}
+            title="Chat settings"
+            style={{
+              filter:
+                "brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(4935%) hue-rotate(357deg) brightness(99%) contrast(105%)",
+            }}
+            onClick={() => setShowSettings((p) => !p)}
+          />
+        </ChatSettingsButton>
       </Title>
       <Messages ref={messagesRef} $limit={limit}>
         <Anchor />
@@ -281,6 +312,12 @@ function DetailedChat() {
       </Messages>
       <Input send={sendMessage} />
       <Scroller unseen={unseen?.count} scrollDown={scrollDown} />
+      <ChatSettings
+        ref={settingsRef}
+        show={showSettings}
+        chat={chat}
+        loggedUser={loggedUser}
+      />
     </DetailedChatsContainer>
   );
 }
