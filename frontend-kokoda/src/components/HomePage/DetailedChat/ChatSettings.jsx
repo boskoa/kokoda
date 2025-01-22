@@ -46,6 +46,7 @@ const ChangeButton = styled.button`
   font-size: 12px;
   font-weight: 600;
   padding: 2px;
+  cursor: pointer;
 `;
 
 const FieldLabel = styled.label`
@@ -66,6 +67,15 @@ const Form = styled.form`
   align-items: start;
   gap: 5px;
   width: 100%;
+`;
+
+const Button = styled.div`
+  background-color: coral;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px;
+  cursor: pointer;
 `;
 
 const ChatSettings = forwardRef(function ChatSettings(
@@ -129,7 +139,7 @@ const ChatSettings = forwardRef(function ChatSettings(
           }}
         />
         <Form id="background-form" encType="multipart/form-data">
-          <label htmlFor="background">
+          <label htmlFor="background" style={{ maxWidth: "70%" }}>
             <input
               style={{
                 display: "none",
@@ -142,7 +152,7 @@ const ChatSettings = forwardRef(function ChatSettings(
                 setFile(e.target.files[0]);
               }}
             />
-            <ChangeButton type="button">Choose image</ChangeButton>
+            <Button type="button">Choose image</Button>
           </label>
           <ChangeButton
             type="submit"
