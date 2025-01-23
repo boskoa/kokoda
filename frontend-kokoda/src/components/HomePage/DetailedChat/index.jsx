@@ -32,6 +32,8 @@ const DetailedChatsContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: inherit;
+  background-image: url(${({ $backgroundUrl }) => $backgroundUrl});
+  background-attachment: fixed;
 `;
 
 const Title = styled.h2`
@@ -273,7 +275,9 @@ function DetailedChat() {
   }
 
   return (
-    <DetailedChatsContainer>
+    <DetailedChatsContainer
+      $backgroundUrl={`/public/uploads/backgrounds/${loggedUser?.id}-${chat?.id}.webp`}
+    >
       <Title>
         <IconContext.Provider value={{ color: "gold", size: "2em" }}>
           <Back to="/chats" title="Go back">

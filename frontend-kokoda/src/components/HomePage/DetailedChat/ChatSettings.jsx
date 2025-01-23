@@ -54,9 +54,17 @@ const FieldLabel = styled.label`
   font-weight: 600;
 `;
 
+const BackgroundField = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+`;
+
 const Image = styled.img`
-  height: 80px;
-  width: 80px;
+  height: 220px;
+  width: 220px;
   display: block;
   object-fit: cover;
 `;
@@ -69,7 +77,7 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const Button = styled.div`
+const SetButton = styled.div`
   background-color: coral;
   color: white;
   font-size: 12px;
@@ -95,18 +103,14 @@ const ChatSettings = forwardRef(function ChatSettings(
     formData.append("name", name);
     formData.append("file", file);
 
-    await axios.post(
-      "/api/backgrounds/chats",
-      { formData, userId: loggedUser.id, chatId: chat.id },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `bearer ${loggedUser.token}`,
-        },
+    await axios.post(`/api/backgrounds/${name}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `bearer ${loggedUser.token}`,
       },
-    );
+    });
 
-    window.location.reload();
+    //window.location.reload();
   }
 
   return (
@@ -117,27 +121,14 @@ const ChatSettings = forwardRef(function ChatSettings(
         <ChangeButton>Change title</ChangeButton>
       </ChangeField>
       <ChangeField>
-        <FieldLabel for="public">Set group to private</FieldLabel>
-        <input type="checkbox" id="public" value={chat?.public} />
-      </ChangeField>
-      <ChangeField>
         <FieldInput type="text" value="foo" />
         <ChangeButton>Add contact</ChangeButton>
       </ChangeField>
       <ChangeField>
-        <Image
-          alt="chosen background"
-          src={
-            file
-              ? URL.createObjectURL(file)
-              : `/public/uploads/backgrounds/chats/${loggedUser?.id}-${chat?.id}.webp`
-          }
-          onError={(e) => {
-            e.currentTarget.src = "/public/uploads/avatars/1.png";
-            e.currentTarget.height = "28";
-            e.currentTarget.width = "28";
-          }}
-        />
+        <FieldLabel htmlFor="public">Set group to private</FieldLabel>
+        <input type="checkbox" id="public" value={chat?.public} />
+      </ChangeField>
+      <BackgroundField>
         <Form id="background-form" encType="multipart/form-data">
           <label htmlFor="background" style={{ maxWidth: "70%" }}>
             <input
@@ -152,7 +143,7 @@ const ChatSettings = forwardRef(function ChatSettings(
                 setFile(e.target.files[0]);
               }}
             />
-            <Button type="button">Choose image</Button>
+            <SetButton type="button">Choose image</SetButton>
           </label>
           <ChangeButton
             type="submit"
@@ -162,7 +153,17 @@ const ChatSettings = forwardRef(function ChatSettings(
             Set
           </ChangeButton>
         </Form>
-      </ChangeField>
+        {file && (
+          <Image
+            alt="chosen background"
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : `/public/uploads/backgrounds/${loggedUser?.id}-${chat?.id}.webp`
+            }
+          />
+        )}
+      </BackgroundField>
     </ChatSettingsContainer>
   );
 });

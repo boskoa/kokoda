@@ -5,7 +5,7 @@ const ContactContainer = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
-  gap: 5px;
+  gap: 10px;
   width: 100%;
   height: 60px;
   position: relative;
@@ -18,7 +18,7 @@ const Avatar = styled.div`
   align-items: center;
   flex-shrink: 0;
   border-radius: 50%;
-  border: 2px solid rgba(125, 235, 155, 0.5);
+  box-shadow: 0 0 5px 0 rgba(125, 235, 155, 1);
 `;
 
 const UserIcon = styled.img`
