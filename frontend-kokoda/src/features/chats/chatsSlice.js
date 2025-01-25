@@ -29,6 +29,18 @@ export const getAllChats = createAsyncThunk(
   },
 );
 
+export const updateChat = createAsyncThunk("chats/updateChat", async (data) => {
+  const { token, updateData } = data;
+  const config = {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  };
+
+  const response = await axios.patch(BASE_URL, updateData, config);
+  return response.data;
+});
+
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
@@ -53,6 +65,19 @@ const chatsSlice = createSlice({
         chatsAdapter.upsertMany(state, action.payload);
       })
       .addCase(getAllChats.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateChat.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateChat.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        chatsAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(updateChat.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

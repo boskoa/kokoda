@@ -91,7 +91,7 @@ function Register() {
               message: "More than 1 character.",
             },
             maxLength: {
-              value: 20,
+              value: 30,
               message: "Less than 31 characters.",
             },
           })}

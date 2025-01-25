@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 import { forwardRef, useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateChat } from "../../../features/chats/chatsSlice";
+import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
@@ -13,7 +16,7 @@ const ChatSettingsContainer = styled.div`
   bottom: 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   padding: 5px;
   transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(101%)")};
   transition: all 0.4s;
@@ -92,12 +95,32 @@ const ChatSettings = forwardRef(function ChatSettings(
 ) {
   const [name, setName] = useState("Choose background");
   const [file, setFile] = useState(null);
+  const [chatName, setChatName] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectAllContacts);
+  const members = contacts.filter((c) => chat?.members.includes(c.id));
 
   useEffect(() => {
     console.log("CHAT", chat && chat, name, file);
-  }, []);
+    if (chat) {
+      if (chat.name) {
+        setChatName(chat.name);
+      } else if (!chat.group) {
+        setChatName(members.find((m) => m !== loggedUser.id).name);
+      }
+    }
+  }, [chat]);
 
-  async function handleSubmit(e) {
+  function handleChatName() {
+    if (chatName.length > 0 && chatName.length < 21 && chat.group) {
+      dispatch(
+        updateChat({ token: loggedUser.token, data: { name: chatName } }),
+      );
+    }
+  }
+
+  async function handleImageSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("name", name);
@@ -117,7 +140,11 @@ const ChatSettings = forwardRef(function ChatSettings(
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
       <ChangeField>
-        <FieldInput type="text" value={chat?.name} />
+        <FieldInput
+          type="text"
+          value={chatName}
+          onChange={(e) => setChatName(e.target.value)}
+        />
         <ChangeButton>Change title</ChangeButton>
       </ChangeField>
       <ChangeField>
@@ -148,7 +175,7 @@ const ChatSettings = forwardRef(function ChatSettings(
           <ChangeButton
             type="submit"
             disabled={!file}
-            onClick={(e) => handleSubmit(e)}
+            onClick={(e) => handleImageSubmit(e)}
           >
             Set
           </ChangeButton>
