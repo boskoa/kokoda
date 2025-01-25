@@ -26,6 +26,7 @@ import {
 import gear from "../../../assets/gear.svg";
 import ChatSettings from "./ChatSettings";
 import { selectChatById } from "../../../features/chats/chatsSlice";
+import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh + 4px);
@@ -106,6 +107,7 @@ function DetailedChat() {
   const { id } = useParams();
   const loggedUser = useSelector(selectLoggedUser);
   const chat = useSelector((state) => selectChatById(state, id));
+  const contacts = useSelector(selectAllContacts);
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
   const limit = 10;
@@ -125,17 +127,6 @@ function DetailedChat() {
   );
   const lastJsonMessage = useContext(WSContext);
 
-  /*   const getChat = useCallback(async (data) => {
-    const { id, token } = data;
-    const config = {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    };
-    const response = await axios.get(`/api/chats/${id}`, config);
-    setChat(response.data);
-  }, []);
- */
   const getMessages = useCallback(async (data) => {
     const { token, id, offset, limit } = data;
     const config = {
@@ -163,12 +154,6 @@ function DetailedChat() {
       p.length ? [...p, ...response.data] : [...response.data],
     );
   }, []);
-
-  /*   useEffect(() => {
-    if (loggedUser && id) {
-      getChat({ id, token: loggedUser.token });
-    }
-  }, [id, loggedUser]); */
 
   useEffect(() => {
     setLoading(true);
@@ -285,7 +270,10 @@ function DetailedChat() {
             <IoArrowBackCircle />
           </Back>
         </IconContext.Provider>
-        {chat?.name}
+        {chat?.name ||
+          contacts.find(
+            (c) => c.id === chat?.members.find((m) => m !== loggedUser.id),
+          ).name}
         <ChatSettingsButton>
           <img
             src={gear}

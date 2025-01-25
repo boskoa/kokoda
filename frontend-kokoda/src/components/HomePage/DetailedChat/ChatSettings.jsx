@@ -35,12 +35,22 @@ const ChangeField = styled.div`
   align-items: stretch;
 `;
 
-const FieldInput = styled.input`
+const InputField = styled.input`
   background-color: navajowhite;
   border: none;
   padding: 2px;
   width: 160px;
 `;
+
+const SelectField = styled.select`
+  background-color: navajowhite;
+  border: none;
+  padding: 2px;
+  width: 160px;
+  outline: none;
+`;
+
+const Option = styled.option``;
 
 const ChangeButton = styled.button`
   all: unset;
@@ -115,14 +125,14 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [name, setName] = useState("Choose background");
   const [file, setFile] = useState(null);
   const [chatName, setChatName] = useState("");
-  const [addedMember, setAddedMember] = useState({});
+  const [addedMember, setAddedMember] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const members = contacts.filter((c) => chat?.members.includes(c.id));
 
   useEffect(() => {
-    console.log("CHAT", chat && chat, name, file);
+    console.log("CHAT", chat && chat, name, file, members);
     if (chat) {
       if (chat.name) {
         setChatName(chat.name);
@@ -149,7 +159,9 @@ const ChatSettings = forwardRef(function ChatSettings(
     dispatch(
       updateChat({
         token: loggedUser.token,
-        updateData: { members: [...chat.members, addedMember.id] },
+        updateData: {
+          members: [...new Set([...chat.members, parseInt(addedMember)])],
+        },
         id: chat.id,
       }),
     );
@@ -169,15 +181,16 @@ const ChatSettings = forwardRef(function ChatSettings(
       },
     });
 
-    //window.location.reload();
+    window.location.reload();
   }
 
   return (
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
       <ChangeField>
-        <FieldInput
+        <InputField
           type="text"
+          disabled={!chat?.group}
           value={chatName}
           onChange={(e) => setChatName(e.target.value)}
         />
@@ -186,8 +199,19 @@ const ChatSettings = forwardRef(function ChatSettings(
         </ChangeButton>
       </ChangeField>
       <ChangeField>
-        <FieldInput type="text" value="foo" />
-        <ChangeButton disabled={!addedMember.id} onClick={handleAddContact}>
+        <SelectField
+          value={addedMember}
+          name="addContact"
+          onChange={(e) => setAddedMember(e.target.value)}
+        >
+          <Option></Option>
+          {contacts?.map((c) => (
+            <Option key={c.id} value={c.id}>
+              {c.name}
+            </Option>
+          ))}
+        </SelectField>
+        <ChangeButton disabled={!addedMember} onClick={handleAddContact}>
           Add contact
         </ChangeButton>
       </ChangeField>
