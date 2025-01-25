@@ -30,14 +30,14 @@ export const getAllChats = createAsyncThunk(
 );
 
 export const updateChat = createAsyncThunk("chats/updateChat", async (data) => {
-  const { token, updateData } = data;
+  const { token, updateData, id } = data;
   const config = {
     headers: {
       Authorization: `bearer ${token}`,
     },
   };
 
-  const response = await axios.patch(BASE_URL, updateData, config);
+  const response = await axios.patch(`${BASE_URL}/${id}`, updateData, config);
   return response.data;
 });
 

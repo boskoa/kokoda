@@ -52,6 +52,25 @@ const ChangeButton = styled.button`
   cursor: pointer;
 `;
 
+const MembersContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+`;
+
+const Member = styled.button`
+  border: none;
+  background-color: teal;
+  color: white;
+  padding: 2px;
+`;
+
+const MembersTitle = styled.h4`
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+`;
+
 const FieldLabel = styled.label`
   font-size: 12px;
   font-weight: 600;
@@ -96,6 +115,7 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [name, setName] = useState("Choose background");
   const [file, setFile] = useState(null);
   const [chatName, setChatName] = useState("");
+  const [addedMember, setAddedMember] = useState({});
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
@@ -113,11 +133,27 @@ const ChatSettings = forwardRef(function ChatSettings(
   }, [chat]);
 
   function handleChatName() {
-    if (chatName.length > 0 && chatName.length < 21 && chat.group) {
+    if (chatName.length > 0 && chatName.length < 21) {
       dispatch(
-        updateChat({ token: loggedUser.token, data: { name: chatName } }),
+        updateChat({
+          token: loggedUser.token,
+          updateData: { name: chatName },
+          id: chat.id,
+        }),
       );
     }
+  }
+
+  function handleAddContact() {
+    console.log("CHATID", chat.id);
+    dispatch(
+      updateChat({
+        token: loggedUser.token,
+        updateData: { members: [...chat.members, addedMember.id] },
+        id: chat.id,
+      }),
+    );
+    return;
   }
 
   async function handleImageSubmit(e) {
@@ -145,12 +181,25 @@ const ChatSettings = forwardRef(function ChatSettings(
           value={chatName}
           onChange={(e) => setChatName(e.target.value)}
         />
-        <ChangeButton>Change title</ChangeButton>
+        <ChangeButton disabled={!chat?.group} onClick={handleChatName}>
+          Change title
+        </ChangeButton>
       </ChangeField>
       <ChangeField>
         <FieldInput type="text" value="foo" />
-        <ChangeButton>Add contact</ChangeButton>
+        <ChangeButton disabled={!addedMember.id} onClick={handleAddContact}>
+          Add contact
+        </ChangeButton>
       </ChangeField>
+      <div>
+        <MembersTitle>Chat members</MembersTitle>
+        <MembersContainer>
+          <Member>{loggedUser.name}</Member>
+          {members.map((m) => (
+            <Member key={m.id}>{m.name}</Member>
+          ))}
+        </MembersContainer>
+      </div>
       <ChangeField>
         <FieldLabel htmlFor="public">Set group to private</FieldLabel>
         <input type="checkbox" id="public" value={chat?.public} />
