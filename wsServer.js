@@ -18,7 +18,6 @@ function handleWebsocketConnections(expressServer) {
     if (request.url.includes("?")) {
       [_path, params] = request.url.split("?");
       id = params.split("=")[1];
-      console.log("BAAAAAAAAAAAAAAAAAAAAAR", id);
       connection.clientId = id;
       console.log("New client connected.", wsServer.clients.size);
     }

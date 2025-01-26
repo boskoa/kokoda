@@ -87,6 +87,15 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
       return res.status(401).json({ error: "Not authorized" });
     }
 
+    if (
+      chat.group &&
+      req.body.members.length &&
+      !sender.admin &&
+      !chat.admins?.includes(sender.id)
+    ) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
+
     chat.set(req.body);
     await chat.save();
     return res.status(200).json(chat);

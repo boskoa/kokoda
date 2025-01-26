@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { forwardRef, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChat } from "../../../features/chats/chatsSlice";
-import { selectAllContacts } from "../../../features/contacts/contactsSlice";
+import { updateChat } from "../../../../features/chats/chatsSlice";
+import { selectAllContacts } from "../../../../features/contacts/contactsSlice";
+import RemoveMemberModal from "./RemoveMemberModal";
 
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
@@ -72,7 +73,16 @@ const Member = styled.button`
   border: none;
   background-color: teal;
   color: white;
-  padding: 2px;
+  padding: 3px;
+  transition: 0.1s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
 `;
 
 const MembersTitle = styled.h4`
@@ -126,13 +136,15 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [file, setFile] = useState(null);
   const [chatName, setChatName] = useState("");
   const [addedMember, setAddedMember] = useState("");
+  const [removeMember, setRemoveMember] = useState();
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const members = contacts.filter((c) => chat?.members.includes(c.id));
 
   useEffect(() => {
-    console.log("CHAT", chat && chat, name, file, members);
+    console.log("CHAT", chat && chat, members);
     if (chat) {
       if (chat.name) {
         setChatName(chat.name);
@@ -155,7 +167,6 @@ const ChatSettings = forwardRef(function ChatSettings(
   }
 
   function handleAddContact() {
-    console.log("CHATID", chat.id);
     dispatch(
       updateChat({
         token: loggedUser.token,
@@ -165,7 +176,22 @@ const ChatSettings = forwardRef(function ChatSettings(
         id: chat.id,
       }),
     );
-    return;
+  }
+
+  function handleRemoveMember() {
+    if (chat.admins.includes(loggedUser.id)) {
+      dispatch(
+        updateChat({
+          token: loggedUser.token,
+          updateData: {
+            members: [
+              ...new Set([...chat.members.filter((m) => m !== removeMember)]),
+            ],
+          },
+          id: chat.id,
+        }),
+      );
+    }
   }
 
   async function handleImageSubmit(e) {
@@ -220,7 +246,16 @@ const ChatSettings = forwardRef(function ChatSettings(
         <MembersContainer>
           <Member>{loggedUser.name}</Member>
           {members.map((m) => (
-            <Member key={m.id}>{m.name}</Member>
+            <Member
+              title="Remove member from chat?"
+              onClick={() => {
+                setShowModal(true);
+                setRemoveMember(m.id);
+              }}
+              key={m.id}
+            >
+              {m.name}
+            </Member>
           ))}
         </MembersContainer>
       </div>
@@ -264,6 +299,12 @@ const ChatSettings = forwardRef(function ChatSettings(
           />
         )}
       </BackgroundField>
+      {showModal && (
+        <RemoveMemberModal
+          setShowModal={setShowModal}
+          handleRemoveMember={handleRemoveMember}
+        />
+      )}
     </ChatSettingsContainer>
   );
 });
