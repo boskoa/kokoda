@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateChat } from "../../../../features/chats/chatsSlice";
 import { selectAllContacts } from "../../../../features/contacts/contactsSlice";
 import RemoveMemberModal from "./RemoveMemberModal";
+import RemoveAdminModal from "./RemoveAdminModal";
 
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
@@ -143,7 +144,10 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [chatName, setChatName] = useState("");
   const [addedMember, setAddedMember] = useState("");
   const [removeMember, setRemoveMember] = useState();
-  const [showModal, setShowModal] = useState(false);
+  const [addedAdmin, setAddedAdmin] = useState("");
+  const [removeAdmin, setRemoveAdmin] = useState();
+  const [showMemberModal, setShowMemberModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const members = contacts.filter((c) => chat?.members.includes(c.id));
@@ -219,6 +223,36 @@ const ChatSettings = forwardRef(function ChatSettings(
     }
   }
 
+  function handleAddAdmin() {
+    if (adminConditions) {
+      dispatch(
+        updateChat({
+          token: loggedUser.token,
+          updateData: {
+            admins: [...new Set([...chat.admins, parseInt(addedAdmin)])],
+          },
+          id: chat.id,
+        }),
+      );
+    }
+  }
+
+  function handleRemoveAdmin() {
+    if (adminConditions && chat.admins.length > 1) {
+      dispatch(
+        updateChat({
+          token: loggedUser.token,
+          updateData: {
+            admins: [
+              ...new Set([...chat.admins.filter((m) => m !== removeAdmin)]),
+            ],
+          },
+          id: chat.id,
+        }),
+      );
+    }
+  }
+
   async function handleImageSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
@@ -268,6 +302,23 @@ const ChatSettings = forwardRef(function ChatSettings(
               Add contact
             </ChangeButton>
           </ChangeField>
+          <ChangeField>
+            <SelectField
+              value={addedAdmin}
+              name="addAdmin"
+              onChange={(e) => setAddedAdmin(e.target.value)}
+            >
+              <Option></Option>
+              {members?.map((c) => (
+                <Option key={c.id} value={c.id}>
+                  {c.name}
+                </Option>
+              ))}
+            </SelectField>
+            <ChangeButton disabled={!addedAdmin} onClick={handleAddAdmin}>
+              Add admin
+            </ChangeButton>
+          </ChangeField>
           <div>
             <MembersTitle>Chat members</MembersTitle>
             <MembersContainer>
@@ -276,7 +327,7 @@ const ChatSettings = forwardRef(function ChatSettings(
                 <Member
                   title="Remove member from chat?"
                   onClick={() => {
-                    setShowModal(true);
+                    setShowMemberModal(true);
                     setRemoveMember(m.id);
                   }}
                   key={m.id}
@@ -284,6 +335,25 @@ const ChatSettings = forwardRef(function ChatSettings(
                   {m.name}
                 </Member>
               ))}
+            </MembersContainer>
+          </div>
+          <div>
+            <MembersTitle>Chat admins</MembersTitle>
+            <MembersContainer>
+              {[loggedUser, ...members]
+                .filter((m) => chat.admins.includes(m.id))
+                .map((m) => (
+                  <Member
+                    title="Remove admin privileges?"
+                    onClick={() => {
+                      setShowAdminModal(true);
+                      setRemoveAdmin(m.id);
+                    }}
+                    key={m.id}
+                  >
+                    {m.name}
+                  </Member>
+                ))}
             </MembersContainer>
           </div>
           <ChangeField>
@@ -333,10 +403,16 @@ const ChatSettings = forwardRef(function ChatSettings(
           />
         )}
       </BackgroundField>
-      {showModal && (
+      {showMemberModal && (
         <RemoveMemberModal
-          setShowModal={setShowModal}
+          setShowModal={setShowMemberModal}
           handleRemoveMember={handleRemoveMember}
+        />
+      )}
+      {showAdminModal && (
+        <RemoveAdminModal
+          setShowModal={setShowAdminModal}
+          handleRemoveAdmin={handleRemoveAdmin}
         />
       )}
     </ChatSettingsContainer>

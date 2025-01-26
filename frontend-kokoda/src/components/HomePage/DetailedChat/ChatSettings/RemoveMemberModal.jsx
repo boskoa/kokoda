@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const RemoveMemberContainer = styled.div`
+export const RemoveContainer = styled.div`
   position: fixed;
   inset: 0;
   z-index: 2;
@@ -11,25 +11,25 @@ const RemoveMemberContainer = styled.div`
   backdrop-filter: blur(2px);
 `;
 
-const DialogBox = styled.div`
+export const DialogBox = styled.div`
   width: 160px;
   background-color: teal;
   padding: 10px;
 `;
 
-const Title = styled.h4`
+export const Title = styled.h4`
   margin-bottom: 20px;
   text-align: center;
   font-size: 14px;
 `;
 
-const ButtonsContainer = styled.div`
+export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `;
 
-const DialogButton = styled.button`
+export const DialogButton = styled.button`
   width: 40px;
   border: none;
   background-color: coral;
@@ -51,7 +51,7 @@ const DialogButton = styled.button`
 
 function RemoveMemberModal({ setShowModal, handleRemoveMember }) {
   return (
-    <RemoveMemberContainer id="foo">
+    <RemoveContainer>
       <DialogBox>
         <Title>Remove member?</Title>
         <ButtonsContainer>
@@ -66,7 +66,7 @@ function RemoveMemberModal({ setShowModal, handleRemoveMember }) {
           </DialogButton>
         </ButtonsContainer>
       </DialogBox>
-    </RemoveMemberContainer>
+    </RemoveContainer>
   );
 }
 
