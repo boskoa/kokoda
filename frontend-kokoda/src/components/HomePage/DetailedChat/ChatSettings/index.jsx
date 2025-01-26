@@ -18,11 +18,12 @@ const ChatSettingsContainer = styled.div`
   padding: 5px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(101%)")};
   transition: all 0.4s;
   z-index: 2;
   backdrop-filter: blur(5px);
+  overflow: auto;
 `;
 
 const Title = styled.h3`
@@ -32,7 +33,7 @@ const Title = styled.h3`
 const AdminFields = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 `;
 
 const ChangeField = styled.div`
@@ -110,7 +111,7 @@ const BackgroundField = styled.div`
 `;
 
 const Image = styled.img`
-  height: 220px;
+  height: 120px;
   width: 220px;
   display: block;
   object-fit: cover;
@@ -146,6 +147,8 @@ const ChatSettings = forwardRef(function ChatSettings(
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const members = contacts.filter((c) => chat?.members.includes(c.id));
+  const adminConditions =
+    (loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && chat.group;
 
   useEffect(() => {
     console.log("CHAT", chat && chat, members);
@@ -159,31 +162,35 @@ const ChatSettings = forwardRef(function ChatSettings(
   }, [chat]);
 
   function handleChatName() {
-    if (chatName.length > 0 && chatName.length < 21) {
+    if (adminConditions) {
+      if (chatName.length > 0 && chatName.length < 21) {
+        dispatch(
+          updateChat({
+            token: loggedUser.token,
+            updateData: { name: chatName },
+            id: chat.id,
+          }),
+        );
+      }
+    }
+  }
+
+  function handleAddContact() {
+    if (adminConditions) {
       dispatch(
         updateChat({
           token: loggedUser.token,
-          updateData: { name: chatName },
+          updateData: {
+            members: [...new Set([...chat.members, parseInt(addedMember)])],
+          },
           id: chat.id,
         }),
       );
     }
   }
 
-  function handleAddContact() {
-    dispatch(
-      updateChat({
-        token: loggedUser.token,
-        updateData: {
-          members: [...new Set([...chat.members, parseInt(addedMember)])],
-        },
-        id: chat.id,
-      }),
-    );
-  }
-
   function handleRemoveMember() {
-    if (chat.admins.includes(loggedUser.id)) {
+    if (adminConditions) {
       dispatch(
         updateChat({
           token: loggedUser.token,
@@ -191,6 +198,20 @@ const ChatSettings = forwardRef(function ChatSettings(
             members: [
               ...new Set([...chat.members.filter((m) => m !== removeMember)]),
             ],
+          },
+          id: chat.id,
+        }),
+      );
+    }
+  }
+
+  function handleMakePrivate() {
+    if (adminConditions) {
+      dispatch(
+        updateChat({
+          token: loggedUser.token,
+          updateData: {
+            public: !chat.public,
           },
           id: chat.id,
         }),
@@ -217,7 +238,7 @@ const ChatSettings = forwardRef(function ChatSettings(
   return (
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
-      {(loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && (
+      {adminConditions && (
         <AdminFields>
           <ChangeField>
             <InputField
@@ -267,7 +288,12 @@ const ChatSettings = forwardRef(function ChatSettings(
           </div>
           <ChangeField>
             <FieldLabel htmlFor="public">Set group to private</FieldLabel>
-            <input type="checkbox" id="public" value={chat?.public} />
+            <input
+              type="checkbox"
+              id="public"
+              checked={!chat?.public}
+              onChange={handleMakePrivate}
+            />
           </ChangeField>
         </AdminFields>
       )}

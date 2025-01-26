@@ -89,7 +89,7 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
 
     if (
       chat.group &&
-      req.body.members.length &&
+      req.body.members?.length &&
       !sender.admin &&
       !chat.admins?.includes(sender.id)
     ) {
