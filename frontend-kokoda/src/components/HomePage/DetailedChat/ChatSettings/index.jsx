@@ -15,10 +15,10 @@ const ChatSettingsContainer = styled.div`
   margin-top: calc(-100vh + 80px);
   position: sticky;
   bottom: 40px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding: 5px;
   transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(101%)")};
   transition: all 0.4s;
   z-index: 2;
@@ -26,8 +26,13 @@ const ChatSettingsContainer = styled.div`
 `;
 
 const Title = styled.h3`
-  margin-bottom: 20px;
   text-align: center;
+`;
+
+const AdminFields = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const ChangeField = styled.div`
@@ -138,7 +143,6 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [addedMember, setAddedMember] = useState("");
   const [removeMember, setRemoveMember] = useState();
   const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
   const members = contacts.filter((c) => chat?.members.includes(c.id));
@@ -213,56 +217,60 @@ const ChatSettings = forwardRef(function ChatSettings(
   return (
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
-      <ChangeField>
-        <InputField
-          type="text"
-          disabled={!chat?.group}
-          value={chatName}
-          onChange={(e) => setChatName(e.target.value)}
-        />
-        <ChangeButton disabled={!chat?.group} onClick={handleChatName}>
-          Change title
-        </ChangeButton>
-      </ChangeField>
-      <ChangeField>
-        <SelectField
-          value={addedMember}
-          name="addContact"
-          onChange={(e) => setAddedMember(e.target.value)}
-        >
-          <Option></Option>
-          {contacts?.map((c) => (
-            <Option key={c.id} value={c.id}>
-              {c.name}
-            </Option>
-          ))}
-        </SelectField>
-        <ChangeButton disabled={!addedMember} onClick={handleAddContact}>
-          Add contact
-        </ChangeButton>
-      </ChangeField>
-      <div>
-        <MembersTitle>Chat members</MembersTitle>
-        <MembersContainer>
-          <Member>{loggedUser.name}</Member>
-          {members.map((m) => (
-            <Member
-              title="Remove member from chat?"
-              onClick={() => {
-                setShowModal(true);
-                setRemoveMember(m.id);
-              }}
-              key={m.id}
+      {(loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && (
+        <AdminFields>
+          <ChangeField>
+            <InputField
+              type="text"
+              disabled={!chat?.group}
+              value={chatName}
+              onChange={(e) => setChatName(e.target.value)}
+            />
+            <ChangeButton disabled={!chat?.group} onClick={handleChatName}>
+              Change title
+            </ChangeButton>
+          </ChangeField>
+          <ChangeField>
+            <SelectField
+              value={addedMember}
+              name="addContact"
+              onChange={(e) => setAddedMember(e.target.value)}
             >
-              {m.name}
-            </Member>
-          ))}
-        </MembersContainer>
-      </div>
-      <ChangeField>
-        <FieldLabel htmlFor="public">Set group to private</FieldLabel>
-        <input type="checkbox" id="public" value={chat?.public} />
-      </ChangeField>
+              <Option></Option>
+              {contacts?.map((c) => (
+                <Option key={c.id} value={c.id}>
+                  {c.name}
+                </Option>
+              ))}
+            </SelectField>
+            <ChangeButton disabled={!addedMember} onClick={handleAddContact}>
+              Add contact
+            </ChangeButton>
+          </ChangeField>
+          <div>
+            <MembersTitle>Chat members</MembersTitle>
+            <MembersContainer>
+              <Member>{loggedUser.name}</Member>
+              {members.map((m) => (
+                <Member
+                  title="Remove member from chat?"
+                  onClick={() => {
+                    setShowModal(true);
+                    setRemoveMember(m.id);
+                  }}
+                  key={m.id}
+                >
+                  {m.name}
+                </Member>
+              ))}
+            </MembersContainer>
+          </div>
+          <ChangeField>
+            <FieldLabel htmlFor="public">Set group to private</FieldLabel>
+            <input type="checkbox" id="public" value={chat?.public} />
+          </ChangeField>
+        </AdminFields>
+      )}
       <BackgroundField>
         <Form id="background-form" encType="multipart/form-data">
           <label htmlFor="background" style={{ maxWidth: "70%" }}>

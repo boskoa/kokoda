@@ -3,11 +3,12 @@ import styled from "styled-components";
 const RemoveMemberContainer = styled.div`
   position: fixed;
   inset: 0;
-  background-color: #ff7f50bc;
   z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #8080806e;
+  backdrop-filter: blur(2px);
 `;
 
 const DialogBox = styled.div`

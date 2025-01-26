@@ -94,6 +94,10 @@ export function selectChatsLoading(state) {
   return state.chats.loading;
 }
 
+export function selectChatsError(state) {
+  return state.chats.error;
+}
+
 export const { addSocketMessage, clearChats } = chatsSlice.actions;
 
 export default chatsSlice.reducer;
