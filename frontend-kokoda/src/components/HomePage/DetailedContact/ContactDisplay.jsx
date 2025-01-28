@@ -2,6 +2,7 @@ import styled from "styled-components";
 import userIcon from "/user.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserById, updateUser } from "../../../features/users/usersSlice";
+import { removeContact } from "../../../features/contacts/contactsSlice";
 
 const ContactDataContainer = styled.div`
   width: 90%;
@@ -83,6 +84,22 @@ function ContactDisplay({ contact, user, loggedUser }) {
     );
   }
 
+  function handleRemove() {
+    if (user.contacts !== null && user.contacts.includes(contact.id)) {
+      dispatch(
+        updateUser({
+          token: loggedUser.token,
+          updateData: {
+            contacts: user.contacts.filter((u) => u !== contact.id),
+          },
+          id: loggedUser.id,
+        }),
+      );
+
+      dispatch(removeContact(contact.id));
+    }
+  }
+
   return (
     <ContactDataContainer>
       <UserIcon
@@ -110,7 +127,7 @@ function ContactDisplay({ contact, user, loggedUser }) {
       </ContactData>
       <ButtonContainer>
         <Button onClick={handleBlock}>{blocked ? "Unblock" : "Block"}</Button>
-        <Button>Remove</Button>
+        <Button onClick={handleRemove}>Remove</Button>
       </ButtonContainer>
     </ContactDataContainer>
   );
