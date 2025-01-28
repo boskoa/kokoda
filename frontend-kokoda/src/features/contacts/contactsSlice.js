@@ -17,17 +17,13 @@ const initialState = contactsAdapter.getInitialState({
 export const getAllContacts = createAsyncThunk(
   "contacts/getAllContacts",
   async (data) => {
-    const { token, offset, limit } = data;
+    const { token } = data;
     const config = {
       headers: {
         Authorization: `bearer ${token}`,
       },
     };
-    //change query when quering db
-    const response = await axios.get(
-      BASE_URL, // + `?_start=${offset}&_limit=${limit}`,
-      config,
-    );
+    const response = await axios.get(BASE_URL, config);
     return response.data;
   },
 );

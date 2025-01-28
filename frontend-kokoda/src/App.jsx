@@ -12,14 +12,15 @@ import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
 import Chats from "./components/HomePage/Chats";
 import { useDispatch } from "react-redux";
-import { getAllChats } from "./features/chats/chatsSlice";
-import { getAllContacts } from "./features/contacts/contactsSlice";
 import { alreadyLogged } from "./features/login/loginSlice";
 import ComponentLoader from "./components/ComponentLoader";
 
 const Contacts = lazy(() => import("./components/HomePage/Contacts"));
 const DetailedChat = lazy(
   () => import("./components/HomePage/DetailedChat/index.jsx"),
+);
+const DetailedContact = lazy(
+  () => import("./components/HomePage/DetailedContact"),
 );
 const Authentication = lazy(() => import("./components/Authentication"));
 const Login = lazy(() => import("./components/Authentication/Login"));
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<ComponentLoader />}>
                 <Contacts />
+              </Suspense>
+            ),
+          },
+          {
+            path: "contacts/:id",
+            element: (
+              <Suspense fallback={<ComponentLoader />}>
+                <DetailedContact />
               </Suspense>
             ),
           },

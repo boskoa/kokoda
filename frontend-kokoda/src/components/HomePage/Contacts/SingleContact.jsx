@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import user from "/user.svg";
+import { useNavigate } from "react-router-dom";
 
 const ContactContainer = styled.div`
   display: flex;
@@ -63,8 +64,10 @@ const ContactName = styled.h2`
 `;
 
 function SingleContact({ contact }) {
+  const navigate = useNavigate();
+
   return (
-    <ContactContainer>
+    <ContactContainer onClick={() => navigate(`/contacts/${contact.id}`)}>
       <Avatar>
         <UserIcon
           src={`/public/uploads/avatars/${contact.id}.webp`}

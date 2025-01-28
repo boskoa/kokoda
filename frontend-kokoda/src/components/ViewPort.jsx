@@ -9,16 +9,7 @@ const ViewPortContainer = styled.div`
   overflow-x: hidden;
   background-color: ${({ theme }) => theme.main.bg};
   position: relative;
-  /* 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: ${({ $userId }) =>
-    `url(/public/uploads/backgrounds/${$userId})`};
-    filter: opacity(0.3);
-  }
- */
+
   @media only screen and (max-width: 800px) {
     width: 320px;
   }

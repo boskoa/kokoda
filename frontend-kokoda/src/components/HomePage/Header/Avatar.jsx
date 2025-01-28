@@ -104,7 +104,7 @@ function Avatar() {
       </LogoutButton>
       <Image
         onClick={() => setShow((p) => !p)}
-        src={`/public/uploads/avatars/${loggedUser.id}.png`}
+        src={`/public/uploads/avatars/${loggedUser.id}.webp`}
         alt="user avatar"
         onLoad={(e) => {
           e.currentTarget.style.opacity = 1;
