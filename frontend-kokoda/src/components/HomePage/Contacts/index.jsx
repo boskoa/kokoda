@@ -2,7 +2,9 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 import SingleContact from "./SingleContact";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AddContact from "./AddContact";
+import ContactModal from "./ContactModal";
 
 const ContactsContainer = styled.div`
   display: flex;
@@ -15,6 +17,7 @@ const ContactsContainer = styled.div`
 
 function Contacts() {
   const contacts = useSelector(selectAllContacts);
+  const [addContactModal, setAddContactModal] = useState(false);
 
   useEffect(() => {
     document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
@@ -25,6 +28,10 @@ function Contacts() {
       {contacts.map((c) => (
         <SingleContact key={c.id} contact={c} />
       ))}
+      <AddContact setAddContactModal={setAddContactModal} />
+      {addContactModal && (
+        <ContactModal setAddContactModal={setAddContactModal} />
+      )}
     </ContactsContainer>
   );
 }

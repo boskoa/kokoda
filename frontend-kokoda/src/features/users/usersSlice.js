@@ -41,8 +41,8 @@ export const updateUser = createAsyncThunk(
         Authorization: `bearer ${token}`,
       },
     };
-
     const response = await axios.patch(`${BASE_URL}/${id}`, updateData, config);
+
     return response.data;
   },
 );
