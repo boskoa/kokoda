@@ -2,7 +2,9 @@ import { useSelector } from "react-redux";
 import { selectAllChats } from "../../../features/chats/chatsSlice";
 import styled from "styled-components";
 import SingleChat from "./SingleChat";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ChatModal from "./ChatModal";
+import AddChat from "./AddChat";
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -15,6 +17,7 @@ const ChatsContainer = styled.div`
 
 function Chats() {
   const chats = useSelector(selectAllChats);
+  const [addChatModal, setAddChatModal] = useState(false);
 
   useEffect(() => {
     document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
@@ -25,6 +28,8 @@ function Chats() {
       {chats.map((c) => (
         <SingleChat key={c.id} chat={c} />
       ))}
+      <AddChat setAddChatModal={setAddChatModal} />
+      {addChatModal && <ChatModal setAddChatModal={setAddChatModal} />}
     </ChatsContainer>
   );
 }

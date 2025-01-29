@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Chat, User, Message } = require("../models");
+const { Chat, User, Message, Unseen } = require("../models");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();
 
@@ -67,6 +67,18 @@ router.post("/", tokenExtractor, async (req, res, next) => {
     if (req.body.members?.length !== 2 || req.body.admins) {
       return res.status(401).json({ error: "Wrong data" });
     }
+
+    const existingChat = await Chat.findOne({
+      where: {
+        [Op.and]: {
+          members: { [Op.contained]: [...req.body.members] },
+        },
+      },
+    });
+    if (existingChat) {
+      return res.status(401).json({ error: "Chat already exists" });
+    }
+
     req.body.public = false;
   }
 
@@ -114,6 +126,7 @@ router.delete("/:id", tokenExtractor, async (req, res, next) => {
     }
 
     await Message.destroy({ where: { chatId: chat.id } });
+    await Unseen.destroy({ where: { chatId: chat.id } });
     await chat.destroy();
     return res.status(200).send("Chat deleted");
   } catch (error) {

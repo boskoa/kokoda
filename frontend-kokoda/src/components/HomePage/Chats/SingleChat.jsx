@@ -125,7 +125,8 @@ function SingleChat({ chat }) {
       <ChatData>
         <ChatTitle>{chat.name || contact?.username}</ChatTitle>
         <ChatLastMessage>
-          {chat.messages[0]?.text || "No messages yet."}
+          {(chat.messages?.length && chat.messages[0].text) ||
+            "No messages yet."}
         </ChatLastMessage>
         <NewMessages count={count || 0} />
       </ChatData>

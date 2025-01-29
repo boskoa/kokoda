@@ -41,6 +41,18 @@ export const updateChat = createAsyncThunk("chats/updateChat", async (data) => {
   return response.data;
 });
 
+export const createChat = createAsyncThunk("chats/createChat", async (data) => {
+  const { token, creationData } = data;
+  const config = {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(BASE_URL, creationData, config);
+  return response.data;
+});
+
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
@@ -78,6 +90,19 @@ const chatsSlice = createSlice({
         chatsAdapter.upsertOne(state, action.payload);
       })
       .addCase(updateChat.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(createChat.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createChat.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        chatsAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(createChat.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

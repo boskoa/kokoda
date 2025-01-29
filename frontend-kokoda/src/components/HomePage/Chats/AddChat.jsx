@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { IconContext } from "react-icons";
 
-const AddContactContainer = styled.button`
+const AddChatContainer = styled.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -25,17 +25,14 @@ const AddContactContainer = styled.button`
   }
 `;
 
-function AddContact({ setAddContactModal }) {
+function AddChat({ setAddChatModal }) {
   return (
-    <AddContactContainer
-      onClick={() => setAddContactModal(true)}
-      title="Add contact"
-    >
+    <AddChatContainer onClick={() => setAddChatModal(true)} title="Add chat">
       <IconContext.Provider value={{ color: "gold", size: "100%" }}>
         <IoAddCircleSharp />
       </IconContext.Provider>
-    </AddContactContainer>
+    </AddChatContainer>
   );
 }
 
-export default AddContact;
+export default AddChat;

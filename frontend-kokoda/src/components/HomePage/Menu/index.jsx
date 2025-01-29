@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import styled from "styled-components";
+import BlockedContactsModal from "./BlockedContactsModal";
 
 const MenuContainer = styled.div`
   height: calc(100vh - 80px);
@@ -45,6 +46,7 @@ const Menu = forwardRef(function Menu({ menu }, ref) {
   return (
     <MenuContainer $show={menu} ref={ref}>
       <Button>Blocked users</Button>
+      <BlockedContactsModal />
     </MenuContainer>
   );
 });
