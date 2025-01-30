@@ -4,11 +4,19 @@ const { User, Message, Chat } = require("../models");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 const { Op } = require("sequelize");
 
-router.get("/", tokenExtractor, async (_req, res, next) => {
+router.get("/", tokenExtractor, async (req, res, next) => {
   try {
-    const users = await User.findAll({
-      attributes: { exclude: ["passwordHash"] },
-    });
+    let users;
+    if (!("include" in req.query)) {
+      users = await User.findAll({
+        attributes: { exclude: ["passwordHash"] },
+      });
+    } else {
+      users = await User.findAll({
+        where: { id: req.query.include.split(",").map((x) => parseInt(x)) },
+        attributes: { exclude: ["passwordHash"] },
+      });
+    }
 
     return res.status(200).json(users);
   } catch (error) {

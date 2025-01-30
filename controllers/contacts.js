@@ -7,7 +7,7 @@ router.get("/", tokenExtractor, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.decodedToken.id);
     const contacts = await User.findAll({
-      where: { id: { [Op.in]: user.contacts } },
+      where: { id: user.contacts },
       attributes: ["id", "name", "username"],
     });
 

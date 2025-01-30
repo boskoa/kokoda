@@ -8,9 +8,14 @@ import { selectLoggedUser } from "../../features/login/loginSlice";
 import Header from "./Header";
 import useWebSocket from "react-use-websocket";
 import WSContext from "./wsContext";
-import { addSocketMessage, getAllChats } from "../../features/chats/chatsSlice";
+import {
+  addSocketMessage,
+  getAllChats,
+  selectAllChats,
+} from "../../features/chats/chatsSlice";
 import { getAllUnseen, updateUnseen } from "../../features/unseen/unseenSlice";
 import { getAllContacts } from "../../features/contacts/contactsSlice";
+import { getAllUsers } from "../../features/users/usersSlice";
 
 const HomeContainer = styled.div`
   background-color: transparent;
@@ -27,6 +32,7 @@ const WS_URL = "ws://127.0.0.1:3003/websockets";
 function HomePage() {
   const [menu, setMenu] = useState(false);
   const loggedUser = useSelector(selectLoggedUser);
+  const chats = useSelector(selectAllChats);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const menuRef = useRef(null);
@@ -49,6 +55,13 @@ function HomePage() {
       dispatch(getAllChats({ token: loggedUser.token }));
     }
   }, [loggedUser]);
+
+  useEffect(() => {
+    if (chats.length) {
+      const users = [...new Set(chats.map((c) => c.members).flat())];
+      dispatch(getAllUsers({ token: loggedUser.token, query: users }));
+    }
+  }, [loggedUser, chats]);
 
   useEffect(() => {
     if (lastJsonMessage) {

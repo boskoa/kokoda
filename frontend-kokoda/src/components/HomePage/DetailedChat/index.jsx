@@ -27,6 +27,7 @@ import gear from "../../../assets/gear.svg";
 import ChatSettings from "./ChatSettings";
 import { selectChatById } from "../../../features/chats/chatsSlice";
 import { selectAllContacts } from "../../../features/contacts/contactsSlice";
+import { selectAllUsers } from "../../../features/users/usersSlice";
 
 const DetailedChatsContainer = styled.div`
   min-height: calc(100vh + 4px);
@@ -111,6 +112,7 @@ function DetailedChat() {
   const loggedUser = useSelector(selectLoggedUser);
   const chat = useSelector((state) => selectChatById(state, id));
   const contacts = useSelector(selectAllContacts);
+  const users = useSelector(selectAllUsers);
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
   const limit = 10;
@@ -279,8 +281,8 @@ function DetailedChat() {
           </Back>
         </IconContext.Provider>
         {chat?.name ||
-          contacts.find(
-            (c) => c.id === chat?.members.find((m) => m !== loggedUser.id),
+          users.find(
+            (u) => u.id === chat?.members.find((m) => m !== loggedUser.id),
           ).name}
         <ChatSettingsButton>
           <img

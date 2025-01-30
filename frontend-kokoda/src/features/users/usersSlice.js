@@ -47,6 +47,21 @@ export const updateUser = createAsyncThunk(
   },
 );
 
+export const getAllUsers = createAsyncThunk(
+  "users/getAllUser",
+  async (data) => {
+    const { token, query } = data;
+    const config = {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(`${BASE_URL}?include=${query}`, config);
+    return response.data;
+  },
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -93,6 +108,19 @@ const usersSlice = createSlice({
         usersAdapter.upsertOne(state, action.payload);
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.error = null;
+        state.loading = false;
+        usersAdapter.upsertMany(state, action.payload);
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
