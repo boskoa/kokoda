@@ -36,6 +36,9 @@ const DetailedChatsContainer = styled.div`
   width: inherit;
   background-image: url(${({ $backgroundUrl }) => $backgroundUrl});
   background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const Title = styled.h2`
@@ -115,6 +118,7 @@ function DetailedChat() {
   const unseen = useSelector((state) => selectUnseenById(state, id));
   const [scrollDown, setScrollDown] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [deletedBg, setDeletedBg] = useState(false);
   const settingsRef = useRef(null);
   const offsetRef = useRef(0);
   const messagesRef = useRef(null);
@@ -126,7 +130,7 @@ function DetailedChat() {
     document.getElementById("vp"),
   );
   const lastJsonMessage = useContext(WSContext);
-
+  console.log("RENDER", deletedBg);
   const getMessages = useCallback(async (data) => {
     const { token, id, offset, limit } = data;
     const config = {
@@ -262,7 +266,11 @@ function DetailedChat() {
 
   return (
     <DetailedChatsContainer
-      $backgroundUrl={`/public/uploads/backgrounds/${loggedUser?.id}-${chat?.id}.webp`}
+      $backgroundUrl={
+        !deletedBg
+          ? `/public/uploads/backgrounds/${loggedUser?.id}-${chat?.id}.webp`
+          : ""
+      }
     >
       <Title>
         <IconContext.Provider value={{ color: "gold", size: "2em" }}>
@@ -310,6 +318,7 @@ function DetailedChat() {
         show={showSettings}
         chat={chat}
         loggedUser={loggedUser}
+        setDeletedBg={setDeletedBg}
       />
     </DetailedChatsContainer>
   );

@@ -80,4 +80,27 @@ router.post(
   },
 );
 
+router.delete("/:id", tokenExtractor, async (req, res, next) => {
+  const sender = await User.findByPk(req.decodedToken.id);
+
+  if (!sender && !sender.admin && sender.id !== req.params.id.split("-")[0]) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  const filePath = `./public/uploads/backgrounds/${req.params.id}.webp`;
+
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (error) => {
+      if (error) {
+        console.log("Error while removing file:", error);
+        return;
+      }
+    });
+
+    return res.status(200).send("Image removed");
+  }
+
+  return res.status(404).json({ error: "No such file" });
+});
+
 module.exports = router;

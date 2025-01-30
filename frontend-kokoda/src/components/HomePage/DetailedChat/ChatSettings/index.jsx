@@ -136,7 +136,7 @@ const SetButton = styled.div`
 `;
 
 const ChatSettings = forwardRef(function ChatSettings(
-  { show, chat, loggedUser },
+  { show, chat, loggedUser, setDeletedBg },
   ref,
 ) {
   const [name, setName] = useState("Choose background");
@@ -155,7 +155,6 @@ const ChatSettings = forwardRef(function ChatSettings(
     (loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && chat.group;
 
   useEffect(() => {
-    console.log("CHAT", chat && chat, members);
     if (chat) {
       if (chat.name) {
         setChatName(chat.name);
@@ -259,14 +258,37 @@ const ChatSettings = forwardRef(function ChatSettings(
     formData.append("name", name);
     formData.append("file", file);
 
-    await axios.post(`/api/backgrounds/${name}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `bearer ${loggedUser.token}`,
-      },
-    });
+    try {
+      await axios.post(`/api/backgrounds/${name}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `bearer ${loggedUser.token}`,
+        },
+      });
 
-    window.location.reload();
+      window.location.reload();
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  async function handleRemoveImage() {
+    try {
+      const response = await axios.delete(
+        `/api/backgrounds/${loggedUser.id}-${chat.id}`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `bearer ${loggedUser.token}`,
+          },
+        },
+      );
+      if (response.status === 200) {
+        setDeletedBg(true);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
   }
 
   return (
@@ -367,6 +389,12 @@ const ChatSettings = forwardRef(function ChatSettings(
           </ChangeField>
         </AdminFields>
       )}
+      <ChangeButton
+        onClick={handleRemoveImage}
+        style={{ textAlign: "center", marginBottom: -10 }}
+      >
+        Remove current background
+      </ChangeButton>
       <BackgroundField>
         <Form id="background-form" encType="multipart/form-data">
           <label htmlFor="background" style={{ maxWidth: "70%" }}>

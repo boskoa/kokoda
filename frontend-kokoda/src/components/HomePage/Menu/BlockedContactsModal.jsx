@@ -27,7 +27,7 @@ function BlockedContactsModal() {
   const loggedUser = useSelector(selectLoggedUser);
   const user = useSelector((state) => selectUserById(state, loggedUser.id));
   const blocked = useSelector(selectAllContacts).filter((c) =>
-    user.blockedUsers.includes(c.id),
+    user?.blockedUsers?.includes(c.id),
   );
 
   if (!user?.blockedUsers) return null;
