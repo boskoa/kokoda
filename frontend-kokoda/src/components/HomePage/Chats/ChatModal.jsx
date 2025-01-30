@@ -77,13 +77,37 @@ const SelectField = styled.select`
   outline: none;
 `;
 
+const InputField = styled.input`
+  background-color: navajowhite;
+  border: none;
+  padding: 2px;
+  width: 160px;
+`;
+
 const Option = styled.option``;
+
+const Contacts = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
+const Contact = styled.span`
+  background-color: gold;
+  color: black;
+  padding: 3px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+`;
 
 function ChatModal({ setAddChatModal }) {
   const [chatType, setChatType] = useState("single");
   const contacts = useSelector(selectAllContacts);
   const [addedSingleContact, setAddedSingleContact] = useState(-1);
-  const chatsError = useSelector(selectChatsError);
+  const [addedGroupContacts, setAddedGroupContacts] = useState([]);
+  const [chatName, setChatName] = useState("");
+  const [publicChat, setPublicChat] = useState(false);
   const chats = useSelector(selectAllChats);
   const loggedUser = useSelector(selectLoggedUser);
   const navigate = useNavigate();
@@ -111,6 +135,24 @@ function ChatModal({ setAddChatModal }) {
       } else {
         navigate(`/chats/${existingChat.id}`);
       }
+    }
+  }
+
+  function handleGroupChat() {
+    if (addedGroupContacts.length > 1) {
+      console.log("NEW");
+      dispatch(
+        createChat({
+          token: loggedUser.token,
+          creationData: {
+            members: [loggedUser.id, ...addedGroupContacts.map((c) => c.id)],
+            group: true,
+            admins: [loggedUser.id],
+            name: chatName,
+            public: publicChat,
+          },
+        }),
+      );
     }
   }
 
@@ -151,12 +193,69 @@ function ChatModal({ setAddChatModal }) {
             </AddContainer>
           </>
         ) : (
-          <></>
+          <>
+            <AddContainer>
+              <Label htmlFor="chatName">Chat name</Label>
+              <InputField
+                type="text"
+                id="chatName"
+                value={chatName}
+                onChange={(e) => setChatName(e.target.value)}
+              />
+            </AddContainer>
+            <AddContainer>
+              <Label htmlFor="AddContacts">Select contact</Label>
+              <SelectField
+                id="AddContacts"
+                name="AddContacts"
+                onChange={(e) => {
+                  setAddedGroupContacts((p) => [
+                    ...p,
+                    contacts.find((c) => c.id === parseInt(e.target.value)),
+                  ]);
+                }}
+              >
+                <Option value=""></Option>
+                {contacts
+                  .filter(
+                    (c) => !addedGroupContacts.map((a) => a.id).includes(c.id),
+                  )
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((u) => (
+                    <Option value={u.id} key={u.id}>
+                      {u.name}
+                    </Option>
+                  ))}
+              </SelectField>
+            </AddContainer>
+            <Contacts>
+              {addedGroupContacts.map((c) => (
+                <Contact
+                  onClick={() =>
+                    setAddedGroupContacts((p) => p.filter((g) => g.id !== c.id))
+                  }
+                  key={c.id}
+                >
+                  {c.name}
+                </Contact>
+              ))}
+            </Contacts>
+            <AddContainer>
+              <Label htmlFor="public">Set group to public</Label>
+              <input
+                type="checkbox"
+                id="public"
+                checked={publicChat}
+                onChange={() => setPublicChat((p) => !p)}
+              />
+            </AddContainer>
+          </>
         )}
         <AddContainer>
           <Button
-            disabled={addedSingleContact === -1}
-            onClick={handleSingleChat}
+            onClick={() =>
+              chatType === "single" ? handleSingleChat() : handleGroupChat()
+            }
           >
             Create Chat
           </Button>

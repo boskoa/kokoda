@@ -18,6 +18,7 @@ const ChatContainer = styled.div`
   width: 100%;
   height: 60px;
   position: relative;
+  cursor: pointer;
 `;
 
 const Avatar = styled.div`
