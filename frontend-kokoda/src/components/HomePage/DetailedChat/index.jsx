@@ -302,6 +302,7 @@ function DetailedChat() {
             parentWidth={messagesRef.current?.offsetWidth}
             key={m.id}
             message={m}
+            setMessages={setMessages}
           >
             {m.id}: {m.text}
           </Message>

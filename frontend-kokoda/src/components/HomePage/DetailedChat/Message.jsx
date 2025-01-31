@@ -57,7 +57,7 @@ const MiniAvatar = styled.img`
 `;
 
 const MessageText = styled.p`
-  margin-bottom: 5px;
+  margin: 5px 10px 5px 0;
 `;
 
 const Time = styled.span`
@@ -94,7 +94,7 @@ const EditButton = styled.button`
   }
 `;
 
-function Message({ message, parentWidth }) {
+function Message({ message, parentWidth, setMessages }) {
   const loggedUser = useSelector(selectLoggedUser);
   const [showEdit, setShowEdit] = useState(false);
 
@@ -145,6 +145,7 @@ function Message({ message, parentWidth }) {
           message={message}
           loggedUser={loggedUser}
           setShowEdit={setShowEdit}
+          setMessages={setMessages}
         />
       )}
       <Time $edited={message.updatedAt !== message.createdAt}>

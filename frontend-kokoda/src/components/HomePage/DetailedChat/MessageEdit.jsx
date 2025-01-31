@@ -31,7 +31,7 @@ const Button = styled.button`
   }
 `;
 
-function MessageEdit({ message, loggedUser, setShowEdit }) {
+function MessageEdit({ message, loggedUser, setShowEdit, setMessages }) {
   const [edit, setEdit] = useState("");
 
   useEffect(() => {
@@ -46,10 +46,14 @@ function MessageEdit({ message, loggedUser, setShowEdit }) {
         },
       };
       try {
-        await axios.patch(
+        const response = await axios.patch(
           `/api/messages/${message.id}`,
           { text: edit },
           config,
+        );
+        console.log("RESP", response.data);
+        setMessages((p) =>
+          p.map((x) => (response.data.id === x.id ? response.data : x)),
         );
       } catch (error) {
         console.log("Error:", error);
