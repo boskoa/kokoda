@@ -7,6 +7,7 @@ import { updateChat } from "../../../../features/chats/chatsSlice";
 import { selectAllContacts } from "../../../../features/contacts/contactsSlice";
 import RemoveMemberModal from "./RemoveMemberModal";
 import RemoveAdminModal from "./RemoveAdminModal";
+import { selectAllUsers } from "../../../../features/users/usersSlice";
 
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
@@ -150,7 +151,8 @@ const ChatSettings = forwardRef(function ChatSettings(
   const [showAdminModal, setShowAdminModal] = useState(false);
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
-  const members = contacts.filter((c) => chat?.members.includes(c.id));
+  const users = useSelector(selectAllUsers);
+  const members = users.filter((u) => chat?.members.includes(u.id));
   const adminConditions =
     (loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && chat.group;
 
@@ -313,7 +315,7 @@ const ChatSettings = forwardRef(function ChatSettings(
               name="addContact"
               onChange={(e) => setAddedMember(e.target.value)}
             >
-              <Option></Option>
+              <Option key={0}></Option>
               {contacts?.map((c) => (
                 <Option key={c.id} value={c.id}>
                   {c.name}
@@ -362,7 +364,7 @@ const ChatSettings = forwardRef(function ChatSettings(
           <div>
             <MembersTitle>Chat admins</MembersTitle>
             <MembersContainer>
-              {[loggedUser, ...members]
+              {members
                 .filter((m) => chat.admins.includes(m.id))
                 .map((m) => (
                   <Member

@@ -26,7 +26,6 @@ import {
 import gear from "../../../assets/gear.svg";
 import ChatSettings from "./ChatSettings";
 import { selectChatById } from "../../../features/chats/chatsSlice";
-import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 import { selectAllUsers } from "../../../features/users/usersSlice";
 
 const DetailedChatsContainer = styled.div`
@@ -111,7 +110,6 @@ function DetailedChat() {
   const { id } = useParams();
   const loggedUser = useSelector(selectLoggedUser);
   const chat = useSelector((state) => selectChatById(state, id));
-  const contacts = useSelector(selectAllContacts);
   const users = useSelector(selectAllUsers);
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
@@ -132,7 +130,7 @@ function DetailedChat() {
     document.getElementById("vp"),
   );
   const lastJsonMessage = useContext(WSContext);
-  console.log("RENDER", deletedBg);
+
   const getMessages = useCallback(async (data) => {
     const { token, id, offset, limit } = data;
     const config = {
@@ -199,7 +197,8 @@ function DetailedChat() {
 
   useEffect(() => {
     if (
-      !initialRef.current &&
+      // delete if no bugs
+      //!initialRef.current &&
       lastJsonMessage &&
       lastJsonMessage.chatId == id
     ) {

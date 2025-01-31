@@ -75,8 +75,9 @@ router.delete("/:id", tokenExtractor, async (req, res, next) => {
     const chat = await Chat.findByPk(message.chatId);
 
     if (
-      sender?.id !== message.userId ||
-      !sender?.admin ||
+      sender?.id !== message.userId &&
+      !sender?.admin &&
+      chat.admins &&
       !chat.admins.includes(req.decodedToken.id)
     ) {
       return res.status(401).json({ error: "Not authorized" });

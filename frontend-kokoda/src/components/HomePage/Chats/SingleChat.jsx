@@ -9,6 +9,7 @@ import {
 import NewMessages from "./NewMessages";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import { selectContactById } from "../../../features/contacts/contactsSlice";
+import { selectUserById } from "../../../features/users/usersSlice";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ function SingleChat({ chat }) {
   const group = chat.members.length > 2;
   const directory = group ? "chat" : "avatars";
   const contactId = group ? -1 : chat.members.find((m) => m !== loggedUser.id);
-  const contact = useSelector((state) => selectContactById(state, contactId));
+  const contact = useSelector((state) => selectUserById(state, contactId));
   const imageId = group
     ? chat.id
     : chat.members.find((m) => m !== loggedUser.id);
@@ -124,7 +125,7 @@ function SingleChat({ chat }) {
         />
       </Avatar>
       <ChatData>
-        <ChatTitle>{chat.name || contact?.username}</ChatTitle>
+        <ChatTitle>{chat.name || contact?.name}</ChatTitle>
         <ChatLastMessage>
           {(chat.messages?.length && chat.messages[0].text) ||
             "No messages yet."}
