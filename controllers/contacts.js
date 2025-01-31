@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const { User } = require("../models");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();

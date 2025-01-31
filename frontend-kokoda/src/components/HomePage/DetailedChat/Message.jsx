@@ -2,10 +2,13 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import user from "/user.svg";
+import { useState } from "react";
+import MessageEdit from "./MessageEdit";
+import edit from "../../../assets/edit.svg";
 
 const MessageContainer = styled.div`
   position: relative;
-  background-color: #32cd3271;
+  background-color: #32cd32cd;
   margin: 10px;
   padding: 10px;
   width: fit-content;
@@ -58,13 +61,42 @@ const MessageText = styled.p`
 `;
 
 const Time = styled.span`
+  margin-top: 5px;
   font-size: 10px;
   float: right;
   filter: brightness(0.8);
+
+  ${({ $edited }) =>
+    $edited &&
+    `&::before {
+    content: "edited";
+    position: absolute;
+    left: -130%;
+    font-style: italic;
+  }`}
+`;
+
+const EditButton = styled.button`
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  transition: all 0.1s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
 `;
 
 function Message({ message, parentWidth }) {
   const loggedUser = useSelector(selectLoggedUser);
+  const [showEdit, setShowEdit] = useState(false);
 
   return (
     <MessageContainer
@@ -89,9 +121,34 @@ function Message({ message, parentWidth }) {
           }}
         />
       )}
-      <MessageText>{message.text}</MessageText>
-      <Time>
-        {new Date(message.updatedAt).toLocaleTimeString("en-US", {
+      {!showEdit ? (
+        <MessageText>
+          {message.userId === loggedUser.id && (
+            <EditButton>
+              <img
+                src={edit}
+                title="Edit"
+                onClick={() => setShowEdit(true)}
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  filter:
+                    "brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(4935%) hue-rotate(357deg) brightness(99%) contrast(105%)",
+                }}
+              />
+            </EditButton>
+          )}
+          {message.text}
+        </MessageText>
+      ) : (
+        <MessageEdit
+          message={message}
+          loggedUser={loggedUser}
+          setShowEdit={setShowEdit}
+        />
+      )}
+      <Time $edited={message.updatedAt !== message.createdAt}>
+        {new Date(message.createdAt).toLocaleTimeString("en-US", {
           hour12: false,
           hour: "2-digit",
           minute: "2-digit",

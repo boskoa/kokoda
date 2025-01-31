@@ -80,7 +80,7 @@ router.post(
   },
 );
 
-router.delete("/:id", tokenExtractor, async (req, res, next) => {
+router.delete("/:id", tokenExtractor, async (req, res) => {
   const sender = await User.findByPk(req.decodedToken.id);
 
   if (!sender && !sender.admin && sender.id !== req.params.id.split("-")[0]) {
