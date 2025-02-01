@@ -98,7 +98,7 @@ function SingleContact({ contact }) {
       </Avatar>
       <ContactData>
         <ContactName>{contact.name}</ContactName>
-        {userData.blockedUsers.includes(contact.id) && (
+        {userData.blockedUsers?.includes(contact.id) && (
           <Blocked>Blocked</Blocked>
         )}
       </ContactData>

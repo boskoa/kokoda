@@ -5,6 +5,7 @@ import user from "/user.svg";
 import { useState } from "react";
 import MessageEdit from "./MessageEdit";
 import edit from "../../../assets/edit.svg";
+import { useNavigate } from "react-router-dom";
 
 const MessageContainer = styled.div`
   position: relative;
@@ -97,6 +98,7 @@ const EditButton = styled.button`
 function Message({ message, parentWidth, setMessages }) {
   const loggedUser = useSelector(selectLoggedUser);
   const [showEdit, setShowEdit] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <MessageContainer
@@ -109,6 +111,7 @@ function Message({ message, parentWidth, setMessages }) {
     >
       {loggedUser.id !== message.userId && (
         <MiniAvatar
+          onClick={() => navigate(`/contacts/${message.userId}`)}
           src={`/public/uploads/avatars/${message.userId}.webp`}
           alt="user avatar"
           onLoad={(e) => {

@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import userIcon from "/user.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserById, updateUser } from "../../../features/users/usersSlice";
-import { removeContact } from "../../../features/contacts/contactsSlice";
+import { useDispatch } from "react-redux";
+import { getUser, updateUser } from "../../../features/users/usersSlice";
+import {
+  getAllContacts,
+  removeContact,
+} from "../../../features/contacts/contactsSlice";
 
 const ContactDataContainer = styled.div`
   width: 90%;
@@ -65,6 +68,7 @@ const Button = styled.button`
 function ContactDisplay({ contact, user, loggedUser }) {
   const blocked =
     user.blockedUsers !== null ? user.blockedUsers.includes(contact.id) : false;
+  const contacted = user.contacts.includes(contact.id) || false;
   const dispatch = useDispatch();
 
   function handleBlock() {
@@ -85,18 +89,28 @@ function ContactDisplay({ contact, user, loggedUser }) {
   }
 
   function handleRemove() {
-    if (user.contacts !== null && user.contacts.includes(contact.id)) {
+    if (user.contacts !== null) {
       dispatch(
         updateUser({
           token: loggedUser.token,
           updateData: {
-            contacts: user.contacts.filter((u) => u !== contact.id),
+            contacts: contacted
+              ? user.contacts.filter((u) => u !== contact.id)
+              : [...user.contacts, contact.id],
           },
           id: loggedUser.id,
         }),
       );
 
-      dispatch(removeContact(contact.id));
+      if (contacted) {
+        dispatch(removeContact(contact.id));
+      } else {
+        dispatch(getAllContacts({ token: loggedUser.token }));
+        setTimeout(
+          () => dispatch(getUser({ token: loggedUser.token, id: contact.id })),
+          300,
+        );
+      }
     }
   }
 
@@ -127,7 +141,7 @@ function ContactDisplay({ contact, user, loggedUser }) {
       </ContactData>
       <ButtonContainer>
         <Button onClick={handleBlock}>{blocked ? "Unblock" : "Block"}</Button>
-        <Button onClick={handleRemove}>Remove</Button>
+        <Button onClick={handleRemove}>{contacted ? "Remove" : "Add"}</Button>
       </ButtonContainer>
     </ContactDataContainer>
   );
