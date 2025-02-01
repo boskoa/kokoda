@@ -109,7 +109,7 @@ function Message({ message, parentWidth, setMessages }) {
     >
       {loggedUser.id !== message.userId && (
         <MiniAvatar
-          src={`/public/uploads/avatars/${message.userId}.png`}
+          src={`/public/uploads/avatars/${message.userId}.webp`}
           alt="user avatar"
           onLoad={(e) => {
             e.currentTarget.style.opacity = 1;

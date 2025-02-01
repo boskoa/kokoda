@@ -112,7 +112,7 @@ function SingleChat({ chat }) {
       <Avatar>
         <UserIcon
           // Remove image extension after upload implementation
-          src={`/public/uploads/${directory}/${imageId}.png`}
+          src={`/public/uploads/${directory}/${imageId}.webp`}
           alt="user avatar"
           onLoad={(e) => {
             e.currentTarget.style.opacity = 1;
