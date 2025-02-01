@@ -12,7 +12,7 @@ const BlockedContainer = styled.div`
   bottom: 0;
   backdrop-filter: blur(2px);
   background-color: #ffd9009f;
-  display: flex;
+  display: ${({ $show }) => ($show ? "flex" : "none")};
   flex-direction: column;
   align-items: stretch;
   padding: 10px;
@@ -23,20 +23,19 @@ const ContactContainer = styled.div`
   justify-content: space-between;
 `;
 
-function BlockedContactsModal() {
+function BlockedContactsModal({ showBlockedModal, setShowBlockedModal }) {
   const loggedUser = useSelector(selectLoggedUser);
   const user = useSelector((state) => selectUserById(state, loggedUser.id));
   const blocked = useSelector(selectAllContacts).filter((c) =>
     user?.blockedUsers?.includes(c.id),
   );
 
-  if (!user?.blockedUsers) return null;
-
   return (
-    <BlockedContainer>
-      {blocked.map((b) => (
+    <BlockedContainer $show={showBlockedModal}>
+      {blocked?.map((b) => (
         <ContactContainer key={b.id}>{b.name}</ContactContainer>
       ))}
+      <button onClick={(e) => setShowBlockedModal(false)}>Close</button>
     </BlockedContainer>
   );
 }

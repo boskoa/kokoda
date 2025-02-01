@@ -37,7 +37,6 @@ function HomePage() {
   const dispatch = useDispatch();
   const menuRef = useRef(null);
   const headerRef = useRef(null);
-  const lastMessageId = useRef(null);
 
   const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser?.id, {
     onOpen: () => {

@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import styled from "styled-components";
 import BlockedContactsModal from "./BlockedContactsModal";
 
@@ -43,10 +43,15 @@ const Button = styled.button`
 `;
 
 const Menu = forwardRef(function Menu({ menu }, ref) {
+  const [showBlockedModal, setShowBlockedModal] = useState(false);
+
   return (
     <MenuContainer $show={menu} ref={ref}>
-      <Button>Blocked users</Button>
-      <BlockedContactsModal />
+      <Button onClick={() => setShowBlockedModal(true)}>Blocked users</Button>
+      <BlockedContactsModal
+        showBlockedModal={showBlockedModal}
+        setShowBlockedModal={setShowBlockedModal}
+      />
     </MenuContainer>
   );
 });
