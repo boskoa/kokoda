@@ -37,18 +37,18 @@ const SendButton = styled.button`
   }
 `;
 
-function Input({ send }) {
+function Input({ send, blocked }) {
   const [message, setMessage] = useState("");
 
   return (
     <InputContainer>
       <TextInput
         type="text"
-        value={message}
+        value={blocked ? "You are blocked by this user" : message}
         onChange={(e) => setMessage(e.target.value)}
       />
       <SendButton
-        disabled={message.trim().length < 1}
+        disabled={message.trim().length < 1 || blocked}
         onClick={() => {
           send(message);
           setMessage("");

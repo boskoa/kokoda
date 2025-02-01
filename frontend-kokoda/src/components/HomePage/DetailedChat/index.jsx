@@ -20,7 +20,6 @@ import Message from "./Message";
 import WSContext from "../wsContext";
 import Scroller from "./Scroller";
 import {
-  clearUnseen,
   selectUnseenById,
   updateUnseen,
 } from "../../../features/unseen/unseenSlice";
@@ -113,7 +112,7 @@ function DetailedChat() {
   const chat = useSelector((state) => selectChatById(state, id));
   const users = useSelector(selectAllUsers);
   const [messages, setMessages] = useState([]);
-  const lastMessageCount = useRef(-1);
+  const [blocked, setBlocked] = useState(false);
   const dispatch = useDispatch();
   const limit = 10;
   const [loading, setLoading] = useState(false);
@@ -274,7 +273,13 @@ function DetailedChat() {
         Authorization: `bearer ${loggedUser.token}`,
       },
     };
-    await axios.post("/api/messages", { chatId: chat.id, text }, config);
+    try {
+      await axios.post("/api/messages", { chatId: chat.id, text }, config);
+    } catch (error) {
+      if (error.response.data.error === "You are blocked by this user") {
+        setBlocked(true);
+      }
+    }
   }
 
   return (
@@ -325,7 +330,7 @@ function DetailedChat() {
           style={{ marginTop: 300 }}
         />
       </Messages>
-      <Input send={sendMessage} />
+      <Input send={sendMessage} blocked={blocked} />
       <Scroller unseen={unseen?.count} scrollDown={scrollDown} />
       <ChatSettings
         ref={settingsRef}

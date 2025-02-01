@@ -22,7 +22,7 @@ const MenuContainer = styled.div`
   overflow: auto;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 100px;
   border: none;
   background-color: coral;

@@ -22,8 +22,20 @@ router.post("/", tokenExtractor, async (req, res, next) => {
   const newData = { ...req.body, userId: req.decodedToken.id };
 
   try {
-    const message = await Message.create(newData);
     const chat = await Chat.findByPk(req.body.chatId);
+
+    if (!chat.group) {
+      const receiverId = chat.members.filter(
+        (m) => m !== req.decodedToken.id,
+      )[0];
+      const receiver = await User.findByPk(receiverId);
+      if (receiver.blockedUsers.includes(req.decodedToken.id)) {
+        return res.status(401).json({ error: "You are blocked by this user" });
+      }
+    }
+
+    const message = await Message.create(newData);
+
     req.app.locals.wsClients.forEach((c) => {
       if (chat.members.includes(parseInt(c.clientId))) {
         c.send(JSON.stringify(message));

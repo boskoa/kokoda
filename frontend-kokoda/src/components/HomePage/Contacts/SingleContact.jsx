@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import user from "/user.svg";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectLoggedUser } from "../../../features/login/loginSlice";
+import { selectUserById } from "../../../features/users/usersSlice";
 
 const ContactContainer = styled.div`
   display: flex;
@@ -34,9 +37,9 @@ const UserIcon = styled.img`
 
 const ContactData = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
+  //flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   gap: 5px;
   width: calc(100% - 60px - 5px);
   position: relative;
@@ -57,15 +60,23 @@ const ContactBackground = styled.div`
 
 const ContactName = styled.h2`
   font-size: 14px;
-  height: 50%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 5px;
+`;
+
+const Blocked = styled.span`
+  padding: 2px;
+  background-color: gold;
+  color: black;
+  font-size: 12px;
+  border-radius: 3px;
 `;
 
 function SingleContact({ contact }) {
   const navigate = useNavigate();
+  const loggedUser = useSelector(selectLoggedUser);
+  const userData = useSelector((state) => selectUserById(state, loggedUser.id));
 
   return (
     <ContactContainer onClick={() => navigate(`/contacts/${contact.id}`)}>
@@ -87,6 +98,9 @@ function SingleContact({ contact }) {
       </Avatar>
       <ContactData>
         <ContactName>{contact.name}</ContactName>
+        {userData.blockedUsers.includes(contact.id) && (
+          <Blocked>Blocked</Blocked>
+        )}
       </ContactData>
       <ContactBackground />
     </ContactContainer>
