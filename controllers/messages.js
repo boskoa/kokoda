@@ -45,9 +45,10 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
     const chat = await Chat.findByPk(message.chatId);
 
     if (
-      sender?.id !== message.userId ||
-      !sender?.admin ||
-      !chat.admins.includes(req.decodedToken.id)
+      sender?.id !== message.userId &&
+      !sender?.admin &&
+      !sender.admin &&
+      !chat.admins?.includes(sender.id)
     ) {
       return res.status(401).json({ error: "Not authorized" });
     }
@@ -58,6 +59,12 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
 
     message.set({ text: req.body.text });
     await message.save();
+
+    req.app.locals.wsClients.forEach((c) => {
+      if (chat.members.includes(parseInt(c.clientId))) {
+        c.send(JSON.stringify(message));
+      }
+    });
 
     return res.status(200).json(message);
   } catch (error) {

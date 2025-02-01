@@ -51,7 +51,6 @@ function MessageEdit({ message, loggedUser, setShowEdit, setMessages }) {
           { text: edit },
           config,
         );
-        console.log("RESP", response.data);
         setMessages((p) =>
           p.map((x) => (response.data.id === x.id ? response.data : x)),
         );
@@ -70,9 +69,9 @@ function MessageEdit({ message, loggedUser, setShowEdit, setMessages }) {
         value={edit}
         onChange={(e) => setEdit(e.target.value)}
       />
-      <Button onClick={handleEdit}>Edit</Button>
-      <Button style={{ marginLeft: 10 }} onClick={() => setShowEdit(false)}>
-        Cancel
+      <Button onClick={() => setShowEdit(false)}>Cancel</Button>
+      <Button style={{ marginLeft: 10 }} onClick={handleEdit}>
+        Edit
       </Button>
     </>
   );

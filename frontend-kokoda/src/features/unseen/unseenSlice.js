@@ -14,6 +14,7 @@ const unseenAdapter = createEntityAdapter({
 const initialState = unseenAdapter.getInitialState({
   loading: false,
   error: null,
+  ignore: false,
 });
 
 export const getAllUnseen = createAsyncThunk(
@@ -49,6 +50,9 @@ const unseenSlice = createSlice({
   initialState,
   reducers: {
     clearUnseen: () => initialState,
+    setIgnore: (state, action) => {
+      state.ignore = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,6 +95,10 @@ export function selectUnseenLoading(state) {
   return state.unseen.loading;
 }
 
-export const { clearUnseen } = unseenSlice.actions;
+export function selectUnseenIgnore(state) {
+  return state.unseen.ignore;
+}
+
+export const { clearUnseen, setIgnore } = unseenSlice.actions;
 
 export default unseenSlice.reducer;

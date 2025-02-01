@@ -252,6 +252,7 @@ function ChatModal({ setAddChatModal }) {
           </>
         )}
         <AddContainer>
+          <Button onClick={() => setAddChatModal(false)}>Close</Button>
           <Button
             onClick={() =>
               chatType === "single" ? handleSingleChat() : handleGroupChat()
@@ -259,7 +260,6 @@ function ChatModal({ setAddChatModal }) {
           >
             Create Chat
           </Button>
-          <Button onClick={() => setAddChatModal(false)}>Close</Button>
         </AddContainer>
       </AddChatContainer>
     </ModalContainer>

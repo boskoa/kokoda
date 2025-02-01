@@ -37,6 +37,7 @@ function HomePage() {
   const dispatch = useDispatch();
   const menuRef = useRef(null);
   const headerRef = useRef(null);
+  const lastMessageId = useRef(null);
 
   const { lastJsonMessage } = useWebSocket(WS_URL + "?id=" + loggedUser?.id, {
     onOpen: () => {
@@ -64,7 +65,14 @@ function HomePage() {
   }, [loggedUser, chats]);
 
   useEffect(() => {
-    if (lastJsonMessage) {
+    let edit = false;
+    if (chats.length && lastJsonMessage) {
+      edit =
+        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0].id >=
+        lastJsonMessage.id;
+    }
+
+    if (lastJsonMessage && !edit) {
       dispatch(addSocketMessage(lastJsonMessage));
 
       if (lastJsonMessage.userId !== loggedUser.id) {
@@ -77,7 +85,16 @@ function HomePage() {
         );
       }
     }
-  }, [lastJsonMessage, loggedUser]);
+
+    if (
+      lastJsonMessage &&
+      edit &&
+      lastJsonMessage.id ===
+        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0].id
+    ) {
+      dispatch(addSocketMessage(lastJsonMessage));
+    }
+  }, [lastJsonMessage, loggedUser, chats.length]);
 
   useEffect(() => {
     function handleMenuClick(e) {

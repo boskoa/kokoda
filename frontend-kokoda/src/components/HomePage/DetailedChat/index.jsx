@@ -20,6 +20,7 @@ import Message from "./Message";
 import WSContext from "../wsContext";
 import Scroller from "./Scroller";
 import {
+  clearUnseen,
   selectUnseenById,
   updateUnseen,
 } from "../../../features/unseen/unseenSlice";
@@ -112,6 +113,7 @@ function DetailedChat() {
   const chat = useSelector((state) => selectChatById(state, id));
   const users = useSelector(selectAllUsers);
   const [messages, setMessages] = useState([]);
+  const lastMessageCount = useRef(-1);
   const dispatch = useDispatch();
   const limit = 10;
   const [loading, setLoading] = useState(false);
@@ -197,16 +199,26 @@ function DetailedChat() {
 
   useEffect(() => {
     if (
-      // delete if no bugs
-      //!initialRef.current &&
+      !initialRef.current &&
       lastJsonMessage &&
       lastJsonMessage.chatId == id
     ) {
-      setMessages((p) =>
-        p.length
-          ? [lastJsonMessage, ...p.filter((m) => m.id !== lastJsonMessage.id)]
-          : [lastJsonMessage],
-      );
+      setMessages((p) => {
+        if (p.length) {
+          if (!p.map((m) => m.id).includes(lastJsonMessage.id)) {
+            return [
+              lastJsonMessage,
+              ...p.filter((m) => m.id !== lastJsonMessage.id),
+            ];
+          } else {
+            return p.map((m) =>
+              m.id === lastJsonMessage.id ? lastJsonMessage : m,
+            );
+          }
+        } else {
+          return [lastJsonMessage];
+        }
+      });
       offsetRef.current += 1;
     }
   }, [lastJsonMessage, id, loggedUser]);
