@@ -57,7 +57,7 @@ function HomePage() {
   }, [loggedUser]);
 
   useEffect(() => {
-    if (chats.length) {
+    if (chats.length && loggedUser) {
       const users = [...new Set(chats.map((c) => c.members).flat())];
       dispatch(getAllUsers({ token: loggedUser.token, query: users }));
     }

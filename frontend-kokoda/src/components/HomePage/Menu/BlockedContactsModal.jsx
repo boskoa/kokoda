@@ -18,6 +18,7 @@ const BlockedContainer = styled.div`
   align-items: center;
   gap: 20px;
   padding: 10px;
+  z-index: 3;
 `;
 
 const Title = styled.h3`

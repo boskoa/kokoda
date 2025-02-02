@@ -11,6 +11,7 @@ const messagesRouter = require("./controllers/messages");
 const contactsRouter = require("./controllers/contacts");
 const unseensRouter = require("./controllers/unseens");
 const backgroundsRouter = require("./controllers/backgrounds");
+const avatarsRouter = require("./controllers/avatars");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/api/messages", messagesRouter);
 app.use("/api/contacts", contactsRouter);
 app.use("/api/unseens", unseensRouter);
 app.use("/api/backgrounds", backgroundsRouter);
+app.use("/api/avatars", avatarsRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));

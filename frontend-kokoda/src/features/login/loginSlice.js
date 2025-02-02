@@ -26,9 +26,9 @@ const loginSlice = createSlice({
     alreadyLogged: (state, action) => {
       state.user = action.payload;
     },
-    logout: (state) => {
-      state.user = null;
+    logout: () => {
       window.localStorage.removeItem("loggedKokoda");
+      return initialState;
     },
     clearLoginError: (state) => {
       state.error = null;
