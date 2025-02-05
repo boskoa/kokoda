@@ -139,8 +139,7 @@ function ChatModal({ setAddChatModal }) {
   }
 
   function handleGroupChat() {
-    if (addedGroupContacts.length > 1) {
-      console.log("NEW");
+    if (addedGroupContacts.length > 0) {
       dispatch(
         createChat({
           token: loggedUser.token,

@@ -346,7 +346,6 @@ const ChatSettings = forwardRef(function ChatSettings(
           <div>
             <MembersTitle>Chat members</MembersTitle>
             <MembersContainer>
-              <Member>{loggedUser.name}</Member>
               {members.map((m) => (
                 <Member
                   title="Remove member from chat?"

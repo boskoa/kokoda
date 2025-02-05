@@ -32,8 +32,8 @@ const MessageContainer = styled.div`
     border-radius: 5px;
     box-shadow: 0px -2px 2px -1px gold;
     text-align: center;
-    right: ${({ $side }) => ($side === "end" ? 0 : "")};
-    left: ${({ $side }) => ($side === "start" ? 0 : "")};
+    right: ${({ $side }) => ($side === "end" ? "0px" : "")};
+    left: ${({ $side }) => ($side === "start" ? "-20px" : "")};
     height: 12px;
     font-size: 12px;
     line-height: 100%;

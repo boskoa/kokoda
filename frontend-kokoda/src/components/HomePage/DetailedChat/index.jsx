@@ -154,7 +154,7 @@ function DetailedChat() {
       stopLoadingRef.current = true;
       return;
     }
-
+    console.log("getmessages", response.data);
     setMessages((p) =>
       p.length ? [...p, ...response.data] : [...response.data],
     );
@@ -162,6 +162,8 @@ function DetailedChat() {
 
   useEffect(() => {
     setLoading(true);
+    console.log("INTER", intersecting);
+    console.log("stopLoading", stopLoadingRef.current);
     if (intersecting && !stopLoadingRef.current) {
       getMessages({
         token: loggedUser.token,
@@ -176,7 +178,9 @@ function DetailedChat() {
   useEffect(() => {
     setLoading(false);
     // Set date element
-    messagesRef.current.childNodes.forEach((c) => c.classList.remove("date"));
+    if (messagesRef.current) {
+      messagesRef.current.childNodes.forEach((c) => c.classList.remove("date"));
+    }
 
     const messageDates = Object.keys(
       Object.groupBy(messages, ({ createdAt }) =>
@@ -189,10 +193,11 @@ function DetailedChat() {
       group[group.length - 1].classList.add("date");
     });
 
-    if (initialRef.current && messages.length) {
+    if (initialRef.current /*  && messages.length */) {
       const vp = document.getElementById("vp");
       vp.scrollTop = vp.scrollHeight;
       initialRef.current = false;
+      console.log("INIT", initialRef);
     }
   }, [messages]);
 
@@ -267,6 +272,15 @@ function DetailedChat() {
     };
   }, []);
 
+  if (!chat || !users)
+    return (
+      <Spinner
+        endRef={observerRef}
+        loading={intersecting && loading && !stopLoadingRef.current}
+        style={{ marginTop: 300 }}
+      />
+    );
+
   async function sendMessage(text) {
     const config = {
       headers: {
@@ -296,9 +310,9 @@ function DetailedChat() {
             <IoArrowBackCircle />
           </Back>
         </IconContext.Provider>
-        {chat?.name ||
+        {chat.name ||
           users.find(
-            (u) => u.id === chat?.members.find((m) => m !== loggedUser.id),
+            (u) => u.id === chat.members.find((m) => m !== loggedUser.id),
           ).name}
         <ChatSettingsButton>
           <img
