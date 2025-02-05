@@ -140,7 +140,7 @@ const Menu = forwardRef(function Menu({ menu }, ref) {
 
   return (
     <MenuContainer $show={menu} ref={ref}>
-      <Title>Customize account</Title>
+      <Title>Account settings</Title>
       <UserData />
       <Separator />
       <Button

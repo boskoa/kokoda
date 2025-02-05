@@ -33,6 +33,9 @@ const loginSlice = createSlice({
     clearLoginError: (state) => {
       state.error = null;
     },
+    updateLoggedUser: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,6 +63,7 @@ export function selectLoggedError(state) {
   return state.login.error;
 }
 
-export const { alreadyLogged, logout, clearLoginError } = loginSlice.actions;
+export const { alreadyLogged, logout, clearLoginError, updateLoggedUser } =
+  loginSlice.actions;
 
 export default loginSlice.reducer;

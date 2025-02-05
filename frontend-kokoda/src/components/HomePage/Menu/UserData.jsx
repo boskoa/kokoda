@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectLoggedUser } from "../../../features/login/loginSlice";
+import {
+  logout,
+  selectLoggedUser,
+  updateLoggedUser,
+} from "../../../features/login/loginSlice";
 import {
   clearUsersError,
   selectUsersError,
@@ -105,6 +109,7 @@ function UserData() {
     register,
     reset,
     handleSubmit,
+    getValues,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
@@ -117,7 +122,13 @@ function UserData() {
 
   useEffect(() => {
     if (submitted && !updateLoading && !updateError) {
-      dispatch(logout());
+      const password = getValues("password");
+      if (password.length) {
+        dispatch(logout());
+      } else {
+        setSubmitted(false);
+      }
+      console.log("PASS", password);
     }
 
     if (submitted && !updateLoading && updateError) {
@@ -142,6 +153,13 @@ function UserData() {
     };
     if (data.password.length) {
       updateData.password = data.password;
+      dispatch(
+        updateUser({
+          token: loggedUser.token,
+          updateData,
+          id: loggedUser.id,
+        }),
+      );
     }
 
     dispatch(
@@ -151,6 +169,9 @@ function UserData() {
         id: loggedUser.id,
       }),
     );
+
+    dispatch(updateLoggedUser(updateData));
+
     setSubmitted(true);
   }
 
@@ -217,7 +238,7 @@ function UserData() {
       <InputContainer>
         <AuthInput
           $color={errors.password ? "red" : "gold"}
-          placeholder="new password"
+          placeholder="new password (needs new login)"
           name="password"
           type="password"
           {...register("password", {
@@ -235,7 +256,7 @@ function UserData() {
         <Button type="button" onClick={() => reset()}>
           Reset
         </Button>
-        <Button type="submit" $disabled={!isValid} title="Will cause log out">
+        <Button type="submit" $disabled={!isValid}>
           Update
         </Button>
       </ButtonContainer>
