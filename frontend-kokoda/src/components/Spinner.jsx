@@ -2,9 +2,9 @@ import styled, { keyframes } from "styled-components";
 
 const SpinnerContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
-  height: 50px;
+  height: 150px;
   width: 100%;
 `;
 

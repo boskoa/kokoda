@@ -29,7 +29,7 @@ import { selectChatById } from "../../../features/chats/chatsSlice";
 import { selectAllUsers } from "../../../features/users/usersSlice";
 
 const DetailedChatsContainer = styled.div`
-  min-height: calc(100vh + 4px);
+  min-height: calc(100vh - 35px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -114,7 +114,7 @@ function DetailedChat() {
   const [messages, setMessages] = useState([]);
   const [blocked, setBlocked] = useState(false);
   const dispatch = useDispatch();
-  const limit = 10;
+  const limit = 20;
   const [loading, setLoading] = useState(false);
   const unseen = useSelector((state) => selectUnseenById(state, id));
   const [scrollDown, setScrollDown] = useState(false);
@@ -154,7 +154,6 @@ function DetailedChat() {
       stopLoadingRef.current = true;
       return;
     }
-    console.log("getmessages", response.data);
     setMessages((p) =>
       p.length ? [...p, ...response.data] : [...response.data],
     );
@@ -162,8 +161,6 @@ function DetailedChat() {
 
   useEffect(() => {
     setLoading(true);
-    console.log("INTER", intersecting);
-    console.log("stopLoading", stopLoadingRef.current);
     if (intersecting && !stopLoadingRef.current) {
       getMessages({
         token: loggedUser.token,
@@ -193,7 +190,7 @@ function DetailedChat() {
       group[group.length - 1].classList.add("date");
     });
 
-    if (initialRef.current /*  && messages.length */) {
+    if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
       vp.scrollTop = vp.scrollHeight;
       initialRef.current = false;
@@ -231,8 +228,8 @@ function DetailedChat() {
     const vp = document.getElementById("vp");
     let lastScrollTop = 0;
     function stopScroll(e) {
-      if (e.target.scrollTop < 300) {
-        e.target.scrollTop = 300;
+      if (e.target.scrollTop < 100) {
+        e.target.scrollTop = 100;
       }
 
       if (
@@ -277,7 +274,6 @@ function DetailedChat() {
       <Spinner
         endRef={observerRef}
         loading={intersecting && loading && !stopLoadingRef.current}
-        style={{ marginTop: 300 }}
       />
     );
 
@@ -341,7 +337,7 @@ function DetailedChat() {
         <Spinner
           endRef={observerRef}
           loading={intersecting && loading && !stopLoadingRef.current}
-          style={{ marginTop: 300 }}
+          style={{ marginBottom: 100 }}
         />
       </Messages>
       <Input send={sendMessage} blocked={blocked} />
