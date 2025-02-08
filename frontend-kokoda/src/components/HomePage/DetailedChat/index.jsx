@@ -194,7 +194,6 @@ function DetailedChat() {
       const vp = document.getElementById("vp");
       vp.scrollTop = vp.scrollHeight;
       initialRef.current = false;
-      console.log("INIT", initialRef);
     }
   }, [messages]);
 
@@ -269,14 +268,14 @@ function DetailedChat() {
     };
   }, []);
 
-  if (!chat || !users)
+  if (!chat || !users) {
     return (
       <Spinner
         endRef={observerRef}
         loading={intersecting && loading && !stopLoadingRef.current}
       />
     );
-
+  }
   async function sendMessage(text) {
     const config = {
       headers: {
@@ -310,7 +309,7 @@ function DetailedChat() {
           users.find(
             (u) => u.id === chat.members.find((m) => m !== loggedUser.id),
           ).name}
-        <ChatSettingsButton>
+        <ChatSettingsButton onClick={() => setShowSettings((p) => !p)}>
           <img
             src={gear}
             title="Chat settings"
@@ -318,7 +317,6 @@ function DetailedChat() {
               filter:
                 "brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(4935%) hue-rotate(357deg) brightness(99%) contrast(105%)",
             }}
-            onClick={() => setShowSettings((p) => !p)}
           />
         </ChatSettingsButton>
       </Title>

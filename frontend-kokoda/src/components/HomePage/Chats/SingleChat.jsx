@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import user from "/user.svg";
+import users from "/users.svg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +9,6 @@ import {
 } from "../../../features/unseen/unseenSlice";
 import NewMessages from "./NewMessages";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
-import { selectContactById } from "../../../features/contacts/contactsSlice";
 import { selectUserById } from "../../../features/users/usersSlice";
 
 const ChatContainer = styled.div`
@@ -88,7 +88,7 @@ function SingleChat({ chat }) {
   const loggedUser = useSelector(selectLoggedUser);
   const count = useSelector((state) => selectUnseenById(state, chat.id))?.count;
   const group = chat.members.length > 2;
-  const directory = group ? "chat" : "avatars";
+  const directory = group ? "chats" : "avatars";
   const contactId = group ? -1 : chat.members.find((m) => m !== loggedUser.id);
   const contact = useSelector((state) => selectUserById(state, contactId));
   const imageId = group
@@ -111,7 +111,6 @@ function SingleChat({ chat }) {
     <ChatContainer onClick={handleClick}>
       <Avatar>
         <UserIcon
-          // Remove image extension after upload implementation
           src={`/public/uploads/${directory}/${imageId}.webp`}
           alt="user avatar"
           onLoad={(e) => {
@@ -119,7 +118,7 @@ function SingleChat({ chat }) {
           }}
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = user;
+            e.currentTarget.src = group ? users : user;
             e.currentTarget.style.opacity = 1;
           }}
         />
