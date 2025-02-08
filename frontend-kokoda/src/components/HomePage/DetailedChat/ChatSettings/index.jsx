@@ -69,6 +69,7 @@ const ChangeButton = styled.button`
   font-weight: 600;
   padding: 2px;
   cursor: pointer;
+  text-align: center;
 `;
 
 const MembersContainer = styled.div`
@@ -106,25 +107,28 @@ const FieldLabel = styled.label`
 
 const BackgroundField = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: start;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
+  height: 70px;
 `;
 
 const Image = styled.img`
-  height: 120px;
-  width: 220px;
+  height: 100%;
   display: block;
   object-fit: cover;
 `;
 
 const Form = styled.form`
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: stretch;
+  align-self: flex-start;
   gap: 5px;
-  width: 100%;
+  width: 40%;
+  height: 100%;
+  transition: all 0.2s;
 `;
 
 const SetButton = styled.div`
@@ -134,14 +138,17 @@ const SetButton = styled.div`
   font-weight: 600;
   padding: 2px;
   cursor: pointer;
+  text-align: center;
 `;
 
 const ChatSettings = forwardRef(function ChatSettings(
   { show, chat, loggedUser, setDeletedBg },
   ref,
 ) {
-  const [name, setName] = useState("Choose background");
-  const [file, setFile] = useState(null);
+  const [bgName, setBgName] = useState("Choose background");
+  const [bgFile, setBgFile] = useState(null);
+  const [avatarName, setAvatarName] = useState("Choose background");
+  const [avatarFile, setAvatarFile] = useState(null);
   const [chatName, setChatName] = useState("");
   const [addedMember, setAddedMember] = useState("");
   const [removeMember, setRemoveMember] = useState();
@@ -254,14 +261,14 @@ const ChatSettings = forwardRef(function ChatSettings(
     }
   }
 
-  async function handleImageSubmit(e) {
+  async function handleBgImageSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("file", file);
+    formData.append("name", bgName);
+    formData.append("file", bgFile);
 
     try {
-      await axios.post(`/api/backgrounds/${name}`, formData, {
+      await axios.post(`/api/backgrounds/${bgName}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `bearer ${loggedUser.token}`,
@@ -274,7 +281,7 @@ const ChatSettings = forwardRef(function ChatSettings(
     }
   }
 
-  async function handleRemoveImage() {
+  async function handleRemoveBgImage() {
     try {
       const response = await axios.delete(
         `/api/backgrounds/${loggedUser.id}-${chat.id}`,
@@ -288,6 +295,42 @@ const ChatSettings = forwardRef(function ChatSettings(
       if (response.status === 200) {
         setDeletedBg(true);
       }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  async function handleAvatarImageSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", avatarName);
+    formData.append("file", avatarFile);
+
+    try {
+      await axios.post(`/api/chatAvatars/${avatarName}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `bearer ${loggedUser.token}`,
+        },
+      });
+
+      //window.location.reload();
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  async function handleRemoveAvatarImage() {
+    try {
+      const response = await axios.delete(`/api/chatAvatars/${chat.id}`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `bearer ${loggedUser.token}`,
+        },
+      });
+      /*       if (response.status === 200) {
+        setDeletedBg(true);
+      } */
     } catch (error) {
       console.log("Error:", error);
     }
@@ -391,14 +434,14 @@ const ChatSettings = forwardRef(function ChatSettings(
         </AdminFields>
       )}
       <ChangeButton
-        onClick={handleRemoveImage}
+        onClick={handleRemoveBgImage}
         style={{ textAlign: "center", marginBottom: -10 }}
       >
         Remove current background
       </ChangeButton>
       <BackgroundField>
         <Form id="background-form" encType="multipart/form-data">
-          <label htmlFor="background" style={{ maxWidth: "70%" }}>
+          <label htmlFor="background">
             <input
               style={{
                 display: "none",
@@ -407,27 +450,69 @@ const ChatSettings = forwardRef(function ChatSettings(
               type="file"
               name="background"
               onChange={(e) => {
-                setName(`${loggedUser.id}-${chat.id}`);
-                setFile(e.target.files[0]);
+                setBgName(`${loggedUser.id}-${chat.id}`);
+                setBgFile(e.target.files[0]);
               }}
             />
             <SetButton type="button">Choose image</SetButton>
           </label>
           <ChangeButton
             type="submit"
-            disabled={!file}
-            onClick={(e) => handleImageSubmit(e)}
+            disabled={!bgFile}
+            onClick={(e) => handleBgImageSubmit(e)}
           >
-            Set
+            Set image
           </ChangeButton>
         </Form>
-        {file && (
+        {bgFile && (
           <Image
             alt="chosen background"
             src={
-              file
-                ? URL.createObjectURL(file)
+              bgFile
+                ? URL.createObjectURL(bgFile)
                 : `/public/uploads/backgrounds/${loggedUser?.id}-${chat?.id}.webp`
+            }
+          />
+        )}
+      </BackgroundField>
+      <ChangeButton
+        onClick={handleRemoveAvatarImage}
+        style={{ textAlign: "center", marginBottom: -10 }}
+      >
+        Remove current avatar
+      </ChangeButton>
+      <BackgroundField>
+        <Form id="chat-avatar-form" encType="multipart/form-data">
+          <label htmlFor="chat-avatar">
+            <input
+              style={{
+                display: "none",
+              }}
+              id="chat-avatar"
+              type="file"
+              name="chat-avatar"
+              onChange={(e) => {
+                setAvatarName(chat.id);
+                setAvatarFile(e.target.files[0]);
+              }}
+            />
+            <SetButton type="button">Choose image</SetButton>
+          </label>
+          <ChangeButton
+            type="submit"
+            disabled={!avatarFile}
+            onClick={(e) => handleAvatarImageSubmit(e)}
+          >
+            Set image
+          </ChangeButton>
+        </Form>
+        {avatarFile && (
+          <Image
+            alt="chosen background"
+            src={
+              avatarFile
+                ? URL.createObjectURL(avatarFile)
+                : `/public/uploads/chats/${chat?.id}.webp`
             }
           />
         )}

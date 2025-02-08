@@ -12,6 +12,7 @@ const contactsRouter = require("./controllers/contacts");
 const unseensRouter = require("./controllers/unseens");
 const backgroundsRouter = require("./controllers/backgrounds");
 const avatarsRouter = require("./controllers/avatars");
+const chatAvatarsRouter = require("./controllers/chatAvatars");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/contacts", contactsRouter);
 app.use("/api/unseens", unseensRouter);
 app.use("/api/backgrounds", backgroundsRouter);
 app.use("/api/avatars", avatarsRouter);
+app.use("/api/chatAvatars", chatAvatarsRouter);
 
 app.all("/*", (_req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
