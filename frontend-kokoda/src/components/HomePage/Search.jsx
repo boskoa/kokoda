@@ -12,13 +12,19 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
+  position: relative;
+  left: -8px;
   height: 100%;
-  width: 80%;
+  width: 280px;
   border-radius: 15px;
   border: 2px solid gold;
   background-color: #4c3f20;
   color: gold;
-  padding-left: 28px;
+  padding-left: 24px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const SearchIcon = styled.img`
@@ -26,15 +32,20 @@ const SearchIcon = styled.img`
     brightness(101%) contrast(105%);
   width: 16px;
   height: 16px;
-  position: absolute;
-  left: 36px;
+  position: relative;
+  left: 13px;
+  z-index: 2;
 `;
 
-function Search() {
+function Search({ filter, setFilter }) {
   return (
     <SearchContainer>
       <SearchIcon src={search} />
-      <SearchInput type="text" />
+      <SearchInput
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value.toLowerCase())}
+      />
     </SearchContainer>
   );
 }
