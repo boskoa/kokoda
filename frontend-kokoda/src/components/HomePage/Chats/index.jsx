@@ -5,6 +5,7 @@ import SingleChat from "./SingleChat";
 import { useEffect, useState } from "react";
 import ChatModal from "./ChatModal";
 import AddChat from "./AddChat";
+import Search from "../Search";
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ function Chats() {
 
   return (
     <ChatsContainer>
+      <Search />
       {chats.map((c) => (
         <SingleChat key={c.id} chat={c} />
       ))}

@@ -313,8 +313,6 @@ const ChatSettings = forwardRef(function ChatSettings(
           Authorization: `bearer ${loggedUser.token}`,
         },
       });
-
-      //window.location.reload();
     } catch (error) {
       console.log("Error:", error);
     }
@@ -328,14 +326,16 @@ const ChatSettings = forwardRef(function ChatSettings(
           Authorization: `bearer ${loggedUser.token}`,
         },
       });
-      /*       if (response.status === 200) {
-        setDeletedBg(true);
-      } */
     } catch (error) {
       console.log("Error:", error);
     }
   }
+  /* 
+  pretraga korisnika
+pretraga četova
 
+wss
+ */
   return (
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
