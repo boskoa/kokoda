@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { forwardRef, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updateChat } from "../../../../features/chats/chatsSlice";
+import {
+  removeGroupChat,
+  updateChat,
+} from "../../../../features/chats/chatsSlice";
 import { selectAllContacts } from "../../../../features/contacts/contactsSlice";
 import RemoveMemberModal from "./RemoveMemberModal";
 import RemoveAdminModal from "./RemoveAdminModal";
 import { selectAllUsers } from "../../../../features/users/usersSlice";
+import { useNavigate } from "react-router-dom";
 
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
@@ -162,6 +166,7 @@ const ChatSettings = forwardRef(function ChatSettings(
   const members = users.filter((u) => chat?.members.includes(u.id));
   const adminConditions =
     (loggedUser?.admin || chat.admins?.includes(loggedUser.id)) && chat.group;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (chat) {
@@ -330,6 +335,25 @@ const ChatSettings = forwardRef(function ChatSettings(
       console.log("Error:", error);
     }
   }
+
+  async function handleLeaveChat() {
+    const config = {
+      headers: {
+        Authorization: `bearer ${loggedUser.token}`,
+      },
+    };
+
+    const updateData = {
+      members: chat.members.filter((m) => m !== loggedUser.id),
+    };
+    if (chat.admins.includes(loggedUser.id)) {
+      updateData.admins = chat.admins.filter((a) => a !== loggedUser.id);
+    }
+
+    await axios.patch(`/api/chats/${chat.id}`, updateData, config);
+    dispatch(removeGroupChat(chat.id));
+    navigate("/chats");
+  }
   /* 
 wss
  */
@@ -429,6 +453,9 @@ wss
             />
           </ChangeField>
         </AdminFields>
+      )}
+      {chat.group && (
+        <ChangeButton onClick={handleLeaveChat}>Leave chat</ChangeButton>
       )}
       <ChangeButton
         onClick={handleRemoveBgImage}
