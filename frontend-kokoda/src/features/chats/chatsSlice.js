@@ -64,6 +64,9 @@ const chatsSlice = createSlice({
       });
     },
     clearChats: () => initialState,
+    addGroupChat: (state, action) => {
+      chatsAdapter.upsertOne(state, action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -123,6 +126,7 @@ export function selectChatsError(state) {
   return state.chats.error;
 }
 
-export const { addSocketMessage, clearChats } = chatsSlice.actions;
+export const { addSocketMessage, clearChats, addGroupChat } =
+  chatsSlice.actions;
 
 export default chatsSlice.reducer;

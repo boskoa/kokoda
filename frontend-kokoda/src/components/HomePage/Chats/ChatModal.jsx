@@ -1,19 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
-import axios from "axios";
-import {
-  getAllContacts,
-  selectAllContacts,
-} from "../../../features/contacts/contactsSlice";
-import { selectUserById, updateUser } from "../../../features/users/usersSlice";
-import {
-  createChat,
-  selectAllChats,
-  selectChatsError,
-  selectChatsIds,
-} from "../../../features/chats/chatsSlice";
+import { selectAllContacts } from "../../../features/contacts/contactsSlice";
+import { createChat, selectAllChats } from "../../../features/chats/chatsSlice";
 import { useNavigate } from "react-router-dom";
 
 const ModalContainer = styled.div`
@@ -26,6 +16,7 @@ const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 3;
 `;
 
 const AddChatContainer = styled.div`

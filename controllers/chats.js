@@ -3,6 +3,21 @@ const { Chat, User, Message, Unseen } = require("../models");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 const router = require("express").Router();
 
+router.get("/public-chats", tokenExtractor, async (req, res, next) => {
+  try {
+    const sender = await User.findByPk(req.decodedToken.id);
+    const publicChats = await Chat.findAll({
+      where: { public: true },
+      include: { model: Message, limit: 1, order: [["id", "DESC"]] },
+    });
+    return res
+      .status(200)
+      .json(publicChats.filter((c) => !c.members.includes(sender.id)));
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/", tokenExtractor, async (req, res, next) => {
   try {
     const chats = await Chat.findAll({
@@ -95,15 +110,14 @@ router.patch("/:id", tokenExtractor, async (req, res, next) => {
     const sender = await User.findByPk(req.decodedToken.id);
     const chat = await Chat.findByPk(req.params.id);
 
-    if (!sender.admin && !chat.admins?.includes(sender.id)) {
-      return res.status(401).json({ error: "Not authorized" });
-    }
-
     if (
       chat.group &&
       req.body.members?.length &&
       !sender.admin &&
-      !chat.admins?.includes(sender.id)
+      !chat.admins?.includes(sender.id) &&
+      !chat.public &&
+      Object.keys(req.body).length > 1 &&
+      Object.keys(req.body)[0] !== "members"
     ) {
       return res.status(401).json({ error: "Not authorized" });
     }

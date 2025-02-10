@@ -331,9 +331,6 @@ const ChatSettings = forwardRef(function ChatSettings(
     }
   }
   /* 
-  pretraga korisnika
-pretraga četova
-
 wss
  */
   return (

@@ -8,6 +8,8 @@ import AddChat from "./AddChat";
 import Search from "../Search";
 import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
+import JoinGroupChat from "./JoinGroupChat";
+import GroupChatModal from "./GroupChatModal";
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -24,6 +26,7 @@ function Chats() {
   const loggedUser = useSelector(selectLoggedUser);
   const [filter, setFilter] = useState("");
   const [addChatModal, setAddChatModal] = useState(false);
+  const [joinChatModal, setJoinChatModal] = useState(false);
 
   useEffect(() => {
     document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
@@ -48,7 +51,9 @@ function Chats() {
           <SingleChat key={c.id} chat={c} />
         ))}
       <AddChat setAddChatModal={setAddChatModal} />
+      <JoinGroupChat setJoinChatModal={setJoinChatModal} />
       {addChatModal && <ChatModal setAddChatModal={setAddChatModal} />}
+      {joinChatModal && <GroupChatModal setJoinChatModal={setJoinChatModal} />}
     </ChatsContainer>
   );
 }
