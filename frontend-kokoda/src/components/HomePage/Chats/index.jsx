@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { selectAllChats } from "../../../features/chats/chatsSlice";
 import styled from "styled-components";
 import SingleChat from "./SingleChat";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChatModal from "./ChatModal";
 import AddChat from "./AddChat";
 import Search from "../Search";
@@ -27,10 +27,6 @@ function Chats() {
   const [filter, setFilter] = useState("");
   const [addChatModal, setAddChatModal] = useState(false);
   const [joinChatModal, setJoinChatModal] = useState(false);
-
-  useEffect(() => {
-    document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <ChatsContainer>

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 import SingleContact from "./SingleContact";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddContact from "./AddContact";
 import ContactModal from "./ContactModal";
 import Search from "../Search";
@@ -20,10 +20,6 @@ function Contacts() {
   const contacts = useSelector(selectAllContacts);
   const [addContactModal, setAddContactModal] = useState(false);
   const [filter, setFilter] = useState("");
-
-  useEffect(() => {
-    document.getElementById("vp").scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
 
   return (
     <ContactsContainer>
