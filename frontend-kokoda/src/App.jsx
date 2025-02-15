@@ -7,7 +7,6 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import Test from "./components/Test";
 import ViewPort from "./components/ViewPort";
 import Intro from "./components/Intro";
 import Chats from "./components/HomePage/Chats";
@@ -99,10 +98,6 @@ const router = createBrowserRouter([
         ],
       },
     ],
-  },
-  {
-    path: "test",
-    element: <Test />,
   },
   {
     path: "*",

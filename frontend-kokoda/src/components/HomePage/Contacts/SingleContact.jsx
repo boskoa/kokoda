@@ -37,7 +37,6 @@ const UserIcon = styled.img`
 
 const ContactData = styled.div`
   display: flex;
-  //flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 5px;

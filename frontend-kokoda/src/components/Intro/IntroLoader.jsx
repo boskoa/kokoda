@@ -12,8 +12,6 @@ const LoaderContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.main.bg};
-  //border: 2px solid ${({ theme }) => theme.main.bg};
-  //border-radius: 100% / 125% 125% 80% 80%;
 
   @media only screen and (max-width: 800px) {
     font-size: 12px;

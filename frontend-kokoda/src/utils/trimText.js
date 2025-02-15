@@ -9,11 +9,6 @@ export default function trimText(container, text, setText, lines = 1) {
 
   for (let i = 0; i < text.length; i++) {
     testElement.textContent += text[i];
-    /* console.log(
-      testElement.getBoundingClientRect().width,
-      container.clientWidth,
-      text,
-    ); */
     if (
       testElement.getBoundingClientRect().width >
       container.clientWidth * lines

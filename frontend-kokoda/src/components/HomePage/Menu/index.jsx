@@ -22,7 +22,6 @@ const MenuContainer = styled.div`
   gap: 20px;
   transform: ${({ $show }) => ($show ? "translateX(0%)" : "translateX(101%)")};
   transition: all 0.4s;
-  //opacity: 0.7;
   z-index: 2;
   backdrop-filter: blur(5px);
   overflow: auto;
