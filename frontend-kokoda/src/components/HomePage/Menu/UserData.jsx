@@ -128,7 +128,6 @@ function UserData() {
       } else {
         setSubmitted(false);
       }
-      console.log("PASS", password);
     }
 
     if (submitted && !updateLoading && updateError) {

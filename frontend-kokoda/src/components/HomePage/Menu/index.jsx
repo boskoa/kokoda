@@ -63,7 +63,7 @@ export const Button = styled.button`
   font-weight: 600;
   padding: 3px;
   cursor: pointer;
-  transition: 0.1s;
+  transition: all 0.1s;
 
   &:hover {
     transform: scale(1.05);
@@ -81,6 +81,7 @@ const ChooseButton = styled.div`
   font-weight: 600;
   padding: 3px;
   cursor: pointer;
+  transition: all 0.1s;
 
   &:hover {
     transform: scale(1.05);
