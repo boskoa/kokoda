@@ -1,4 +1,4 @@
-import{d as n,u as y,a as c,s as f,b,j as t,c as A,I as S,e as U,r as p,f as j,g as I,h as z,i as B,k as T,S as D}from"./index-uHRheYgX.js";const E=n.div`
+import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as U,r as p,f as m,g as I,h as z,i as B,k as T,S as D}from"./index-O-xb5Ixg.js";const E=n.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
@@ -51,7 +51,7 @@ import{d as n,u as y,a as c,s as f,b,j as t,c as A,I as S,e as U,r as p,f as j,g
   color: black;
   font-size: 12px;
   border-radius: 3px;
-`;function P({contact:s}){var r;const d=y(),i=c(f),a=c(e=>b(e,i.id));return t.jsxs(E,{onClick:()=>d(`/contacts/${s.id}`),children:[t.jsx(M,{children:t.jsx($,{src:`/public/uploads/avatars/${s.id}.webp`,alt:"user avatar",onLoad:e=>{e.currentTarget.style.opacity=1},onError:e=>{e.currentTarget.onerror=null,e.currentTarget.src=A,e.currentTarget.style.opacity=1},height:"100%",width:"100%"})}),t.jsxs(L,{children:[t.jsx(N,{children:s.name}),((r=a.blockedUsers)==null?void 0:r.includes(s.id))&&t.jsx(O,{children:"Blocked"})]}),t.jsx(F,{})]})}const R=n.button`
+`;function P({contact:a}){var r;const d=y(),i=c(j),s=c(e=>C(e,i.id));return t.jsxs(E,{onClick:()=>d(`/contacts/${a.id}`),children:[t.jsx(M,{children:t.jsx($,{src:`/public/uploads/avatars/${a.id}.webp`,alt:"user avatar",onLoad:e=>{e.currentTarget.style.opacity=1},onError:e=>{e.currentTarget.onerror=null,e.currentTarget.src=A,e.currentTarget.style.opacity=1},height:"100%",width:"100%"})}),t.jsxs(L,{children:[t.jsx(N,{children:a.name}),((r=s.blockedUsers)==null?void 0:r.includes(a.id))&&t.jsx(O,{children:"Blocked"})]}),t.jsx(F,{})]})}const R=n.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -72,7 +72,7 @@ import{d as n,u as y,a as c,s as f,b,j as t,c as A,I as S,e as U,r as p,f as j,g
     transform: scale(0.95);
     box-shadow: 0 0 0 0 gold;
   }
-`;function q({setAddContactModal:s}){return t.jsx(R,{onClick:()=>s(!0),title:"Add contact",children:t.jsx(S.Provider,{value:{color:"gold",size:"100%"},children:t.jsx(U,{})})})}const G=n.div`
+`;function q({setAddContactModal:a}){return t.jsx(R,{onClick:()=>a(!0),title:"Add contact",children:t.jsx(S.Provider,{value:{color:"gold",size:"100%"},children:t.jsx(U,{})})})}const G=n.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -95,7 +95,7 @@ import{d as n,u as y,a as c,s as f,b,j as t,c as A,I as S,e as U,r as p,f as j,g
   justify-content: space-between;
   align-items: stretch;
   align-self: stretch;
-`,g=n.button`
+`,f=n.button`
   width: 60px;
   border: none;
   background-color: coral;
@@ -119,11 +119,11 @@ import{d as n,u as y,a as c,s as f,b,j as t,c as A,I as S,e as U,r as p,f as j,g
   padding: 2px;
   width: 160px;
   outline: none;
-`,h=n.option``;function Q({setAddContactModal:s}){const[d,i]=p.useState([]),[a,r]=p.useState(-1),e=c(f),C=c(o=>b(o,e.id)),m=c(j),x=I();function v(){a!==-1&&(x(z({token:e.token,updateData:{contacts:[...new Set([...C.contacts,parseInt(a)])]},id:e.id})),r(-1),i(o=>o.filter(l=>parseInt(a)!==l.id)),setTimeout(()=>x(B({token:e.token})),300))}return p.useEffect(()=>{async function o(){const l={headers:{Authorization:`bearer ${e.token}`}},w=await T.get("/api/users",l);i(()=>w.data.filter(u=>!m.map(k=>k.id).includes(u.id)&&u.id!==e.id))}e&&o()},[e]),t.jsx(G,{children:t.jsxs(H,{children:[t.jsxs(J,{children:[t.jsxs(K,{name:"AddContact",value:a,onChange:o=>r(o.target.value),children:[t.jsx(h,{}),d.sort((o,l)=>o.name.localeCompare(l.name)).map(o=>t.jsx(h,{value:o.id,children:o.name},o.id))]}),t.jsx(g,{disabled:a===-1,onClick:v,children:"Add user"})]}),t.jsx(g,{onClick:()=>s(!1),children:"Close"})]})})}const V=n.div`
+`,b=n.option``;function Q({setAddContactModal:a}){const[d,i]=p.useState([]),[s,r]=p.useState(-1),e=c(j),u=c(o=>C(o,e.id)),v=c(m),g=I();function w(){var o;s!==-1&&(g(z({token:e.token,updateData:{contacts:[...new Set((o=u.contacts)!=null&&o.length?[...u.contacts,parseInt(s)]:[parseInt(s)])]},id:e.id})),r(-1),i(l=>l.filter(x=>parseInt(s)!==x.id)),setTimeout(()=>g(B({token:e.token})),300))}return p.useEffect(()=>{async function o(){const l={headers:{Authorization:`bearer ${e.token}`}},x=await T.get("/api/users",l);i(()=>x.data.filter(h=>!v.map(k=>k.id).includes(h.id)&&h.id!==e.id))}e&&o()},[e]),t.jsx(G,{children:t.jsxs(H,{children:[t.jsxs(J,{children:[t.jsxs(K,{name:"AddContact",value:s,onChange:o=>r(o.target.value),children:[t.jsx(b,{}),d.sort((o,l)=>o.name.localeCompare(l.name)).map(o=>t.jsx(b,{value:o.id,children:o.name},o.id))]}),t.jsx(f,{disabled:s===-1,onClick:w,children:"Add user"})]}),t.jsx(f,{onClick:()=>a(!1),children:"Close"})]})})}const V=n.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 5px;
   width: 100%;
   justify-content: start;
-`;function X(){const s=c(j),[d,i]=p.useState(!1),[a,r]=p.useState("");return t.jsxs(V,{children:[t.jsx(D,{filter:a,setFilter:r}),s.filter(e=>e.name.toLowerCase().includes(a)).map(e=>t.jsx(P,{contact:e},e.id)),t.jsx(q,{setAddContactModal:i}),d&&t.jsx(Q,{setAddContactModal:i})]})}export{X as default};
+`;function X(){const a=c(m),[d,i]=p.useState(!1),[s,r]=p.useState("");return t.jsxs(V,{children:[t.jsx(D,{filter:s,setFilter:r}),a.filter(e=>e.name.toLowerCase().includes(s)).map(e=>t.jsx(P,{contact:e},e.id)),t.jsx(q,{setAddContactModal:i}),d&&t.jsx(Q,{setAddContactModal:i})]})}export{X as default};

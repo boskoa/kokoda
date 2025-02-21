@@ -82,7 +82,13 @@ function ContactModal({ setAddContactModal }) {
         updateUser({
           token: loggedUser.token,
           updateData: {
-            contacts: [...new Set([...user.contacts, parseInt(addedContact)])],
+            contacts: [
+              ...new Set(
+                user.contacts?.length
+                  ? [...user.contacts, parseInt(addedContact)]
+                  : [parseInt(addedContact)],
+              ),
+            ],
           },
           id: loggedUser.id,
         }),
