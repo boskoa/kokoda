@@ -29,7 +29,7 @@ router.post("/", tokenExtractor, async (req, res, next) => {
         (m) => m !== req.decodedToken.id,
       )[0];
       const receiver = await User.findByPk(receiverId);
-      if (receiver.blockedUsers.includes(req.decodedToken.id)) {
+      if (receiver.blockedUsers?.includes(req.decodedToken.id)) {
         return res.status(401).json({ error: "You are blocked by this user" });
       }
     }

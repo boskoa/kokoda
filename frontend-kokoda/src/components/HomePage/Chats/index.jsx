@@ -10,6 +10,7 @@ import { selectAllContacts } from "../../../features/contacts/contactsSlice";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import JoinGroupChat from "./JoinGroupChat";
 import GroupChatModal from "./GroupChatModal";
+import { selectAllUsers } from "../../../features/users/usersSlice";
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -22,11 +23,13 @@ const ChatsContainer = styled.div`
 
 function Chats() {
   const chats = useSelector(selectAllChats);
-  const contacts = useSelector(selectAllContacts);
+  const users = useSelector(selectAllUsers);
   const loggedUser = useSelector(selectLoggedUser);
   const [filter, setFilter] = useState("");
   const [addChatModal, setAddChatModal] = useState(false);
   const [joinChatModal, setJoinChatModal] = useState(false);
+
+  if (!chats.length) return null;
 
   return (
     <ChatsContainer>
@@ -35,12 +38,11 @@ function Chats() {
         .filter((c) =>
           c.name
             ? c.name.toLowerCase().includes(filter)
-            : contacts
+            : users
                 .find(
-                  (contact) =>
-                    contact.id === c.members.find((m) => m !== loggedUser.id),
+                  (u) => u.id === c.members.find((m) => m !== loggedUser.id),
                 )
-                .name.toLowerCase()
+                ?.name.toLowerCase()
                 .includes(filter),
         )
         .map((c) => (

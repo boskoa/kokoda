@@ -67,7 +67,7 @@ function HomePage() {
     let edit = false;
     if (chats.length && lastJsonMessage) {
       edit =
-        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0].id >=
+        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0]?.id >=
         lastJsonMessage.id;
     }
 
@@ -89,7 +89,7 @@ function HomePage() {
       lastJsonMessage &&
       edit &&
       lastJsonMessage.id ===
-        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0].id
+        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0]?.id
     ) {
       dispatch(addSocketMessage(lastJsonMessage));
     }
