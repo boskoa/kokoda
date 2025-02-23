@@ -308,7 +308,6 @@ function DetailedChat() {
     }
   }
 
-  console.log("USERS", users);
   return (
     <DetailedChatsContainer
       $backgroundUrl={
