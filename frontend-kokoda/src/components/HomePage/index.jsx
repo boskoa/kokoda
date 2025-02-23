@@ -27,7 +27,7 @@ const HomeContainer = styled.div`
   z-index: 1;
 `;
 
-const WS_URL = "ws://127.0.0.1:3003/websockets";
+const WS_URL = "wss://127.0.0.1:3003/websockets";
 
 function HomePage() {
   const [menu, setMenu] = useState(false);
@@ -57,10 +57,8 @@ function HomePage() {
   }, [loggedUser]);
 
   useEffect(() => {
-    console.log("FOOOO", chats, loggedUser);
     if (chats.length && loggedUser) {
       const users = [...new Set(chats.map((c) => c.members).flat())];
-      console.log("HOME USERS", users);
       dispatch(getAllUsers({ token: loggedUser.token, query: users }));
     }
   }, [loggedUser, chats]);
