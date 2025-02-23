@@ -177,18 +177,18 @@ function DetailedChat() {
     // Set date element
     if (messagesRef.current) {
       messagesRef.current.childNodes.forEach((c) => c.classList.remove("date"));
+
+      const messageDates = Object.keys(
+        Object.groupBy(messages, ({ createdAt }) =>
+          new Date(createdAt).toLocaleString("en-GB").slice(0, 10),
+        ),
+      );
+
+      messageDates.forEach((d) => {
+        const group = document.querySelectorAll(`[data-date="${d}"]`);
+        group[group.length - 1].classList.add("date");
+      });
     }
-
-    const messageDates = Object.keys(
-      Object.groupBy(messages, ({ createdAt }) =>
-        new Date(createdAt).toLocaleString("en-GB").slice(0, 10),
-      ),
-    );
-
-    messageDates.forEach((d) => {
-      const group = document.querySelectorAll(`[data-date="${d}"]`);
-      group[group.length - 1].classList.add("date");
-    });
 
     if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
@@ -278,7 +278,13 @@ function DetailedChat() {
     };
   }, []);
 
-  if (!chat || !users) {
+  if (
+    !chat ||
+    !users ||
+    users.find(
+      (u) => u.id === chat.members.find((m) => m !== loggedUser.id),
+    ) === undefined
+  ) {
     return (
       <Spinner
         endRef={observerRef}
@@ -286,6 +292,7 @@ function DetailedChat() {
       />
     );
   }
+
   async function sendMessage(text) {
     const config = {
       headers: {
@@ -301,6 +308,7 @@ function DetailedChat() {
     }
   }
 
+  console.log("USERS", users);
   return (
     <DetailedChatsContainer
       $backgroundUrl={
