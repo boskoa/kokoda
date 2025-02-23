@@ -1,9 +1,12 @@
 const WebSocket = require("ws");
 const app = require("./app");
+const http = require("http");
+
+const httpServer = http.createServer();
 
 function handleWebsocketConnections(expressServer) {
   const wsServer = new WebSocket.Server({
-    noServer: true,
+    server: httpServer,
     path: "/websockets",
   });
 

@@ -27,7 +27,7 @@ const HomeContainer = styled.div`
   z-index: 1;
 `;
 
-const WS_URL = "wss://127.0.0.1:8080/websockets";
+const WS_URL = "ws://127.0.0.1:8080/websockets";
 
 function HomePage() {
   const [menu, setMenu] = useState(false);
