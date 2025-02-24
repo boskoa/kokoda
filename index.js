@@ -28,9 +28,12 @@ async function start() {
 
   app.locals.wsClients = wsServer.clients;
 
-  httpServer.listen(PORT, function () {
-    console.log("Server is running on port", PORT);
-  });
+  httpServer.listen(
+    process.env.NODE_ENV === "development" ? 3003 : PORT,
+    function () {
+      console.log("Server is running on port", PORT);
+    },
+  );
 }
 
 start();
