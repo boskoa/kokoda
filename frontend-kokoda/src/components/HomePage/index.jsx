@@ -27,7 +27,11 @@ const HomeContainer = styled.div`
   z-index: 1;
 `;
 
-const WS_URL = `wss://${window.location.host}/websockets`;
+const WS_URL =
+  process.env.NODE_ENV === "development"
+    ? "ws://127.0.0.1:3003/websockets"
+    : `wss://${window.location.host}/websockets`;
+console.log("FOO", process.env.NODE_ENV);
 
 function HomePage() {
   const [menu, setMenu] = useState(false);
