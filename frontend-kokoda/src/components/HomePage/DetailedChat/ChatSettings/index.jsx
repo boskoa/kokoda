@@ -463,11 +463,13 @@ const ChatSettings = forwardRef(function ChatSettings(
         </AdminFields>
       )}
       {chat.group && (
-        <ChangeButton onClick={handleLeaveChat}>Leave chat</ChangeButton>
+        <ChangeButton style={{ flex: 0 }} onClick={handleLeaveChat}>
+          Leave chat
+        </ChangeButton>
       )}
       <ChangeButton
         onClick={handleRemoveBgImage}
-        style={{ textAlign: "center", marginBottom: -10 }}
+        style={{ textAlign: "center", marginBottom: -10, flex: 0 }}
       >
         Remove current background
       </ChangeButton>
@@ -510,7 +512,7 @@ const ChatSettings = forwardRef(function ChatSettings(
       </BackgroundField>
       <ChangeButton
         onClick={handleRemoveAvatarImage}
-        style={{ textAlign: "center", marginBottom: -10 }}
+        style={{ textAlign: "center", marginBottom: -10, flex: 0 }}
       >
         Remove current avatar
       </ChangeButton>
