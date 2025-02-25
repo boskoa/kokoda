@@ -192,7 +192,7 @@ function DetailedChat() {
 
     if (initialRef.current && messages.length) {
       const vp = document.getElementById("vp");
-      vp.scrollTop = vp.scrollHeight;
+      setTimeout(() => (vp.scrollTop = vp.scrollHeight), 100);
       initialRef.current = false;
     }
   }, [messages]);
