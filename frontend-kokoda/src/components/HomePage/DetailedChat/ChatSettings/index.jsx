@@ -15,12 +15,12 @@ import { useNavigate } from "react-router-dom";
 const ChatSettingsContainer = styled.div`
   height: calc(100vh - 80px);
   width: 80%;
-  background-color: #00ff007d;
+  background-color: #0080804e;
   margin-left: auto;
   margin-top: calc(-100vh + 80px);
   position: sticky;
   bottom: 40px;
-  padding: 5px;
+  padding: 5px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -51,14 +51,14 @@ const InputField = styled.input`
   background-color: navajowhite;
   border: none;
   padding: 2px;
-  width: 160px;
+  width: 140px;
 `;
 
 const SelectField = styled.select`
   background-color: navajowhite;
   border: none;
   padding: 2px;
-  width: 160px;
+  width: 140px;
   outline: none;
 `;
 
@@ -67,12 +67,18 @@ const Option = styled.option``;
 const ChangeButton = styled.button`
   all: unset;
   background-color: coral;
+  flex: 2;
   color: white;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px;
+  padding-top: 3px;
   cursor: pointer;
   text-align: center;
+  transition: 0.1s;
+
+  &:hover {
+    color: black;
+  }
 `;
 
 const MembersContainer = styled.div`
@@ -139,9 +145,14 @@ const SetButton = styled.div`
   color: white;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px;
+  padding-top: 3px;
   cursor: pointer;
   text-align: center;
+  transition: 0.1s;
+
+  &:hover {
+    color: black;
+  }
 `;
 
 const ChatSettings = forwardRef(function ChatSettings(
@@ -353,9 +364,7 @@ const ChatSettings = forwardRef(function ChatSettings(
     dispatch(removeGroupChat(chat.id));
     navigate("/chats");
   }
-  /* 
-wss
- */
+
   return (
     <ChatSettingsContainer ref={ref} $show={show}>
       <Title>Customize chat</Title>
@@ -482,6 +491,7 @@ wss
           <ChangeButton
             type="submit"
             disabled={!bgFile}
+            style={{ flex: 0 }}
             onClick={(e) => handleBgImageSubmit(e)}
           >
             Set image
@@ -524,6 +534,7 @@ wss
           <ChangeButton
             type="submit"
             disabled={!avatarFile}
+            style={{ flex: 0 }}
             onClick={(e) => handleAvatarImageSubmit(e)}
           >
             Set image

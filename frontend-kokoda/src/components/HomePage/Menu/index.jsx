@@ -10,12 +10,12 @@ import UserData from "./UserData";
 const MenuContainer = styled.div`
   height: calc(100vh - 80px);
   width: 80%;
-  background-color: #00ff007d;
+  background-color: #0080804e;
   margin-left: auto;
   margin-top: calc(-100vh + 80px);
   position: sticky;
   bottom: 40px;
-  padding: 10px;
+  padding: 5px 20px;
   display: flex;
   flex-direction: column;
   align-items: stretch;

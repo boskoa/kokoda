@@ -12,7 +12,7 @@ const BlockedContainer = styled.div`
   left: 0;
   bottom: 0;
   backdrop-filter: blur(2px);
-  background-color: #6e2500e5;
+  background-color: #b01d1de4;
   display: ${({ $show }) => ($show ? "flex" : "none")};
   flex-direction: column;
   align-items: center;

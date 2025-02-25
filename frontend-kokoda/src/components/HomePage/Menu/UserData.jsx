@@ -24,7 +24,7 @@ const FormContainer = styled.form`
 
 const InputContainer = styled.div`
   position: relative;
-  width: 90%;
+  width: 100%;
 `;
 
 const AuthInput = styled.input`
@@ -36,7 +36,7 @@ const AuthInput = styled.input`
   background-color: teal;
   outline: none;
   font-size: 13px;
-  padding: 0 5px;
+  padding: 2px 5px 0 5px;
   z-index: 2;
   transition: all 0.2s;
 
