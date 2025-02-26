@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const MessageContainer = styled.div`
   position: relative;
-  background-color: #32cd32cd;
+  background-color: #005c5cdf;
   margin: 10px;
   padding: 10px;
   width: fit-content;

@@ -10,6 +10,7 @@ import {
 import NewMessages from "./NewMessages";
 import { selectLoggedUser } from "../../../features/login/loginSlice";
 import { selectUserById } from "../../../features/users/usersSlice";
+import GroupLabel from "./GroupLabel";
 
 const ChatContainer = styled.div`
   display: flex;
@@ -124,7 +125,10 @@ function SingleChat({ chat }) {
         />
       </Avatar>
       <ChatData>
-        <ChatTitle>{chat.name || contact?.name}</ChatTitle>
+        <ChatTitle>
+          {chat.name || contact?.name}
+          {chat.group && <GroupLabel />}
+        </ChatTitle>
         <ChatLastMessage>
           {(chat.messages?.length && chat.messages[0].text) ||
             "No messages yet."}

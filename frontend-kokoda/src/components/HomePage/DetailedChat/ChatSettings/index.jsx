@@ -510,49 +510,53 @@ const ChatSettings = forwardRef(function ChatSettings(
           />
         )}
       </BackgroundField>
-      <ChangeButton
-        onClick={handleRemoveAvatarImage}
-        style={{ textAlign: "center", marginBottom: -10, flex: 0 }}
-      >
-        Remove current avatar
-      </ChangeButton>
-      <BackgroundField>
-        <Form id="chat-avatar-form" encType="multipart/form-data">
-          <label htmlFor="chat-avatar">
-            <input
-              style={{
-                display: "none",
-              }}
-              id="chat-avatar"
-              type="file"
-              name="chat-avatar"
-              onChange={(e) => {
-                setAvatarName(chat.id);
-                setAvatarFile(e.target.files[0]);
-              }}
-            />
-            <SetButton type="button">Choose image</SetButton>
-          </label>
+      {chat.group && (
+        <>
           <ChangeButton
-            type="submit"
-            disabled={!avatarFile}
-            style={{ flex: 0 }}
-            onClick={(e) => handleAvatarImageSubmit(e)}
+            onClick={handleRemoveAvatarImage}
+            style={{ textAlign: "center", marginBottom: -10, flex: 0 }}
           >
-            Set image
+            Remove current avatar
           </ChangeButton>
-        </Form>
-        {avatarFile && (
-          <Image
-            alt="chosen background"
-            src={
-              avatarFile
-                ? URL.createObjectURL(avatarFile)
-                : `/public/uploads/chats/${chat?.id}.webp`
-            }
-          />
-        )}
-      </BackgroundField>
+          <BackgroundField>
+            <Form id="chat-avatar-form" encType="multipart/form-data">
+              <label htmlFor="chat-avatar">
+                <input
+                  style={{
+                    display: "none",
+                  }}
+                  id="chat-avatar"
+                  type="file"
+                  name="chat-avatar"
+                  onChange={(e) => {
+                    setAvatarName(chat.id);
+                    setAvatarFile(e.target.files[0]);
+                  }}
+                />
+                <SetButton type="button">Choose image</SetButton>
+              </label>
+              <ChangeButton
+                type="submit"
+                disabled={!avatarFile}
+                style={{ flex: 0 }}
+                onClick={(e) => handleAvatarImageSubmit(e)}
+              >
+                Set image
+              </ChangeButton>
+            </Form>
+            {avatarFile && (
+              <Image
+                alt="chosen background"
+                src={
+                  avatarFile
+                    ? URL.createObjectURL(avatarFile)
+                    : `/public/uploads/chats/${chat?.id}.webp`
+                }
+              />
+            )}
+          </BackgroundField>
+        </>
+      )}
       {showMemberModal && (
         <RemoveMemberModal
           setShowModal={setShowMemberModal}
