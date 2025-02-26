@@ -10,7 +10,7 @@ module.exports = [
       globals: globals.node,
     },
   },
-  { languageOptions: { globals: globals.node } },
+  { languageOptions: { globals: { ...globals.node, ...globals.jest } } },
   pluginJs.configs.recommended,
   eslintConfigPrettier,
   {

@@ -3,7 +3,6 @@ const path = require("path");
 const cors = require("cors");
 const compression = require("compression");
 const { errorHandler } = require("./utils/errorHandler");
-const testRouter = require("./controllers/test");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
 const chatsRouter = require("./controllers/chats");
@@ -27,7 +26,6 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.static("dist"));
 
 // routers
-app.use("/api/test", testRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/chats", chatsRouter);
