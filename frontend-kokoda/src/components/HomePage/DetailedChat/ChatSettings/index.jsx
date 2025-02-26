@@ -51,14 +51,14 @@ const InputField = styled.input`
   background-color: navajowhite;
   border: none;
   padding: 2px;
-  width: 140px;
+  width: 60%;
 `;
 
 const SelectField = styled.select`
   background-color: navajowhite;
   border: none;
   padding: 2px;
-  width: 140px;
+  width: 60%;
   outline: none;
 `;
 
@@ -69,9 +69,9 @@ const ChangeButton = styled.button`
   background-color: coral;
   flex: 2;
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding-top: 3px;
+  padding: 2px 0;
   cursor: pointer;
   text-align: center;
   transition: 0.1s;
@@ -143,9 +143,9 @@ const Form = styled.form`
 const SetButton = styled.div`
   background-color: coral;
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding-top: 3px;
+  padding: 2px 0;
   cursor: pointer;
   text-align: center;
   transition: 0.1s;

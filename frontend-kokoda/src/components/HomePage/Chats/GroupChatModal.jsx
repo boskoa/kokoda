@@ -20,7 +20,7 @@ const ModalContainer = styled.div`
 `;
 
 const AddChatContainer = styled.div`
-  background-color: #32cd3275;
+  background-color: #008080b3;
   width: 300px;
   display: flex;
   flex-direction: column;

@@ -7,7 +7,7 @@ export const RemoveContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #8080806e;
+  background-color: #3e3e3e95;
   backdrop-filter: blur(2px);
 `;
 
