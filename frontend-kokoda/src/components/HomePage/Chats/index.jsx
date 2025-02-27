@@ -45,6 +45,11 @@ function Chats() {
                     ?.name.toLowerCase()
                     .includes(filter),
             )
+            .sort(
+              (a, b) =>
+                new Date(b.messages[0]?.createdAt) -
+                new Date(a.messages[0]?.createdAt),
+            )
             .map((c) => <SingleChat key={c.id} chat={c} />)
         : null}
       <AddChat setAddChatModal={setAddChatModal} />

@@ -222,17 +222,7 @@ function DetailedChat() {
       offsetRef.current += 1;
     }
   }, [lastJsonMessage, id, loggedUser]);
-  /* 
-  useEffect(() => {
-    if (
-      messages.length === 0 &&
-      lastJsonMessage &&
-      lastJsonMessage.chatId == id
-    ) {
-      setMessages([lastJsonMessage]);
-    }
-  }, [messages.length, lastJsonMessage]);
- */
+
   useLayoutEffect(() => {
     const vp = document.getElementById("vp");
     let lastScrollTop = 0;
