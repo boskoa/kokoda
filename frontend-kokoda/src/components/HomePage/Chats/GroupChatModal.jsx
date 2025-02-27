@@ -122,7 +122,7 @@ function GroupChatModal({ setJoinChatModal }) {
     <ModalContainer>
       <AddChatContainer>
         <AddContainer>
-          <Label htmlFor="AddGroupChat">Select contact</Label>
+          <Label htmlFor="AddGroupChat">Select group</Label>
           <SelectField
             id="AddGroupChat"
             name="AddGroupChat"

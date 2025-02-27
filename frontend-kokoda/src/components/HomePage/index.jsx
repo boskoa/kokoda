@@ -69,9 +69,13 @@ function HomePage() {
   useEffect(() => {
     let edit = false;
     if (chats.length && lastJsonMessage) {
-      edit =
-        chats.find((c) => c.id === lastJsonMessage.chatId).messages[0]?.id >=
-        lastJsonMessage.id;
+      if (
+        chats.find((c) => c.id === lastJsonMessage.chatId)?.messages?.length
+      ) {
+        edit =
+          chats.find((c) => c.id === lastJsonMessage.chatId).messages[0]?.id >=
+          lastJsonMessage.id;
+      }
     }
 
     if (lastJsonMessage && !edit) {

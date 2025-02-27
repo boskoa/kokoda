@@ -29,25 +29,24 @@ function Chats() {
   const [addChatModal, setAddChatModal] = useState(false);
   const [joinChatModal, setJoinChatModal] = useState(false);
 
-  if (!chats.length) return null;
-
   return (
     <ChatsContainer>
       <Search filter={filter} setFilter={setFilter} />
-      {chats
-        .filter((c) =>
-          c.name
-            ? c.name.toLowerCase().includes(filter)
-            : users
-                .find(
-                  (u) => u.id === c.members.find((m) => m !== loggedUser.id),
-                )
-                ?.name.toLowerCase()
-                .includes(filter),
-        )
-        .map((c) => (
-          <SingleChat key={c.id} chat={c} />
-        ))}
+      {chats.length
+        ? chats
+            .filter((c) =>
+              c.name
+                ? c.name.toLowerCase().includes(filter)
+                : users
+                    .find(
+                      (u) =>
+                        u.id === c.members?.find((m) => m !== loggedUser.id),
+                    )
+                    ?.name.toLowerCase()
+                    .includes(filter),
+            )
+            .map((c) => <SingleChat key={c.id} chat={c} />)
+        : null}
       <AddChat setAddChatModal={setAddChatModal} />
       <JoinGroupChat setJoinChatModal={setJoinChatModal} />
       {addChatModal && <ChatModal setAddChatModal={setAddChatModal} />}
