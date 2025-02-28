@@ -1,4 +1,4 @@
-import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as U,r as p,f as m,g as I,h as z,i as B,k as T,S as D}from"./index-DWzSJu7u.js";const E=n.div`
+import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as I,r as d,f as m,g as U,h as z,i as B,k as E,S as T}from"./index-B46HOFuL.js";const D=n.div`
   display: flex;
   align-items: stretch;
   justify-content: start;
@@ -51,7 +51,7 @@ import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as U,r as p,f a
   color: black;
   font-size: 12px;
   border-radius: 3px;
-`;function P({contact:a}){var r;const d=y(),i=c(j),s=c(e=>C(e,i.id));return t.jsxs(E,{onClick:()=>d(`/contacts/${a.id}`),children:[t.jsx(M,{children:t.jsx($,{src:`/public/uploads/avatars/${a.id}.webp`,alt:"user avatar",onLoad:e=>{e.currentTarget.style.opacity=1},onError:e=>{e.currentTarget.onerror=null,e.currentTarget.src=A,e.currentTarget.style.opacity=1},height:"100%",width:"100%"})}),t.jsxs(L,{children:[t.jsx(N,{children:a.name}),((r=s.blockedUsers)==null?void 0:r.includes(a.id))&&t.jsx(O,{children:"Blocked"})]}),t.jsx(F,{})]})}const R=n.button`
+`;function P({contact:a}){var r;const l=y(),i=c(j),s=c(e=>C(e,i.id));return t.jsxs(D,{onClick:()=>l(`/contacts/${a.id}`),children:[t.jsx(M,{children:t.jsx($,{src:`/public/uploads/avatars/${a.id}.webp`,alt:"user avatar",onLoad:e=>{e.currentTarget.style.opacity=1},onError:e=>{e.currentTarget.onerror=null,e.currentTarget.src=A,e.currentTarget.style.opacity=1},height:"100%",width:"100%"})}),t.jsxs(L,{children:[t.jsx(N,{children:a.name}),((r=s.blockedUsers)==null?void 0:r.includes(a.id))&&t.jsx(O,{children:"Blocked"})]}),t.jsx(F,{})]})}const R=n.button`
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -72,7 +72,7 @@ import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as U,r as p,f a
     transform: scale(0.95);
     box-shadow: 0 0 0 0 gold;
   }
-`;function q({setAddContactModal:a}){return t.jsx(R,{onClick:()=>a(!0),title:"Add contact",children:t.jsx(S.Provider,{value:{color:"gold",size:"100%"},children:t.jsx(U,{})})})}const G=n.div`
+`;function q({setAddContactModal:a}){return t.jsx(R,{onClick:()=>a(!0),title:"Add contact",children:t.jsx(S.Provider,{value:{color:"gold",size:"100%"},children:t.jsx(I,{})})})}const G=n.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -119,11 +119,11 @@ import{d as n,u as y,a as c,s as j,b as C,j as t,c as A,I as S,e as U,r as p,f a
   padding: 2px;
   width: 160px;
   outline: none;
-`,b=n.option``;function Q({setAddContactModal:a}){const[d,i]=p.useState([]),[s,r]=p.useState(-1),e=c(j),u=c(o=>C(o,e.id)),v=c(m),g=I();function w(){var o;s!==-1&&(g(z({token:e.token,updateData:{contacts:[...new Set((o=u.contacts)!=null&&o.length?[...u.contacts,parseInt(s)]:[parseInt(s)])]},id:e.id})),r(-1),i(l=>l.filter(x=>parseInt(s)!==x.id)),setTimeout(()=>g(B({token:e.token})),300))}return p.useEffect(()=>{async function o(){const l={headers:{Authorization:`bearer ${e.token}`}},x=await T.get("/api/users",l);i(()=>x.data.filter(h=>!v.map(k=>k.id).includes(h.id)&&h.id!==e.id))}e&&o()},[e]),t.jsx(G,{children:t.jsxs(H,{children:[t.jsxs(J,{children:[t.jsxs(K,{name:"AddContact",value:s,onChange:o=>r(o.target.value),children:[t.jsx(b,{}),d.sort((o,l)=>o.name.localeCompare(l.name)).map(o=>t.jsx(b,{value:o.id,children:o.name},o.id))]}),t.jsx(f,{disabled:s===-1,onClick:w,children:"Add user"})]}),t.jsx(f,{onClick:()=>a(!1),children:"Close"})]})})}const V=n.div`
+`,b=n.option``;function Q({setAddContactModal:a}){const[l,i]=d.useState([]),[s,r]=d.useState(-1),e=c(j),x=c(o=>C(o,e.id)),v=c(m),g=U();function w(){var o;s!==-1&&(g(z({token:e.token,updateData:{contacts:[...new Set((o=x.contacts)!=null&&o.length?[...x.contacts,parseInt(s)]:[parseInt(s)])]},id:e.id})),r(-1),i(p=>p.filter(u=>parseInt(s)!==u.id)),setTimeout(()=>g(B({token:e.token})),300))}return d.useEffect(()=>{async function o(){const p={headers:{Authorization:`bearer ${e.token}`}},u=await E.get("/api/users",p);i(()=>u.data.filter(h=>!v.map(k=>k.id).includes(h.id)&&h.id!==e.id))}e&&o()},[e]),t.jsx(G,{children:t.jsxs(H,{children:[t.jsxs(J,{children:[t.jsxs(K,{name:"AddContact",value:s,onChange:o=>r(o.target.value),children:[t.jsx(b,{}),l.sort((o,p)=>o.name.localeCompare(p.name)).map(o=>t.jsx(b,{value:o.id,children:o.name},o.id))]}),t.jsx(f,{disabled:s===-1,onClick:w,children:"Add user"})]}),t.jsx(f,{onClick:()=>a(!1),children:"Close"})]})})}const V=n.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 5px;
   width: 100%;
   justify-content: start;
-`;function X(){const a=c(m),[d,i]=p.useState(!1),[s,r]=p.useState("");return t.jsxs(V,{children:[t.jsx(D,{filter:s,setFilter:r}),a.filter(e=>e.name.toLowerCase().includes(s)).map(e=>t.jsx(P,{contact:e},e.id)),t.jsx(q,{setAddContactModal:i}),d&&t.jsx(Q,{setAddContactModal:i})]})}export{X as default};
+`;function X(){const a=c(m),[l,i]=d.useState(!1),[s,r]=d.useState("");return d.useEffect(()=>{document.getElementById("vp").scrollTo({top:0})},[]),t.jsxs(V,{children:[t.jsx(T,{filter:s,setFilter:r}),a.filter(e=>e.name.toLowerCase().includes(s)).map(e=>t.jsx(P,{contact:e},e.id)),t.jsx(q,{setAddContactModal:i}),l&&t.jsx(Q,{setAddContactModal:i})]})}export{X as default};

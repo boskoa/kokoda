@@ -198,6 +198,12 @@ function DetailedChat() {
   }, [messages]);
 
   useEffect(() => {
+    let index = setTimeout(() => (initialRef.current = false), 1000);
+
+    return () => clearTimeout(index);
+  }, []);
+
+  useEffect(() => {
     if (
       !initialRef.current &&
       lastJsonMessage &&
