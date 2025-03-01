@@ -97,7 +97,7 @@ function Login() {
             },
           })}
         />
-        <Error $show={errors.password?.message}>
+        <Error $show={errors.password?.message} data-testid="password-error">
           {errors.password?.message}
         </Error>
       </InputContainer>

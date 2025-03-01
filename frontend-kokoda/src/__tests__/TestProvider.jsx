@@ -1,11 +1,15 @@
-const { Provider } = require("react-redux");
-const { BrowserRouter } = require("react-router-dom");
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
+import { dark } from "../themes";
 
 function TestProvider({ store, children }) {
   return (
-    <Provider store={store}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </Provider>
+    <ThemeProvider theme={dark}>
+      <Provider store={store}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

@@ -59,7 +59,7 @@ export const defaultStore = {
     error: null,
   },
   login: {
-    user: null
+    user: null,
     loading: false,
     error: null,
   },
