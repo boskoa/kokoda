@@ -4,56 +4,52 @@ import userEvent from "@testing-library/user-event";
 import { screen, render } from "@testing-library/react";
 import TestProvider from "./TestProvider";
 import { defaultStore } from "./stores";
-import Login from "../components/Authentication/Login";
+import Register from "../components/Authentication/Register";
 
 const mockStore = configureStore([]);
 
-describe("Testing Login component", () => {
+describe("Testing Register component", () => {
   let store;
   beforeEach(() => {
     store = mockStore(defaultStore);
   });
 
-  test("Renders register button", () => {
+  test("Renders login button", () => {
     render(
       <TestProvider store={store}>
-        <Login />
+        <Register />
       </TestProvider>,
     );
 
-    const registerButton = screen.getByText("Not registered?");
-    expect(registerButton).toBeInTheDocument();
+    const loginButton = screen.getByText("Already registered?");
+    expect(loginButton).toBeInTheDocument();
   });
 
-  test("Renders username input", () => {
+  test("Renders name input", () => {
     render(
       <TestProvider store={store}>
-        <Login />
+        <Register />
       </TestProvider>,
     );
 
-    const usernameInput = screen.getByRole("textbox", {
-      placeholder: "username",
-    });
-    expect(usernameInput).toBeInTheDocument();
+    const nameInput = screen.queryAllByPlaceholderText("name")[0];
+    expect(nameInput).toBeInTheDocument();
   });
 
-  test("Username input can be entered", async () => {
+  test("Name input can be entered", async () => {
     const user = userEvent.setup();
 
     render(
       <TestProvider store={store}>
-        <Login />
+        <Register />
       </TestProvider>,
     );
 
-    const usernameInput = screen.getByRole("textbox", {
-      placeholder: "username",
-    });
-    expect(usernameInput).toBeInTheDocument();
-    await user.click(usernameInput);
-    await user.type(usernameInput, "tester");
-    expect(usernameInput).toHaveValue("tester");
+    const nameInput = screen.queryAllByPlaceholderText("name")[0];
+    expect(nameInput).toBeInTheDocument();
+    await user.click(nameInput);
+    await user.type(nameInput, "tester");
+    expect(nameInput).toHaveValue("tester");
   });
 
   test("Password input can be entered", async () => {
@@ -61,13 +57,11 @@ describe("Testing Login component", () => {
 
     render(
       <TestProvider store={store}>
-        <Login />
+        <Register />
       </TestProvider>,
     );
 
-    const passwordInput = screen.getByRole("textbox", {
-      placeholder: "password",
-    });
+    const passwordInput = screen.queryAllByPlaceholderText("password")[0];
     const passwordError = screen.getByTestId("password-error");
     expect(passwordInput).toBeInTheDocument();
     expect(passwordError).toBeInTheDocument();
