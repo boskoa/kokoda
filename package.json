@@ -9,14 +9,18 @@
     "start": "NODE_ENV=production node index.js",
     "lint": "eslint .",
     "build:ui": "rm -rf dist && cd ./frontend-kokoda/ && npm run build && cp -r dist ..",
-    "dev": "NODE_ENV=development nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run"
   },
   "author": "Bosko A.",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "cypress": "^14.1.0",
     "eslint": "^9.3.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^4.1.0",
     "globals": "^15.3.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.1",

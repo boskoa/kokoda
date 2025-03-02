@@ -10,8 +10,13 @@ module.exports = [
       globals: globals.node,
     },
   },
-  { languageOptions: { globals: { ...globals.node, ...globals.jest } } },
+  {
+    languageOptions: {
+      globals: { ...globals.node, ...globals.jest, ...globals.cypress },
+    },
+  },
   pluginJs.configs.recommended,
+  pluginCypress.configs.recommended,
   eslintConfigPrettier,
   {
     ignores: [
