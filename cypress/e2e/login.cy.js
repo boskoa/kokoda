@@ -15,6 +15,6 @@ describe("Testing Login component", () => {
     cy.get("[name='username']").type("rest");
     cy.get("[name='password']").type("vozinka");
     cy.contains(/log in/i).click();
-    cy.contains("401");
+    cy.contains(/failed/i);
   });
 });
