@@ -31,7 +31,7 @@ jobs:
       - name: e2e testing
         uses: cypress-io/github-action@v6
         with:
-          start: npm run start, cd ./frontend-kokoda/, npm run dev
+          start: npm run start-actions-env
           wait-on: "http://localhost:${{secrets.PORT}}, http://localhost:5173"
   tag_release:
     needs: [simple_deployment_pipeline]
