@@ -1,5 +1,6 @@
 const globals = require("globals");
 const pluginJs = require("@eslint/js");
+const pluginCypress = require("eslint-plugin-cypress/flat");
 const eslintConfigPrettier = require("eslint-config-prettier");
 
 module.exports = [
@@ -21,11 +22,13 @@ module.exports = [
   {
     ignores: [
       "dist",
-      //"frontend-kokoda",
+      "frontend-kokoda",
       ".env",
       "node_modules",
       "cypress.config.js",
+      "**/.eslintrc.cjs",
       "**/stats.html",
+      "cypress",
     ],
   },
 ];

@@ -1,0 +1,58 @@
+env:
+  PORT: ${{secrets.PORT}}
+  PRODUCTION_DATABASE_URL: ${{secrets.PRODUCTION_DATABASE_URL}}
+  SECRET: ${{secrets.SECRET}}
+
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "23.9.0"
+      - name: Install dependencies
+        run: npm run install-packages
+      - name: Check style
+        run: npm run lint
+      - name: Jest backend testing
+        run: npm run test
+      - name: Build
+        run: npm run build:ui
+      - name: Vitest frontend testing
+        run: cd ./frontend-kokoda/ && npm run test
+      - name: e2e testing
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run start
+          wait-on: "http://localhost:${{secrets.PORT}}"
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') && !contains(join(toJson(github.event.commits.*.message), ' '), '#minor') && !contains(join(toJson(github.event.commits.*.message), ' '), '#major') }}
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - name: Bump minor version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') && contains(join(toJson(github.event.commits.*.message), ' '), '#minor') }}
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor
+      - name: Bump major version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') && contains(join(toJson(github.event.commits.*.message), ' '), '#major') }}
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: major
