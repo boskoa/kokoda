@@ -5,11 +5,11 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: 'http://localhost:5173',
+    baseUrl: `http://localhost:${process.env.CYPRESS_PORT ?? 5173}`,
   },
   screenshotOnRunFailure: false,
   video: false,
   env: {
-    BACKEND: 'http://localhost:443/api',
+    BACKEND: `http://localhost:${process.env.CYPRESS_PORT ?? 443}/api`,
   }
 });
