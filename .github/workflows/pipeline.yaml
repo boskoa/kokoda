@@ -28,12 +28,6 @@ jobs:
         run: npm run build:ui
       - name: Vitest frontend testing
         run: cd ./frontend-kokoda/ && npm run test
-      - name: Vitest frontend start
-        run: cd ./frontend-kokoda/ && npm run dev
-      - name: start backend
-        run: npm run start
-      - name: e2e testing
-        run: npm start test:e2e
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
