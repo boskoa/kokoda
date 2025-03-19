@@ -32,7 +32,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run start & cd ./frontend-kokoda/ && npm run dev
-          wait-on: "http://localhost:${{secrets.PORT}}, http://localhost:5173"
+          wait-on: "http://localhost:${{secrets.PORT}}"
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
