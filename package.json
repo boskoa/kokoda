@@ -10,7 +10,6 @@
     "lint": "eslint .",
     "build:ui": "rm -rf dist && cd ./frontend-kokoda/ && npm run build && cp -r dist ..",
     "install-packages": "npm install && cd ./frontend-kokoda/ && npm install",
-    "start-actions-env": "npm run start && cd ./frontend-kokoda/ && npm run dev",
     "dev": "NODE_ENV=development nodemon index.js",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"

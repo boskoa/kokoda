@@ -28,10 +28,12 @@ jobs:
         run: npm run build:ui
       - name: Vitest frontend testing
         run: cd ./frontend-kokoda/ && npm run test
+      - name: start Vitest frontend
+        run: cd ./frontend-kokoda/ && npm run dev
       - name: e2e testing
         uses: cypress-io/github-action@v6
         with:
-          start: npm run start-actions-env
+          start: npm run start
           wait-on: "http://localhost:${{secrets.PORT}}, http://localhost:5173"
   tag_release:
     needs: [simple_deployment_pipeline]
