@@ -1,9 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), visualizer()],
   server: {
     proxy: {
       "/api": {
@@ -22,5 +23,10 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/__tests__/setup.js",
+  },
+  build: {
+    rollupOptions: {
+      treeshake: true,
+    },
   },
 });
