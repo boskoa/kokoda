@@ -42,7 +42,9 @@ function Input({ send, blocked }) {
 
   return (
     <InputContainer>
+      <label htmlFor="messageInput"></label>
       <TextInput
+        id="messageInput"
         type="text"
         value={blocked ? "You are blocked by this user" : message}
         onChange={(e) => setMessage(e.target.value)}

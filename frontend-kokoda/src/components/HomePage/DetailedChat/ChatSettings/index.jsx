@@ -41,7 +41,7 @@ const AdminFields = styled.div`
   gap: 20px;
 `;
 
-const ChangeField = styled.div`
+const ChangeField = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: stretch;
@@ -109,7 +109,7 @@ const MembersTitle = styled.h4`
   margin-bottom: 10px;
 `;
 
-const FieldLabel = styled.label`
+const Checkbox = styled.span`
   font-size: 12px;
   font-weight: 600;
 `;
@@ -370,8 +370,9 @@ const ChatSettings = forwardRef(function ChatSettings(
       <Title>Customize chat</Title>
       {adminConditions && (
         <AdminFields>
-          <ChangeField>
+          <ChangeField htmlFor="chatName">
             <InputField
+              id="chatName"
               type="text"
               disabled={!chat?.group}
               value={chatName}
@@ -381,8 +382,9 @@ const ChatSettings = forwardRef(function ChatSettings(
               Change title
             </ChangeButton>
           </ChangeField>
-          <ChangeField>
+          <ChangeField htmlFor="addMember">
             <SelectField
+              id="addedMember"
               value={addedMember}
               name="addContact"
               onChange={(e) => setAddedMember(e.target.value)}
@@ -398,8 +400,9 @@ const ChatSettings = forwardRef(function ChatSettings(
               Add contact
             </ChangeButton>
           </ChangeField>
-          <ChangeField>
+          <ChangeField htmlFor="addAdmin">
             <SelectField
+              id="addAdmin"
               value={addedAdmin}
               name="addAdmin"
               onChange={(e) => setAddedAdmin(e.target.value)}
@@ -451,8 +454,8 @@ const ChatSettings = forwardRef(function ChatSettings(
                 ))}
             </MembersContainer>
           </div>
-          <ChangeField>
-            <FieldLabel htmlFor="public">Set group to private</FieldLabel>
+          <ChangeField htmlFor="public">
+            <Checkbox>Set group to private</Checkbox>
             <input
               type="checkbox"
               id="public"

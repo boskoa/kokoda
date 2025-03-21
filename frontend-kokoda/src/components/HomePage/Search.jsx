@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import search from "../../assets/search.svg";
 
-const SearchContainer = styled.label`
+const SearchContainer = styled.div`
   justify-self: center;
   width: 100%;
   height: 24px;
@@ -27,7 +27,7 @@ const SearchInput = styled.input`
   }
 `;
 
-const SearchIcon = styled.img`
+const SearchLabel = styled.label`
   filter: invert(80%) sepia(45%) saturate(1131%) hue-rotate(358deg)
     brightness(101%) contrast(105%);
   width: 16px;
@@ -37,11 +37,16 @@ const SearchIcon = styled.img`
   z-index: 2;
 `;
 
+const SearchIcon = styled.img``;
+
 function Search({ filter, setFilter }) {
   return (
     <SearchContainer>
-      <SearchIcon src={search} alt="search-icon" />
+      <SearchLabel htmlFor="filter">
+        <SearchIcon src={search} alt="search-icon" />
+      </SearchLabel>
       <SearchInput
+        id="filter"
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value.toLowerCase())}
