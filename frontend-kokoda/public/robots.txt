@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /chats
+Disallow: /contacts
+Disallow: /authentication
+
+User-Agent: AdsBot-Google
+Disallow: /chats
+Disallow: /contacts
+Disallow: /authentication

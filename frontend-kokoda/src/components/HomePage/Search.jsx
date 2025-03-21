@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import search from "../../assets/search.svg";
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.label`
   justify-self: center;
   width: 100%;
   height: 24px;
@@ -40,7 +40,7 @@ const SearchIcon = styled.img`
 function Search({ filter, setFilter }) {
   return (
     <SearchContainer>
-      <SearchIcon src={search} />
+      <SearchIcon src={search} alt="search-icon" />
       <SearchInput
         type="text"
         value={filter}
