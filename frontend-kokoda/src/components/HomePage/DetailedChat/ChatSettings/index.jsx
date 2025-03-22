@@ -66,7 +66,7 @@ const Option = styled.option``;
 
 const ChangeButton = styled.button`
   all: unset;
-  background-color: coral;
+  background-color: #c43b0a;
   flex: 2;
   color: white;
   font-size: 11px;
@@ -141,7 +141,7 @@ const Form = styled.form`
 `;
 
 const SetButton = styled.div`
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 11px;
   font-weight: 600;

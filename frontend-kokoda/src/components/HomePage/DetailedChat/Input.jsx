@@ -42,7 +42,6 @@ function Input({ send, blocked }) {
 
   return (
     <InputContainer>
-      <label htmlFor="messageInput"></label>
       <TextInput
         id="messageInput"
         type="text"

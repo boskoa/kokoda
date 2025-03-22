@@ -48,7 +48,7 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   width: 60px;
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;

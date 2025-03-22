@@ -57,7 +57,7 @@ const Form = styled.form`
 
 export const Button = styled.button`
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -75,7 +75,7 @@ export const Button = styled.button`
 `;
 
 const ChooseButton = styled.div`
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;

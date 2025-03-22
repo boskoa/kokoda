@@ -43,7 +43,7 @@ const Label = styled.label`
 const Button = styled.button`
   width: 80px;
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;

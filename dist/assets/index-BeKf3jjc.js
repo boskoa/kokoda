@@ -1,4 +1,4 @@
-import{d as a,g as f,j as e,c as j,h as x,z as g,i as y,A as k,q as v,a as l,s as w,b as u,r as C,I as U,w as D,N as B}from"./index-DcpMZKmg.js";const I=a.div`
+import{d as a,g as f,j as e,c as j,h as x,z as g,i as y,A as k,q as v,a as l,s as w,b as u,r as C,I as U,w as D,N as B}from"./index-CnANVkTc.js";const I=a.div`
   width: 90%;
   max-width: 400px;
   padding: 20px;
@@ -29,7 +29,7 @@ import{d as a,g as f,j as e,c as j,h as x,z as g,i as y,A as k,q as v,a as l,s a
 `,h=a.button`
   width: 60px;
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;

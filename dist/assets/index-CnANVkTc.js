@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Login-Rz3s3p2m.js","assets/index-DO63D8WH.js","assets/Register-E7Dn9pzY.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Login-CjNkf9ar.js","assets/index-BlNxgDNc.js","assets/Register-BO7P2nx5.js"])))=>i.map(i=>d[i]);
 var rw=Object.defineProperty;var ow=(e,t,n)=>t in e?rw(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n;var Zu=(e,t,n)=>ow(e,typeof t!="symbol"?t+"":t,n);function Ug(e,t){for(var n=0;n<t.length;n++){const r=t[n];if(typeof r!="string"&&!Array.isArray(r)){for(const o in r)if(o!=="default"&&!(o in e)){const i=Object.getOwnPropertyDescriptor(r,o);i&&Object.defineProperty(e,o,i.get?i:{enumerable:!0,get:()=>r[o]})}}}return Object.freeze(Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}))}(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const o of document.querySelectorAll('link[rel="modulepreload"]'))r(o);new MutationObserver(o=>{for(const i of o)if(i.type==="childList")for(const a of i.addedNodes)a.tagName==="LINK"&&a.rel==="modulepreload"&&r(a)}).observe(document,{childList:!0,subtree:!0});function n(o){const i={};return o.integrity&&(i.integrity=o.integrity),o.referrerPolicy&&(i.referrerPolicy=o.referrerPolicy),o.crossOrigin==="use-credentials"?i.credentials="include":o.crossOrigin==="anonymous"?i.credentials="omit":i.credentials="same-origin",i}function r(o){if(o.ep)return;o.ep=!0;const i=n(o);fetch(o.href,i)}})();var De=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function yd(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var Bg={exports:{}},tu={},Vg={exports:{}},de={};/**
  * @license React
  * react.production.min.js
@@ -138,7 +138,7 @@ Error generating stack: `+i.message+`
   width: 90%;
 `,og=V.button`
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -193,7 +193,7 @@ Error generating stack: `+i.message+`
   width: 100%;
 `,Ys=V.button`
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -209,7 +209,7 @@ Error generating stack: `+i.message+`
     transform: scale(1);
   }
 `,Mb=V.div`
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -716,7 +716,7 @@ Error generating stack: `+i.message+`
 `,Mg=V.button`
   width: 80px;
   border: none;
-  background-color: coral;
+  background-color: #c43b0a;
   color: white;
   font-size: 12px;
   font-weight: 600;
@@ -914,4 +914,4 @@ Error generating stack: `+i.message+`
   background-color: ${({$bg:e})=>e};
   grid-area: ${({$area:e})=>e};
   animation: 1s ${BP} ${({$delay:e})=>e} both infinite;
-`;function _s(){return k.jsx(zP,{children:k.jsxs(UP,{children:[k.jsx(xs,{$bg:"gold",$area:"one",$delay:"0.0s"}),k.jsx(xs,{$bg:"teal",$area:"two",$delay:"0.1s"}),k.jsx(xs,{$bg:"teal",$area:"three",$delay:"0.2s"}),k.jsx(xs,{$bg:"gold",$area:"four",$delay:"0.3s"})]})})}const VP=T.lazy(()=>fi(()=>import("./index-CwjNziWl.js"),[])),WP=T.lazy(()=>fi(()=>import("./index-CKmCLeaP.js"),[])),HP=T.lazy(()=>fi(()=>import("./index-CKMGm0pw.js"),[])),KP=T.lazy(()=>fi(()=>import("./index-DO63D8WH.js"),[])),GP=T.lazy(()=>fi(()=>import("./Login-Rz3s3p2m.js"),__vite__mapDeps([0,1]))),QP=T.lazy(()=>fi(()=>import("./Register-E7Dn9pzY.js"),__vite__mapDeps([2,1]))),Cs=JSON.parse(window.localStorage.getItem("loggedKokoda")),JP=iO([{path:"/",element:k.jsx(FT,{}),children:[{index:!0,element:k.jsx(QT,{})},{path:"",element:k.jsx(MT,{}),children:[{path:"chats",element:k.jsx($P,{})},{path:"chats/:id",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(WP,{})})},{path:"contacts",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(VP,{})})},{path:"contacts/:id",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(HP,{})})}]},{path:"authentication",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(KP,{})}),children:[{path:"login",element:k.jsx(T.Suspense,{children:k.jsx(GP,{})})},{path:"register",element:k.jsx(T.Suspense,{children:k.jsx(QP,{})})}]}]},{path:"*",element:k.jsx(YR,{to:"/chats"})}]);function qP(){const[e,t]=T.useState("dark"),n=Ar();return T.useEffect(()=>{const r=document.getElementById("root");r.style.backgroundColor=(e==="dark"?jg:Dg).main.containerBg},[e]),Cs&&(n(Vk(Cs)),n(Ks({token:Cs.token,id:Cs.id}))),k.jsx(k.Fragment,{children:k.jsx(Nx,{theme:e==="dark"?jg:Dg,children:k.jsx(pO,{router:JP})})})}const YP=z_({reducer:{chats:LO,contacts:eb,login:Hk,users:Yk,unseen:MO}});Yc.createRoot(document.getElementById("root")).render(k.jsx(Ee.StrictMode,{children:k.jsx(e_,{store:YP,children:k.jsx(qP,{})})}));export{Ks as A,ZP as B,bb as C,eA as D,Ic as E,Qk as F,zp as G,Jk as H,Xl as I,qk as J,Fc as K,Lr as L,wO as N,z1 as O,TP as S,LT as W,Ze as a,g1 as b,Op as c,V as d,EP as e,v1 as f,Ar as g,Go as h,Qs as i,k as j,ye as k,Cu as l,mo as m,Gk as n,el as o,lA as p,iA as q,T as r,Zn as s,sA as t,jr as u,jO as v,dA as w,OO as x,sa as y,oA as z};
+`;function _s(){return k.jsx(zP,{children:k.jsxs(UP,{children:[k.jsx(xs,{$bg:"gold",$area:"one",$delay:"0.0s"}),k.jsx(xs,{$bg:"teal",$area:"two",$delay:"0.1s"}),k.jsx(xs,{$bg:"teal",$area:"three",$delay:"0.2s"}),k.jsx(xs,{$bg:"gold",$area:"four",$delay:"0.3s"})]})})}const VP=T.lazy(()=>fi(()=>import("./index-Cg8aAhAP.js"),[])),WP=T.lazy(()=>fi(()=>import("./index-DSqG_4K8.js"),[])),HP=T.lazy(()=>fi(()=>import("./index-BeKf3jjc.js"),[])),KP=T.lazy(()=>fi(()=>import("./index-BlNxgDNc.js"),[])),GP=T.lazy(()=>fi(()=>import("./Login-CjNkf9ar.js"),__vite__mapDeps([0,1]))),QP=T.lazy(()=>fi(()=>import("./Register-BO7P2nx5.js"),__vite__mapDeps([2,1]))),Cs=JSON.parse(window.localStorage.getItem("loggedKokoda")),JP=iO([{path:"/",element:k.jsx(FT,{}),children:[{index:!0,element:k.jsx(QT,{})},{path:"",element:k.jsx(MT,{}),children:[{path:"chats",element:k.jsx($P,{})},{path:"chats/:id",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(WP,{})})},{path:"contacts",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(VP,{})})},{path:"contacts/:id",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(HP,{})})}]},{path:"authentication",element:k.jsx(T.Suspense,{fallback:k.jsx(_s,{}),children:k.jsx(KP,{})}),children:[{path:"login",element:k.jsx(T.Suspense,{children:k.jsx(GP,{})})},{path:"register",element:k.jsx(T.Suspense,{children:k.jsx(QP,{})})}]}]},{path:"*",element:k.jsx(YR,{to:"/chats"})}]);function qP(){const[e,t]=T.useState("dark"),n=Ar();return T.useEffect(()=>{const r=document.getElementById("root");r.style.backgroundColor=(e==="dark"?jg:Dg).main.containerBg},[e]),Cs&&(n(Vk(Cs)),n(Ks({token:Cs.token,id:Cs.id}))),k.jsx(k.Fragment,{children:k.jsx(Nx,{theme:e==="dark"?jg:Dg,children:k.jsx(pO,{router:JP})})})}const YP=z_({reducer:{chats:LO,contacts:eb,login:Hk,users:Yk,unseen:MO}});Yc.createRoot(document.getElementById("root")).render(k.jsx(Ee.StrictMode,{children:k.jsx(e_,{store:YP,children:k.jsx(qP,{})})}));export{Ks as A,ZP as B,bb as C,eA as D,Ic as E,Qk as F,zp as G,Jk as H,Xl as I,qk as J,Fc as K,Lr as L,wO as N,z1 as O,TP as S,LT as W,Ze as a,g1 as b,Op as c,V as d,EP as e,v1 as f,Ar as g,Go as h,Qs as i,k as j,ye as k,Cu as l,mo as m,Gk as n,el as o,lA as p,iA as q,T as r,Zn as s,sA as t,jr as u,jO as v,dA as w,OO as x,sa as y,oA as z};
